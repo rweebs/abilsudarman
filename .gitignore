@@ -4,6 +4,5 @@ dist
 .DS_Store
 .env
 .superpowers
-source
 .agents
 .claude
