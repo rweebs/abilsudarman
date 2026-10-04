@@ -8,6 +8,15 @@ export default defineConfig({
   trailingSlash: 'never',
   build: { format: 'file', inlineStylesheets: 'never' },
   markdown: { syntaxHighlight: false },
-  security: { csp: true },
+  security: {
+    csp: {
+      styleDirective: {
+        resources: [
+          { resource: "'self'", kind: 'element' },
+          { resource: "'unsafe-inline'", kind: 'attribute' },
+        ],
+      },
+    },
+  },
   integrations: [react(), sitemap()],
 });

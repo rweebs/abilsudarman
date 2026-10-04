@@ -10,8 +10,8 @@ export default function ParallaxHeader({ src, alt }: { src: string; alt: string 
   return (
     <figure ref={ref} className="post-header" data-post-header>
       {reduce
-        ? <img src={src} alt={alt} loading="eager" decoding="async" />
-        : <motion.img src={src} alt={alt} loading="eager" decoding="async" style={{ y }} />}
+        ? <img src={src} alt={alt} width={1280} height={720} loading="eager" decoding="async" />
+        : <motion.img src={src} alt={alt} width={1280} height={720} loading="eager" decoding="async" style={{ y }} />}
     </figure>
   );
 }

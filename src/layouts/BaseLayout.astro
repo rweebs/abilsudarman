@@ -5,7 +5,7 @@ import { NAV, SITE } from '../lib/site';
 import { serializeJsonLd } from '../lib/jsonld';
 const { title, description, path, jsonLd, noindex } = Astro.props as { title: string; description: string; path: string; jsonLd?: object; noindex?: boolean };
 const canonical = new URL(path, SITE.url).toString();
-const fullTitle = path === '/' ? SITE.name : `${title} · ${SITE.name}`;
+const fullTitle = title === SITE.name ? SITE.name : `${title} · ${SITE.name}`;
 ---
 <!doctype html>
 <html lang="id">
