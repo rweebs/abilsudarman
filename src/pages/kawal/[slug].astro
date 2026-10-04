@@ -3,7 +3,8 @@ import { getEntry, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import DeliveryAddress from '../../components/DeliveryAddress.astro';
-import { getQuestions } from '../../lib/content';
+import { assertEvidencePublished } from '../../lib/publish';
+import { getQuestions, INCLUDE_DRAFTS } from '../../lib/content';
 
 export async function getStaticPaths() {
   return (await getQuestions()).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
@@ -11,11 +12,14 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const q = entry.data;
 const { Content } = await render(entry);
-const evidence = await Promise.all(q.evidence.map(async (id: string) => {
-  const post = await getEntry('posts', id);
-  if (!post) throw new Error(`Butir kawal ${entry.id} merujuk artikel yang tidak ada: ${id}`);
-  return post;
-}));
+const posts = await Promise.all(q.evidence.map((id: string) => getEntry('posts', id)));
+assertEvidencePublished(
+  entry.id,
+  q.evidence,
+  (id) => posts.find((p) => p?.id === id)?.data,
+  INCLUDE_DRAFTS,
+);
+const evidence = posts.filter((p): p is NonNullable<typeof p> => Boolean(p));
 const fmt = (d?: Date) => d?.toLocaleDateString('id-ID', { dateStyle: 'long' });
 ---
 <BaseLayout title={q.title} description={q.question} path={`/kawal/${entry.id}`}>
