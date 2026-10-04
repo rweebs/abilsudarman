@@ -47,6 +47,12 @@ export const bukuSchema = z.object({
   order: z.number().int(),
 });
 
+export const tiktokSchema = z.object({
+  tiktokId: z.string().regex(/^\d{10,25}$/),
+  title: z.string().min(1),
+  order: z.number().int(),
+});
+
 export const videoSchema = z.object({
   youtubeId: z.string().regex(/^[A-Za-z0-9_-]{11}$/),
   title: z.string().min(1),

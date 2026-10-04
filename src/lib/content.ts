@@ -19,3 +19,7 @@ export async function getBuku() {
 export async function getVideos() {
   return getCollection('videos');
 }
+
+export async function getTiktok() {
+  return getCollection('tiktok');
+}

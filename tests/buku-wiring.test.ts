@@ -5,9 +5,9 @@ import { NAV, PAGE_LASTMOD } from '../src/lib/site';
 const read = (p: string) => readFileSync(p, 'utf8');
 
 describe('buku wiring', () => {
-  it('puts Buku in the nav right after Videos', () => {
+  it('puts Buku in the nav right after TikTok', () => {
     const hrefs = NAV.map((n) => n.href as string);
-    expect(hrefs.indexOf('/buku')).toBe(hrefs.indexOf('/videos') + 1);
+    expect(hrefs.indexOf('/buku')).toBe(hrefs.indexOf('/tiktok') + 1);
     expect(NAV.find((n) => n.href === '/buku')?.label).toBe('Buku');
   });
   it('has a YYYY-MM-DD lastmod and a sitemap entry', () => {
@@ -20,9 +20,9 @@ describe('buku wiring', () => {
   it('caches the pdfs like images', () => {
     expect(read('public/_headers')).toMatch(/\/buku\/\*\s*\n\s*Cache-Control:\s*public, max-age=86400, must-revalidate/);
   });
-  it('adds no new CSP source (pdfs open as plain links, not frames)', () => {
+  it('adds no CSP source for pdfs (they open as plain links, not frames)', () => {
     const csp = read('public/_headers').match(/Content-Security-Policy:([^\n]*)/)?.[1] ?? '';
-    expect(csp).toMatch(/frame-src https:\/\/open\.spotify\.com https:\/\/www\.youtube-nocookie\.com(;|$)/);
+    expect(csp).toMatch(/frame-src https:\/\/open\.spotify\.com https:\/\/www\.youtube-nocookie\.com https:\/\/www\.tiktok\.com(;|$)/);
   });
   it('the page offers Baca and Unduh links and embeds no viewer', () => {
     const page = read('src/pages/buku.astro');
