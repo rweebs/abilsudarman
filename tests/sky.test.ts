@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mulberry32 } from '../src/lib/sky/rng';
-import { stateForSection, SECTION_STATE, CAMERA_POSES } from '../src/lib/sky/states';
+import { stateForSection, SECTION_STATE, CAMERA_POSES, homeSections, poseStateFor } from '../src/lib/sky/states';
 import { makeStars, placeClaimStars } from '../src/lib/sky/layout';
 import { makeFlock, stepFlock, birdTarget, DEFAULT_FLOCK } from '../src/lib/sky/flock';
 
@@ -29,6 +29,24 @@ describe('states', () => {
   });
   it('has a camera pose for every state used', () => {
     for (const s of new Set(Object.values(SECTION_STATE))) expect(CAMERA_POSES[s]).toBeDefined();
+  });
+});
+
+describe('home sections without claims', () => {
+  it('lists all five sections when there are claims', () => {
+    expect(homeSections(true)).toEqual(['operasi', 'siapa', 'klaim', 'bukti', 'jawaban']);
+  });
+  it('drops the empty Kawal section when there are no claims', () => {
+    expect(homeSections(false)).toEqual(['operasi', 'siapa', 'bukti', 'jawaban']);
+  });
+  it('keeps the wide camera pose for claims/evidence when there are no claim-stars', () => {
+    expect(poseStateFor('claims', false)).toBe('circle');
+    expect(poseStateFor('evidence', false)).toBe('circle');
+    expect(poseStateFor('status', false)).toBe('status');
+  });
+  it('uses the state itself when claim-stars exist', () => {
+    expect(poseStateFor('claims', true)).toBe('claims');
+    expect(poseStateFor('evidence', true)).toBe('evidence');
   });
 });
 

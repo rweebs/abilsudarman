@@ -9,13 +9,14 @@ import Reveal from '../components/motion/Reveal.tsx';
 import TiltCard from '../components/motion/TiltCard.tsx';
 import { getPosts, getQuestions } from '../lib/content';
 import { firstImage } from '../lib/header-image';
+import { homeSections } from '../lib/sky/states';
 import poskota from '../assets/home/poskota-cyberattack.png';
 
 const questions = await getQuestions();
 const posts = (await getPosts()).slice(0, 6);
 const answered = questions.filter((q) => q.data.status === 'dijawab').length;
 const claims = questions.map((q) => ({ id: q.id, evidence: q.data.evidence.length }));
-const SECTIONS = ['operasi', 'siapa', 'klaim', 'bukti', 'jawaban'];
+const SECTIONS = homeSections(questions.length > 0);
 const DESCRIPTION = 'Operasi Ababil: kawal terbuka atas klaim Abil Sudarman. Butir kawal, bukti, terjemahan artikel, dan hak jawab, sebagai catatan dan pendapat, bukan putusan.';
 const websiteLd = {
   '@context': 'https://schema.org', '@type': 'WebSite', name: 'Kawal Abil Sudarman', alternateName: 'Operasi Ababil',
@@ -53,19 +54,19 @@ const REPORT = 'https://www.pewartanusantara.com/berita/dibungkam-situs-ordal-id
       </div>
     </section>
 
+    {questions.length > 0 && (
     <section id="klaim" class="home-section container">
       <div class="glass stack">
         <h2>Kawal</h2>
-        {questions.length === 0
-          ? <p class="muted">Belum ada butir kawal yang dipublikasikan.</p>
-          : <div class="grid">{questions.map((q) => (
+        <div class="grid">{questions.map((q) => (
               <TiltCard client:visible href={`/kawal/${q.id}`}>
                 <StatusBadge status={q.data.status} />
                 <h3>{q.data.title}</h3>
                 <p class="muted">{q.data.question}</p>
-              </TiltCard>))}</div>}
+              </TiltCard>))}</div>
       </div>
     </section>
+    )}
 
     <section id="bukti" class="home-section container">
       <div class="glass stack">

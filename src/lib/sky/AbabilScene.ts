@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { makeStars, placeClaimStars } from './layout';
 import { makeFlock, stepFlock, birdTarget, DEFAULT_FLOCK } from './flock';
-import { CAMERA_POSES, type SkyState } from './states';
+import { CAMERA_POSES, poseStateFor, type SkyState } from './states';
 import { BIRD_POSITIONS, STONE_LOCAL, STONE_RADIUS } from './bird-model';
 
 export interface SceneClaim { id: string; evidence: number }
@@ -116,7 +116,7 @@ export function createScene({ canvas, claims, reducedMotion }: SceneInit): Ababi
   const tgtLook = new THREE.Vector3();
 
   function applyPose(snap: boolean) {
-    const pose = CAMERA_POSES[state];
+    const pose = CAMERA_POSES[poseStateFor(state, placed.length > 0)];
     tgtPos.set(pose.pos.x, pose.pos.y, pose.pos.z);
     tgtLook.set(pose.look.x, pose.look.y, pose.look.z);
     if (snap) { camPos.copy(tgtPos); camLook.copy(tgtLook); }
