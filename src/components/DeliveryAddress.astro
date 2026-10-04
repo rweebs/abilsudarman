@@ -1,8 +1,0 @@
----
-import { PDKI, SITE } from '../lib/site';
----
-<address class="address">
-  <strong>Alamat tercatat pada PDKI</strong> (<a href={PDKI.url} rel="noopener noreferrer" target="_blank">permohonan {PDKI.filing}</a>):<br />
-  {PDKI.address}<br />
-  Butir kawal dikirim ke: <a href={`mailto:${SITE.questionEmail}`}>{SITE.questionEmail}</a> dan <a href={`mailto:${SITE.replyEmail}`}>{SITE.replyEmail}</a>
-</address>

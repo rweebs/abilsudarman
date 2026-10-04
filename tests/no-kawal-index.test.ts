@@ -14,7 +14,7 @@ describe('the /kawal list page is removed', () => {
     expect(existsSync('src/pages/kawal/index.astro')).toBe(false);
   });
   it('is not in the navigation', () => {
-    expect(NAV.some((n) => n.href === '/kawal')).toBe(false);
+    expect(NAV.some((n) => (n.href as string) === '/kawal')).toBe(false);
   });
   it('is not linked from any page or component', () => {
     const files = ['src/pages', 'src/components', 'src/layouts'].flatMap(walk).filter((f) => /\.(astro|tsx)$/.test(f));

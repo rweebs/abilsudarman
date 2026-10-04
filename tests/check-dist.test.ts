@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-// @ts-expect-error plain JS module
+// @ts-ignore plain JS module
 import { findProblems } from '../scripts/check-dist.mjs';
 
 let dir: string;

@@ -1,23 +1,20 @@
 ---
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import StatusBadge from '../components/StatusBadge.astro';
 import PostThumb from '../components/PostThumb.astro';
+import ClassificationBadge from '../components/ClassificationBadge.astro';
 import SkyStage from '../components/SkyStage.tsx';
 import SpotifyPlayer from '../components/SpotifyPlayer.tsx';
 import Reveal from '../components/motion/Reveal.tsx';
 import TiltCard from '../components/motion/TiltCard.tsx';
-import { getPosts, getQuestions } from '../lib/content';
+import { getPosts } from '../lib/content';
 import { firstImage } from '../lib/header-image';
-import { homeSections } from '../lib/sky/states';
+import { HOME_SECTIONS } from '../lib/sky/states';
 import poskota from '../assets/home/poskota-cyberattack.png';
 
-const questions = await getQuestions();
 const posts = (await getPosts()).slice(0, 6);
-const answered = questions.filter((q) => q.data.status === 'dijawab').length;
-const claims = questions.map((q) => ({ id: q.id, evidence: q.data.evidence.length }));
-const SECTIONS = homeSections(questions.length > 0);
-const DESCRIPTION = 'Operasi Ababil: kawal terbuka atas klaim Abil Sudarman. Butir kawal, bukti, terjemahan artikel, dan hak jawab, sebagai catatan dan pendapat, bukan putusan.';
+const SECTIONS = [...HOME_SECTIONS];
+const DESCRIPTION = 'Operasi Ababil: kawal terbuka atas klaim Abil Sudarman. Terjemahan artikel, bukti, dan hak jawab, sebagai catatan dan pendapat, bukan putusan.';
 const websiteLd = {
   '@context': 'https://schema.org', '@type': 'WebSite', name: 'Kawal Abil Sudarman', alternateName: 'Operasi Ababil',
   url: 'https://abilsudarman.my.id/', inLanguage: 'id', description: DESCRIPTION,
@@ -25,14 +22,14 @@ const websiteLd = {
 const REPORT = 'https://www.pewartanusantara.com/berita/dibungkam-situs-ordal-id-kena-6-000-serangan-siber-usai-bongkar-borok-loker-komdigi/';
 ---
 <BaseLayout title="Operasi Ababil" description={DESCRIPTION} path="/" jsonLd={websiteLd}>
-  <SkyStage client:idle claims={claims} sectionIds={SECTIONS} />
+  <SkyStage client:idle sectionIds={SECTIONS} />
   <div class="home-main">
     <section id="operasi" class="home-section container">
       <div class="glass stack">
         <Reveal client:visible>
           <h1>Operasi Ababil</h1>
           <p class="hero-sub">Operasi untuk mengungkap Abil Sudarman</p>
-          <p class="lead muted">Seperti kawanan ababil yang membawa batu kecil satu per satu, operasi ini mengumpulkan butir kawal, bukti, dan terjemahan artikel secara terbuka. Ini catatan dan pendapat Rahmat Wibowo, bukan putusan. Abil Sudarman berhak menjawab setiap butir.</p>
+          <p class="lead muted">Seperti kawanan ababil yang membawa batu kecil satu per satu, operasi ini mengumpulkan bukti dan terjemahan artikel secara terbuka. Ini catatan dan pendapat Rahmat Wibowo, bukan putusan. Abil Sudarman berhak menanggapi setiap tulisan.</p>
           <a class="btn" href="/artikel">Baca artikel terjemahan</a>
         </Reveal>
         <SpotifyPlayer client:visible />
@@ -54,40 +51,25 @@ const REPORT = 'https://www.pewartanusantara.com/berita/dibungkam-situs-ordal-id
       </div>
     </section>
 
-    {questions.length > 0 && (
-    <section id="klaim" class="home-section container">
-      <div class="glass stack">
-        <h2>Kawal</h2>
-        <div class="grid">{questions.map((q) => (
-              <TiltCard client:visible href={`/kawal/${q.id}`}>
-                <StatusBadge status={q.data.status} />
-                <h3>{q.data.title}</h3>
-                <p class="muted">{q.data.question}</p>
-              </TiltCard>))}</div>
-      </div>
-    </section>
-    )}
-
     <section id="bukti" class="home-section container">
       <div class="glass stack">
-        <h2>Bukti</h2>
+        <h2>Bukti dan artikel</h2>
         {posts.length === 0
           ? <p class="muted">Belum ada artikel yang dipublikasikan.</p>
           : <div class="grid">{posts.map((p) => (
-              <a class="card card--link card-link" href={`/artikel/${p.id}`}>
+              <TiltCard client:visible href={`/artikel/${p.id}`}>
                 <PostThumb title={p.data.title} slug={p.id} image={firstImage(p.body ?? '')} />
+                <ClassificationBadge value={p.data.classification} />
                 <h3 class="card-title">{p.data.title}</h3>
-              </a>))}</div>}
+              </TiltCard>))}</div>}
       </div>
     </section>
 
     <section id="jawaban" class="home-section container">
       <div class="glass stack">
         <h2>Jawaban</h2>
-        <p class="lead">{questions.length === 0
-          ? 'Belum ada butir kawal yang dikirim.'
-          : `${answered} dari ${questions.length} butir kawal sudah dijawab.`}</p>
-        <p class="muted lead">Jawaban yang diterima dimuat apa adanya. Belum adanya jawaban bukan pengakuan atas apa pun.</p>
+        <p class="lead">Abil Sudarman berhak menanggapi, mengoreksi, atau menambahkan konteks atas setiap tulisan di sini.</p>
+        <p class="muted lead">Tanggapan yang diterima dimuat apa adanya. Belum adanya tanggapan bukan pengakuan atas apa pun.</p>
         <a class="btn" href="/hak-jawab">Hak jawab</a>
       </div>
     </section>

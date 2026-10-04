@@ -5,7 +5,7 @@ import ClassificationBadge from '../../components/ClassificationBadge.astro';
 import TranslationNotice from '../../components/TranslationNotice.astro';
 import PostHeader from '../../components/PostHeader.astro';
 import { firstImage } from '../../lib/header-image';
-import { getPosts, getQuestions } from '../../lib/content';
+import { getPosts } from '../../lib/content';
 import { SITE, CLASSIFICATION_LABEL } from '../../lib/site';
 import { descriptionFromMarkdown } from '../../lib/seo';
 
@@ -16,9 +16,8 @@ const { entry } = Astro.props;
 const p = entry.data;
 const { Content } = await render(entry);
 const header = firstImage(entry.body ?? '');
-const cited = (await getQuestions()).filter((q) => q.data.evidence.includes(entry.id));
 const description = descriptionFromMarkdown(entry.body ?? '')
-  || `Terjemahan Bahasa Indonesia dari “${p.originalTitle}” oleh ${p.author}. ${CLASSIFICATION_LABEL[p.classification]} dalam Kawal Abil Sudarman.`;
+  || `Terjemahan Bahasa Indonesia dari “${p.originalTitle}” oleh ${p.author}. ${CLASSIFICATION_LABEL[p.classification]}.`;
 const path = `/artikel/${entry.id}`;
 const url = new URL(path, SITE.url).toString();
 const date = p.translationDate.toISOString().slice(0, 10);
@@ -43,11 +42,5 @@ const jsonLd = {
     <h1>{p.title}</h1>
     <TranslationNotice originalTitle={p.originalTitle} originalUrl={p.originalUrl} author={p.author} />
     <div class="prose"><Content /></div>
-    {cited.length > 0 && (
-      <aside class="card notice">
-        <h2 class="card-title">Dikutip pada butir kawal</h2>
-        <ul>{cited.map((q) => <li><a href={`/kawal/${q.id}`}>{q.data.title}</a></li>)}</ul>
-      </aside>
-    )}
   </article>
 </BaseLayout>

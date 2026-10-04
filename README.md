@@ -10,10 +10,9 @@ Situs statis Astro (bahasa Indonesia) di Cloudflare Pages.
 - `npm test`
 
 ## Menerbitkan
-1. Tinjau terjemahan, isi `originalUrl`, ubah `translationStatus: final`.
-2. Setujui butir kawal, isi `sentDate` dan `deliveryChannel`, ubah `draft: false` setelah dikirim ke abil@assai.id dan rahmat.wibowo21@gmail.com.
-3. Jika ada jawaban: ubah `status: dijawab`, isi `reply` (apa adanya) dan `replyDate`.
-4. `npm test && npm run build && npm run check`
-5. Cloudflare Pages: build command `npm test && npm run build`, output `dist`, Node 22; atau `npx wrangler pages deploy dist`. Domain produksi: abilsudarman.my.id.
+1. Tinjau terjemahan, lalu ubah `translationStatus: final` (isi `originalUrl` bila ada tautan teks asli).
+2. Tanggapan dari Abil Sudarman (jika ada) ditambahkan apa adanya di akhir tulisan yang bersangkutan, di bawah judul `## Tanggapan Abil Sudarman`, lengkap dengan tanggal penerimaan.
+3. `npm test && npm run build` (build menjalankan pemeriksa `dist/`).
+4. Cloudflare: build command `npm test && npm run build`, deploy command `npx wrangler deploy` (konfigurasi di `wrangler.jsonc`, aset statis dari `dist/`). Domain produksi: abilsudarman.my.id.
 
 Sebelum rilis: minta penasihat hukum meninjau (UU ITE, KUHP baru, UU PDP).

@@ -51,7 +51,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
   <text x="160" y="140" font-family="Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#f1f5f9" letter-spacing="2">KAWAL ABIL SUDARMAN</text>
   <text x="70" y="330" font-family="Helvetica, Arial, sans-serif" font-size="108" font-weight="800" fill="#f1f5f9">Operasi Ababil</text>
   <text x="74" y="396" font-family="Helvetica, Arial, sans-serif" font-size="38" fill="#f59e0b">Operasi untuk mengungkap Abil Sudarman</text>
-  <text x="74" y="470" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="#94a3b8">Butir kawal terbuka · bukti terbuka · hak jawab terbuka</text>
+  <text x="74" y="470" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="#94a3b8">Bukti terbuka · terjemahan terbuka · hak jawab terbuka</text>
   <text x="74" y="570" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="#60a5fa">abilsudarman.my.id</text>
 </svg>`;
 

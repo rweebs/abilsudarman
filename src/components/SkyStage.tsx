@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { stateForSection } from '../lib/sky/states';
 import type { AbabilScene } from '../lib/sky/AbabilScene';
 
-interface Props { claims: Array<{ id: string; evidence: number }>; sectionIds: string[] }
+interface Props { sectionIds: string[] }
 
 function Fallback() {
   const stars = Array.from({ length: 60 }, (_, i) => ({ cx: (i * 53) % 100, cy: (i * 37) % 70, r: 0.15 + ((i * 7) % 5) * 0.06 }));
@@ -17,7 +17,7 @@ function Fallback() {
   );
 }
 
-export default function SkyStage({ claims, sectionIds }: Props) {
+export default function SkyStage({ sectionIds }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [mode, setMode] = useState<'loading' | 'webgl' | 'fallback'>('loading');
 
@@ -36,7 +36,7 @@ export default function SkyStage({ claims, sectionIds }: Props) {
         if (forceFallback) throw new Error('webgl disabled by query');
         const { createScene } = await import('../lib/sky/AbabilScene');
         if (cancelled || !canvasRef.current) return;
-        scene = createScene({ canvas: canvasRef.current, claims, reducedMotion: reduced });
+        scene = createScene({ canvas: canvasRef.current, reducedMotion: reduced });
         onResize();
         setMode('webgl');
 

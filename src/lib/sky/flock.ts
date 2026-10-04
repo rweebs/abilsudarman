@@ -50,18 +50,9 @@ export function stepFlock(birds: readonly Bird[], targets: readonly Vec3[], p: F
   });
 }
 
-export function birdTarget(state: SkyState, i: number, time: number, claims: readonly Vec3[]): Vec3 {
-  const orbit = (): Vec3 => {
-    const a = time * 0.25 + i * 0.37;
-    const r = 3.4 + (i % 5) * 0.55;
-    return { x: Math.cos(a) * r, y: 0.6 + (i % 6) * 0.35 + Math.sin(time * 0.5 + i) * 0.25, z: Math.sin(a) * r };
-  };
-  if (state === 'circle') return orbit();
+export function birdTarget(state: SkyState, i: number, time: number): Vec3 {
   if (state === 'status') return { x: ((i % 7) - 3) * 0.8, y: 3, z: -2 };
-  if (claims.length === 0) return orbit();
-  if (state === 'evidence') return claims[i % claims.length];
-  const c = claims.reduce((s, q) => ({ x: s.x + q.x, y: s.y + q.y, z: s.z + q.z }), { x: 0, y: 0, z: 0 });
-  const k = 1 / claims.length;
-  const ring = i * 0.4 + time * 0.2;
-  return { x: c.x * k + Math.cos(ring) * 1.2, y: c.y * k + Math.sin(ring * 0.7) * 0.5, z: c.z * k + Math.sin(ring) * 1.2 };
+  const a = time * 0.25 + i * 0.37;
+  const r = 3.4 + (i % 5) * 0.55;
+  return { x: Math.cos(a) * r, y: 0.6 + (i % 6) * 0.35 + Math.sin(time * 0.5 + i) * 0.25, z: Math.sin(a) * r };
 }

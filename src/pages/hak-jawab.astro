@@ -1,14 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import DeliveryAddress from '../components/DeliveryAddress.astro';
 import { SITE } from '../lib/site';
 ---
-<BaseLayout title="Hak jawab Abil Sudarman" description="Cara Abil Sudarman menyampaikan jawaban atau tanggapan: butir kawal dikirim lewat email, dan jawaban dimuat apa adanya tanpa penyuntingan." path="/hak-jawab" breadcrumbs={[{ name: 'Hak jawab', path: '/hak-jawab' }]}>
+<BaseLayout title="Hak jawab Abil Sudarman" description="Cara Abil Sudarman menanggapi isi situs ini: tanggapan dikirim lewat email dan dimuat apa adanya, tanpa penyuntingan, bersama tulisan yang bersangkutan." path="/hak-jawab" breadcrumbs={[{ name: 'Hak jawab', path: '/hak-jawab' }]}>
   <article class="reading">
     <h1>Hak jawab</h1>
-    <p>Abil Sudarman berhak menjawab setiap butir kawal dan menanggapi setiap isi situs ini. Jawaban dapat dikirim ke <a href={`mailto:${SITE.replyEmail}`}>{SITE.replyEmail}</a>.</p>
-    <p>Jawaban yang diterima akan dimuat <strong>apa adanya, tanpa penyuntingan</strong>, pada halaman butir kawal yang bersangkutan, lengkap dengan tanggal penerimaan. Butir kawal disampaikan ke alamat berikut:</p>
-    <DeliveryAddress />
-    <p class="muted">Jika tidak ada jawaban, halaman hanya akan menyatakan bahwa belum ada jawaban pada tanggal tertentu. Hal itu bukan pengakuan atas apa pun.</p>
+    <p>Abil Sudarman berhak menanggapi, mengoreksi, atau menambahkan konteks atas setiap tulisan di situs ini. Tanggapan dapat dikirim ke <a href={`mailto:${SITE.replyEmail}`}>{SITE.replyEmail}</a>.</p>
+    <p>Tanggapan yang diterima akan dimuat <strong>apa adanya, tanpa penyuntingan</strong>, bersama tulisan yang bersangkutan, lengkap dengan tanggal penerimaan.</p>
+    <p class="muted">Jika tidak ada tanggapan, situs tidak menyimpulkan apa pun. Belum adanya tanggapan bukan pengakuan atas apa pun.</p>
   </article>
 </BaseLayout>
