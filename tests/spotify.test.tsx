@@ -14,7 +14,7 @@ describe('SpotifyPlayer (click-to-load)', () => {
     expect(html).toContain('https://open.spotify.com/track/6sbK7tNe3RsXPigs3T1PTO');
     expect(html).toContain('pihak ketiga');
   });
-  it('says the track repeats continuously', () => {
-    expect(html).toContain('berulang');
+  it('tells the visitor how to repeat the preview', () => {
+    expect(html).toContain('mengulang');
   });
 });
