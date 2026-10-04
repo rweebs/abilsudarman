@@ -7,7 +7,7 @@ classification: pendapat
 subjects: ["Abil Sudarman", "Gibran Rakabuming Raka", "Joko Widodo", "Endang Sudarman"]
 translationStatus: final
 ---
-![](/img/a66a5e6964ca4b95d4fd1be3.png)
+![Infografis Indonesia Investigates: Sorotan atas Pengaruh Anak Muda, membandingkan Gibran Rakabuming Raka dan Abil Sudarman](/img/scrutiny-of-youth-header.png)
 
 Analisis Investigatif atas Persepsi Publik yang Paralel terhadap Gibran Rakabuming Raka dan Abil Sudarman
 

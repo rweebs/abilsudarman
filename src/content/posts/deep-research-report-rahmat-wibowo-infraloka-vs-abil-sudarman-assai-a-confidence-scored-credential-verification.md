@@ -7,7 +7,7 @@ classification: pendapat
 subjects: ["Rahmat Wibowo", "Abil Sudarman", "Endang Sudarman", "Hammam Riza", "Joko Priyono", "Moch Rafi Adnan", "Setiadipura"]
 translationStatus: final
 ---
-![](/img/39f3321ef42cc2cf03244451.png)
+![Ilustrasi: dua kartu subjek dengan kerangka bukti yang sama dan satu skala keyakinan bersama, dari belum ada hingga terkonfirmasi](/img/deep-research-header.png)
 
 *Analisis profil profesional komparatif berbasis bukti setebal 60 halaman yang menerapkan kerangka Devil's Advocate Modul [F] AEGIS untuk memverifikasi kredensial, afiliasi institusional, dan klaim publik dua tokoh teknologi Indonesia, Rahmat Wibowo (Infraloka) dan Abil Sudarman (ASSAI), terhadap catatan sumber primer.*
 
