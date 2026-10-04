@@ -11,6 +11,7 @@ import { SITE } from '../lib/site';
 import { firstImage } from '../lib/header-image';
 import { HOME_SECTIONS } from '../lib/sky/states';
 import poskota from '../assets/home/poskota-cyberattack.png';
+import burungAbabil from '../assets/home/burung-ababil.png';
 
 const posts = (await getPosts()).slice(0, 6);
 const SECTIONS = [...HOME_SECTIONS];
@@ -25,6 +26,7 @@ const REPORT = 'https://www.pewartanusantara.com/berita/dibungkam-situs-ordal-id
   <SkyStage client:idle sectionIds={SECTIONS} />
   <div class="home-main">
     <section id="operasi" class="home-section container">
+      <div class="home-hero">
       <div class="glass stack">
         <div class="stack">
           <h1>Operasi Ababil</h1>
@@ -32,6 +34,10 @@ const REPORT = 'https://www.pewartanusantara.com/berita/dibungkam-situs-ordal-id
           <p class="lead muted">Seperti kawanan ababil yang membawa batu kecil satu per satu, operasi ini mengumpulkan bukti dan terjemahan artikel secara terbuka. Ini catatan dan pendapat Rahmat Wibowo, bukan putusan. Abil Sudarman berhak menanggapi setiap tulisan.</p>
           <a class="btn" href="/artikel">Baca artikel terjemahan</a>
         </div>
+      </div>
+      <figure class="home-hero__art">
+        <Image src={burungAbabil} alt="Dua burung layang-layang memegang batu kecil di kakinya, dengan teks “Burung Ababil bawa batu neraka?”" width={640} sizes="(min-width: 900px) 30rem, 100vw" loading="eager" />
+      </figure>
       </div>
     </section>
 
