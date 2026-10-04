@@ -5,6 +5,7 @@ import { NAV, SITE } from '../lib/site';
 import { serializeJsonLd } from '../lib/jsonld';
 const { title, description, path, jsonLd, noindex } = Astro.props as { title: string; description: string; path: string; jsonLd?: object; noindex?: boolean };
 const canonical = new URL(path, SITE.url).toString();
+const ogImage = new URL('/og/kawal-og.png', SITE.url).toString();
 const fullTitle = title === SITE.name ? SITE.name : `${title} · ${SITE.name}`;
 ---
 <!doctype html>
@@ -21,14 +22,19 @@ const fullTitle = title === SITE.name ? SITE.name : `${title} · ${SITE.name}`;
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     {!noindex && <meta property="og:url" content={canonical} />}
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Operasi Ababil: kawanan burung ababil membawa batu di langit malam" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
     {jsonLd && <script type="application/ld+json" set:html={serializeJsonLd(jsonLd)} />}
   </head>
   <body>
     <DisclaimerBanner />
     <header class="nav">
       <div class="container">
-        <a href="/" class="brand">{SITE.name}</a>
+        <a href="/" class="brand"><img src="/logo-kawal.svg" alt="" width="32" height="32" />{SITE.name}</a>
         <details class="nav__menu" open>
           <summary>Menu</summary>
           <ul class="nav__links">

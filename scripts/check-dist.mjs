@@ -37,6 +37,13 @@ export function findProblems(dist, site = DEFAULT_SITE) {
     const html = readFileSync(file, 'utf8');
     const base = new URL(pageUrl(dist, file), origin);
     if (!html.includes('data-disclaimer')) problems.push(`${file}: missing disclaimer banner`);
+    const og = html.match(/<meta[^>]*property="og:image"[^>]*content="([^"]*)"/);
+    if (!og) problems.push(`${file}: missing og:image`);
+    else {
+      let ogUrl;
+      try { ogUrl = new URL(og[1], base); } catch { ogUrl = null; }
+      if (!ogUrl || (ogUrl.origin === origin && !pathExists(dist, ogUrl.pathname))) problems.push(`${file}: og:image file not found ${og[1]}`);
+    }
     if (/<details[^>]*class="nav__menu"/.test(html) && !/<details[^>]*class="nav__menu"[^>]*\sopen/.test(html)) {
       problems.push(`${file}: nav menu is not open by default (breaks without JavaScript)`);
     }

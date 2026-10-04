@@ -52,8 +52,9 @@ export function stepFlock(birds: readonly Bird[], targets: readonly Vec3[], p: F
 
 export function birdTarget(state: SkyState, i: number, time: number, claims: readonly Vec3[]): Vec3 {
   const orbit = (): Vec3 => {
-    const a = time * 0.25 + i * 0.05;
-    return { x: Math.cos(a) * 4, y: 1.2 + Math.sin(time * 0.5 + i) * 0.3, z: Math.sin(a) * 4 };
+    const a = time * 0.25 + i * 0.37;
+    const r = 3.4 + (i % 5) * 0.55;
+    return { x: Math.cos(a) * r, y: 0.6 + (i % 6) * 0.35 + Math.sin(time * 0.5 + i) * 0.25, z: Math.sin(a) * r };
   };
   if (state === 'circle') return orbit();
   if (state === 'status') return { x: ((i % 7) - 3) * 0.8, y: 3, z: -2 };

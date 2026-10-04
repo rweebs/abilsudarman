@@ -10,6 +10,7 @@ export default defineConfig({
   markdown: { syntaxHighlight: false },
   security: {
     csp: {
+      scriptDirective: { resources: ["'self'", 'https://open.spotify.com'] },
       styleDirective: {
         resources: [
           { resource: "'self'", kind: 'element' },

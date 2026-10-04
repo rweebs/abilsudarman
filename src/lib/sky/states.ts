@@ -14,7 +14,7 @@ export function stateForSection(id: string): SkyState {
 }
 
 export const CAMERA_POSES: Record<SkyState, { pos: Vec3; look: Vec3 }> = {
-  circle: { pos: { x: 0, y: 1, z: 9 }, look: { x: 0, y: 1.5, z: 0 } },
+  circle: { pos: { x: 0, y: 1.2, z: 11 }, look: { x: 0, y: 1.5, z: 0 } },
   claims: { pos: { x: 0, y: 1.5, z: 6 }, look: { x: 0, y: 2, z: -5 } },
   evidence: { pos: { x: 0, y: 2, z: 3 }, look: { x: 0, y: 2, z: -5 } },
   status: { pos: { x: 0, y: 3, z: 8 }, look: { x: 0, y: 3, z: -4 } },

@@ -7,13 +7,16 @@ import { findProblems } from '../scripts/check-dist.mjs';
 
 let dir: string;
 const NAV = '<details class="nav__menu" open></details>';
-const page = (body: string, opts: { banner?: boolean; nav?: string } = {}) =>
-  `<html><body>${opts.banner === false ? '' : '<div data-disclaimer></div>'}${opts.nav ?? NAV}${body}</body></html>`;
+const OG = '<meta property="og:image" content="https://abilsudarman.my.id/og/kawal-og.png" />';
+const page = (body: string, opts: { banner?: boolean; nav?: string; og?: string } = {}) =>
+  `<html><head>${opts.og ?? OG}</head><body>${opts.banner === false ? '' : '<div data-disclaimer></div>'}${opts.nav ?? NAV}${body}</body></html>`;
 
 beforeEach(() => {
   dir = mkdtempSync(join(tmpdir(), 'dist-'));
   mkdirSync(join(dir, 'img'), { recursive: true });
   mkdirSync(join(dir, 'artikel'), { recursive: true });
+  mkdirSync(join(dir, 'og'), { recursive: true });
+  writeFileSync(join(dir, 'og', 'kawal-og.png'), 'x');
   writeFileSync(join(dir, 'img', 'a.png'), 'x');
   writeFileSync(join(dir, 'artikel.html'), page('ok'));
   writeFileSync(join(dir, 'artikel', 'x.html'), page('ok'));
@@ -56,6 +59,14 @@ describe('findProblems', () => {
   it('flags a page whose nav menu is not open by default', () => {
     writeFileSync(join(dir, 'index.html'), page('ok', { nav: '<details class="nav__menu"></details>' }));
     expect(findProblems(dir).join('\n')).toContain('nav menu');
+  });
+  it('flags a page without an og:image', () => {
+    writeFileSync(join(dir, 'index.html'), page('ok', { og: '' }));
+    expect(findProblems(dir).join('\n')).toContain('og:image');
+  });
+  it('flags an og:image whose file does not exist', () => {
+    writeFileSync(join(dir, 'index.html'), page('ok', { og: '<meta property="og:image" content="https://abilsudarman.my.id/og/missing.png" />' }));
+    expect(findProblems(dir).join('\n')).toContain('/og/missing.png');
   });
   it('fails when there are zero pages', () => {
     const empty = mkdtempSync(join(tmpdir(), 'dist-empty-'));

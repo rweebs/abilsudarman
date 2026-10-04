@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { makeStars, placeClaimStars } from './layout';
 import { makeFlock, stepFlock, birdTarget, DEFAULT_FLOCK } from './flock';
 import { CAMERA_POSES, type SkyState } from './states';
+import { BIRD_POSITIONS, STONE_LOCAL, STONE_RADIUS } from './bird-model';
 
 export interface SceneClaim { id: string; evidence: number }
 export interface SceneInit { canvas: HTMLCanvasElement; claims: SceneClaim[]; reducedMotion: boolean }
@@ -14,14 +15,12 @@ export interface AbabilScene {
 
 const BIRD_COUNT = 96;
 const MAX_LINES_PER_CLAIM = 6;
+const BIRD_SCALE = 0.8;
 
 function birdGeometry(phases: Float32Array): THREE.BufferGeometry {
   const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array([
-    0, 0, 0.5, -0.08, 0, -0.3, 0.08, 0, -0.3,
-    0, 0, 0.15, -0.7, 0, -0.1, 0, 0, -0.25,
-    0, 0, 0.15, 0.7, 0, -0.1, 0, 0, -0.25,
-  ]), 3));
+  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(BIRD_POSITIONS), 3));
+  // one phase value per instance
   g.setAttribute('phase', new THREE.InstancedBufferAttribute(phases, 1));
   return g;
 }
@@ -67,22 +66,42 @@ export function createScene({ canvas, claims, reducedMotion }: SceneInit): Ababi
   // ababil flock
   const phases = new Float32Array(BIRD_COUNT).map((_, i) => (i * 0.37) % (Math.PI * 2));
   const birdMat = new THREE.ShaderMaterial({
-    uniforms: { uTime: { value: 0 }, uColor: { value: new THREE.Color('#efe8d6') } },
+    uniforms: {
+      uTime: { value: 0 },
+      uBody: { value: new THREE.Color('#58647f') },
+      uRim: { value: new THREE.Color('#c4cfe8') },
+    },
     vertexShader: `
       attribute float phase;
       uniform float uTime;
+      varying float vTip;
       void main() {
         vec3 p = position;
-        p.y += abs(p.x) * sin(uTime * 9.0 + phase) * 0.7;
+        float flap = sin(uTime * 9.0 + phase);
+        p.y += abs(p.x) * flap * 0.7;
+        vTip = smoothstep(0.25, 1.0, abs(p.x)) * 0.7 + smoothstep(0.3, 0.6, abs(p.z)) * 0.15;
         gl_Position = projectionMatrix * viewMatrix * modelMatrix * instanceMatrix * vec4(p, 1.0);
       }`,
-    fragmentShader: 'uniform vec3 uColor; void main() { gl_FragColor = vec4(uColor, 1.0); }',
+    fragmentShader: `
+      uniform vec3 uBody;
+      uniform vec3 uRim;
+      varying float vTip;
+      void main() { gl_FragColor = vec4(mix(uBody, uRim, vTip), 1.0); }`,
     side: THREE.DoubleSide,
   });
   const birdGeo = birdGeometry(phases);
   const mesh = new THREE.InstancedMesh(birdGeo, birdMat, BIRD_COUNT);
   mesh.frustumCulled = false;
   scene.add(mesh);
+
+  // the stone each bird carries
+  const stoneGeo = new THREE.IcosahedronGeometry(STONE_RADIUS, 1);
+  const stoneMat = new THREE.MeshBasicMaterial({ color: 0xe08a2e });
+  const stones = new THREE.InstancedMesh(stoneGeo, stoneMat, BIRD_COUNT);
+  stones.frustumCulled = false;
+  scene.add(stones);
+  const stoneOffset = new THREE.Vector3(STONE_LOCAL.x, STONE_LOCAL.y, STONE_LOCAL.z);
+  const stoneDummy = new THREE.Object3D();
 
   let birds = makeFlock(BIRD_COUNT, 11);
   let state: SkyState = 'circle';
@@ -112,11 +131,16 @@ export function createScene({ canvas, claims, reducedMotion }: SceneInit): Ababi
     birds.forEach((b, i) => {
       dummy.position.set(b.x, b.y, b.z);
       if (Math.hypot(b.vx, b.vy, b.vz) > 1e-4) dummy.lookAt(b.x + b.vx, b.y + b.vy, b.z + b.vz);
-      dummy.scale.setScalar(0.4);
+      dummy.scale.setScalar(BIRD_SCALE);
       dummy.updateMatrix();
       mesh.setMatrixAt(i, dummy.matrix);
+      stoneDummy.position.copy(stoneOffset).multiplyScalar(BIRD_SCALE).applyQuaternion(dummy.quaternion).add(dummy.position);
+      stoneDummy.scale.setScalar(BIRD_SCALE * 1.5);
+      stoneDummy.updateMatrix();
+      stones.setMatrixAt(i, stoneDummy.matrix);
     });
     mesh.instanceMatrix.needsUpdate = true;
+    stones.instanceMatrix.needsUpdate = true;
   }
 
   function writeLines() {
@@ -182,8 +206,8 @@ export function createScene({ canvas, claims, reducedMotion }: SceneInit): Ababi
     setPaused(p) { paused = p; },
     dispose() {
       cancelAnimationFrame(raf);
-      for (const x of [starGeo, claimGeo, haloGeo, lineGeo, birdGeo]) x.dispose();
-      for (const m of [starMat, claimMat, haloMat, lineMat, birdMat]) m.dispose();
+      for (const x of [starGeo, claimGeo, haloGeo, lineGeo, birdGeo, stoneGeo]) x.dispose();
+      for (const m of [starMat, claimMat, haloMat, lineMat, birdMat, stoneMat]) m.dispose();
       renderer.dispose();
       renderer.forceContextLoss();
     },

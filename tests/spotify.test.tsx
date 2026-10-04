@@ -8,9 +8,13 @@ describe('SpotifyPlayer (click-to-load)', () => {
     expect(html).toContain('<button');
     expect(html).not.toContain('<iframe');
     expect(html).not.toContain('open.spotify.com/embed');
+    expect(html).not.toContain('iframe-api');
   });
   it('links to the track and discloses the third-party player', () => {
     expect(html).toContain('https://open.spotify.com/track/6sbK7tNe3RsXPigs3T1PTO');
     expect(html).toContain('pihak ketiga');
+  });
+  it('says the track repeats continuously', () => {
+    expect(html).toContain('berulang');
   });
 });
