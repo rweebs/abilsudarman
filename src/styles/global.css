@@ -103,6 +103,7 @@ h1, h2, h3 { line-height: 1.2; }
 .sky-stage { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 20%, #131a33 0%, #0a0e1a 70%); }
 .sky-stage__svg, .sky-stage__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; border-radius: 0; }
 .sky-stage__canvas--hidden { visibility: hidden; }
+.sky-stage[data-mode='webgl'] .sky-stage__svg { display: none; }
 .home-main > section { position: relative; z-index: 1; }
 .hero-sub { font-size: clamp(1.1rem, 2.4vw, 1.5rem); color: var(--accent-amber); margin: 0 0 1rem; }
 .home-section { display: flex; align-items: center; padding-block: 0.5rem; }
@@ -250,7 +251,8 @@ h1, h2, h3 { line-height: 1.2; }
 @keyframes theme-song-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 @media (prefers-reduced-motion: reduce) { .theme-song.is-playing .theme-song__icon { animation: none; } }
 .theme-song__panel { width: min(20rem, calc(100vw - 2rem)); padding: 0.75rem; border: 1px solid var(--bg-glass-border); border-radius: var(--radius-lg); background: rgba(10, 14, 26, 0.96); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5); }
-.theme-song__panel[hidden] { display: none; }
+/* Closed: kept rendered so a playing song continues, but invisible and out of the tab order. */
+.theme-song__panel[data-open='false'] { visibility: hidden; position: fixed; left: -100vw; bottom: 0; pointer-events: none; }
 .theme-song__title { margin: 0 0 0.5rem; font-weight: 600; font-size: 0.9rem; }
 .theme-song__stage { aspect-ratio: 16 / 9; border-radius: var(--radius-md); overflow: hidden; background: #000; }
 .theme-song__stage iframe { display: block; width: 100%; height: 100%; border: 0; border-radius: 0; }

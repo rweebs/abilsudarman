@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import portrait from '../assets/home/rahmat-wibowo.jpg';
 import AnakLangitChapter from '../components/anak-langit/AnakLangitChapter.tsx';
 import { HERO, chapters, STATS, MESSAGE, SOURCE_URL, LINKEDIN_URL } from '../lib/tentang';
 import { DISCLAIMER, SITE } from '../lib/site';
@@ -20,7 +22,7 @@ const ld = { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'Tent
         <p class="tentang-badges">{HERO.badges.map((b) => <span class="badge">{b}</span>)}</p>
         <p>{HERO.lead}</p>
       </div>
-      <img src="/img/rahmat-wibowo.jpg" alt={HERO.photoAlt} width="360" height="480" decoding="async" />
+      <Image src={portrait} alt={HERO.photoAlt} widths={[240, 360]} sizes="(max-width: 640px) 240px, 220px" quality={60} loading="eager" fetchpriority="high" />
     </header>
     <p class="muted">{DISCLAIMER}</p>
     <p class="muted">Terjemahan bahasa Indonesia dari <a href={SOURCE_URL} rel="noopener">kisah asli di infraloka.co.id/story</a>, ditulis oleh penggagas situs ini. Kisah ini memuat riwayat pribadi dan pernyataan penulis tentang dirinya sendiri; sumbernya adalah halaman asli tersebut.</p>

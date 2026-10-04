@@ -79,7 +79,7 @@ const lds = [
     </header>
     {crumbs.length > 1 && <Breadcrumbs items={crumbs} />}
     <main><slot /></main>
-    <ThemeSong />
+    <ThemeSong path={path} />
     <script>import '../scripts/nav-menu';</script>
     <footer class="footer"><div class="container">
       <p>Konten oleh {SITE.author}. Bukan nasihat hukum. Permintaan koreksi: <a href={`mailto:${SITE.correctionsEmail}`}>{SITE.correctionsEmail}</a>.</p>

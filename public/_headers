@@ -12,5 +12,20 @@
 /img/*
   Cache-Control: public, max-age=86400, must-revalidate
 
+/thumb/*
+  Cache-Control: public, max-age=2592000
+
+/og/*
+  Cache-Control: public, max-age=2592000
+
+/logo-kawal.svg
+  Cache-Control: public, max-age=2592000
+
+/favicon.svg
+  Cache-Control: public, max-age=2592000
+
+/apple-touch-icon.png
+  Cache-Control: public, max-age=2592000
+
 /buku/*
   Cache-Control: public, max-age=86400, must-revalidate

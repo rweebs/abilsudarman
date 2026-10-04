@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostThumb from '../components/PostThumb.astro';
 import ClassificationBadge from '../components/ClassificationBadge.astro';
-import SkyStage from '../components/SkyStage.tsx';
+import SkyStage from '../components/SkyStage.astro';
 import TiltCard from '../components/motion/TiltCard.tsx';
 import { getPosts } from '../lib/content';
 import { ALLEGATIONS } from '../lib/allegations';
@@ -23,7 +23,7 @@ const websiteLd = {
 const REPORT = 'https://www.pewartanusantara.com/berita/dibungkam-situs-ordal-id-kena-6-000-serangan-siber-usai-bongkar-borok-loker-komdigi/';
 ---
 <BaseLayout title="Operasi Ababil" description={DESCRIPTION} path="/" jsonLd={websiteLd}>
-  <SkyStage client:idle sectionIds={SECTIONS} />
+  <SkyStage sectionIds={SECTIONS} />
   <div class="home-main">
     <section id="operasi" class="home-section container">
       <div class="home-hero">
@@ -36,7 +36,7 @@ const REPORT = 'https://www.pewartanusantara.com/berita/dibungkam-situs-ordal-id
         </div>
       </div>
       <figure class="home-hero__art">
-        <Image src={burungAbabil} alt="Dua burung layang-layang memegang batu kecil di kakinya, dengan teks “Burung Ababil bawa batu neraka?”" width={640} sizes="(min-width: 900px) 30rem, 100vw" loading="eager" />
+        <Image src={burungAbabil} alt="Dua burung layang-layang memegang batu kecil di kakinya, dengan teks “Burung Ababil bawa batu neraka?”" widths={[400, 640]} sizes="(min-width: 900px) 34rem, calc(100vw - 2rem)" quality={55} loading="eager" fetchpriority="high" />
       </figure>
       </div>
     </section>
@@ -47,7 +47,7 @@ const REPORT = 'https://www.pewartanusantara.com/berita/dibungkam-situs-ordal-id
         <p class="muted lead">Kreator konten dan konselor karier, menurut pemberitaan. Konteks berikut bukan tuduhan.</p>
         <p class="lead">Ringkasnya, klaim yang sedang diperiksa menyangkut {ALLEGATIONS.map((a) => a.label).join(', ').replace(/, ([^,]*)$/, ' dan $1')}. Rincian dan statusnya ada di daftar klaim.</p>
         <figure class="figure-quote">
-          <Image src={poskota} alt="Tangkapan gambar dari pemberitaan: Abil Sudarman berbicara, dengan teks “6000+ cyberattack sejak siang tadi”" width={520} />
+          <Image src={poskota} alt="Tangkapan gambar dari pemberitaan: Abil Sudarman berbicara, dengan teks “6000+ cyberattack sejak siang tadi”" widths={[330, 520]} sizes="(min-width: 900px) 520px, calc(100vw - 4rem)" quality={60} />
           <figcaption>
             Abil Sudarman melaporkan sekitar 6.000 serangan siber terhadap Ordal.id setelah mengunggah video tentang Komdigi
             (<a href={REPORT} rel="noopener noreferrer" target="_blank">Pewarta Nusantara, 31 Januari 2026</a>).

@@ -42,7 +42,7 @@ describe('tentang wiring', () => {
   it('links the original story and ships the photo', () => {
     expect(SOURCE_URL).toBe('https://www.infraloka.co.id/story');
     expect(read('src/pages/tentang.astro')).toContain('SOURCE_URL');
-    expect(existsSync('public/img/rahmat-wibowo.jpg')).toBe(true);
+    expect(existsSync('src/assets/home/rahmat-wibowo.jpg')).toBe(true);
   });
   it('renders the interactive Anak Langit sky between chapters 01 and 03, as a lazy island', () => {
     const page = read('src/pages/tentang.astro');
