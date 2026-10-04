@@ -28,7 +28,6 @@ export const CLASSIFICATION_LABEL = {
 export const STATUS_LABEL = { 'belum-dijawab': 'Belum dijawab', 'dijawab': 'Dijawab' } as const;
 
 export const NAV = [
-  { href: '/kawal', label: 'Kawal Abil Sudarman' },
   { href: '/artikel', label: 'Artikel' },
   { href: '/hak-jawab', label: 'Hak jawab' },
   { href: '/disclaimer', label: 'Disclaimer' },

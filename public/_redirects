@@ -1,2 +1,3 @@
 /blog /artikel 301
 /blog/* /artikel/:splat 301
+/kawal / 301

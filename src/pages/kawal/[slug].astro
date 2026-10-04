@@ -29,7 +29,7 @@ const ld = {
 };
 const fmt = (d?: Date) => d?.toLocaleDateString('id-ID', { dateStyle: 'long' });
 ---
-<BaseLayout title={q.title} description={q.question} path={pagePath} jsonLd={ld} breadcrumbs={[{ name: 'Kawal', path: '/kawal' }, { name: q.title, path: pagePath }]}>
+<BaseLayout title={q.title} description={q.question} path={pagePath} jsonLd={ld} breadcrumbs={[{ name: q.title, path: pagePath }]}>
   <article class="reading">
     <StatusBadge status={q.status} />
     <h1>{q.title}</h1>
