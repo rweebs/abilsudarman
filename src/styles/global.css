@@ -102,3 +102,15 @@ h1, h2, h3 { line-height: 1.2; }
 .reading table { display: block; max-width: 100%; overflow-x: auto; }
 .reading pre { max-width: 100%; overflow-x: auto; white-space: pre; padding: 0.75rem; background: rgba(15, 23, 42, 0.8); border-radius: var(--radius-md); }
 .reading code { font-family: var(--mono); font-size: 0.9em; }
+
+/* Bukti page */
+.bukti-group { margin-top: 2.5rem; }
+.bukti-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); align-items: start; }
+.bukti-item { display: flex; flex-direction: column; gap: 0.6rem; }
+.bukti-item h3 { font-size: 1.05rem; margin: 0; }
+.bukti-item p { margin: 0; }
+.bukti-thumb { display: block; background: var(--bg-secondary); border-radius: var(--radius-md); overflow: hidden; }
+.bukti-thumb img { display: block; width: 100%; max-height: 320px; object-fit: contain; border-radius: 0; }
+.bukti-limits { color: var(--text-secondary); border-left: 3px solid var(--accent-amber); padding-left: 0.75rem; }
+.bukti-source { font-size: 0.85rem; color: var(--text-secondary); }
+.bukti-more { display: flex; flex-wrap: wrap; gap: 0.75rem; font-size: 0.9rem; }

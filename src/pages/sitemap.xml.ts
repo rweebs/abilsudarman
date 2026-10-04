@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { getPosts } from '../lib/content';
+import { getBukti, getPosts } from '../lib/content';
 import { firstImage } from '../lib/header-image';
 import { buildSitemap, type SitemapEntry } from '../lib/sitemap';
 import { PAGE_LASTMOD, SITE } from '../lib/site';
@@ -8,11 +8,13 @@ const iso = (d: Date) => d.toISOString().slice(0, 10);
 
 export const GET: APIRoute = async () => {
   const posts = await getPosts();
+  const bukti = await getBukti();
   const latest = posts.length ? iso(new Date(Math.max(...posts.map((p) => p.data.translationDate.getTime())))) : undefined;
 
   const entries: SitemapEntry[] = [
     { path: '/', lastmod: latest },
     { path: '/artikel', lastmod: latest },
+    { path: '/bukti', lastmod: PAGE_LASTMOD['/bukti'], images: bukti.flatMap((e) => e.data.images.map((i) => i.src)) },
     { path: '/hak-jawab', lastmod: PAGE_LASTMOD['/hak-jawab'] },
     { path: '/disclaimer', lastmod: PAGE_LASTMOD['/disclaimer'] },
     ...posts.map((p) => {

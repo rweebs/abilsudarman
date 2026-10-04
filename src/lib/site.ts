@@ -19,10 +19,11 @@ export const CLASSIFICATION_LABEL = {
 } as const;
 
 // Date each static page's content last changed (used for sitemap lastmod; update when the text changes).
-export const PAGE_LASTMOD = { '/hak-jawab': '2026-10-04', '/disclaimer': '2026-10-04' } as const;
+export const PAGE_LASTMOD = { '/hak-jawab': '2026-10-04', '/disclaimer': '2026-10-04', '/bukti': '2026-10-04' } as const;
 
 export const NAV = [
   { href: '/artikel', label: 'Artikel' },
+  { href: '/bukti', label: 'Bukti' },
   { href: '/hak-jawab', label: 'Hak jawab' },
   { href: '/disclaimer', label: 'Disclaimer' },
 ] as const;
