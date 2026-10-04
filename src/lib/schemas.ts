@@ -16,3 +16,20 @@ export const postSchema = z.object({
 });
 
 export type PostData = z.infer<typeof postSchema>;
+
+export const buktiGroup = z.enum(['catatan-resmi', 'klaim-yang-dipublikasikan', 'liputan-pihak-ketiga', 'upaya-verifikasi']);
+
+export const buktiSchema = z.object({
+  title: z.string().min(1),
+  group: buktiGroup,
+  images: z.array(z.object({
+    src: z.string().regex(/^\/img\/[^/]+\.(png|jpe?g)$/i),
+    alt: z.string().min(1),
+  })).min(1).max(4),
+  shows: z.string().min(1),
+  limits: z.string().min(1),
+  source: z.string().min(1).optional(),
+  sourceUrl: z.string().url().optional(),
+  capturedAt: z.coerce.date().optional(),
+  order: z.number().int(),
+});
