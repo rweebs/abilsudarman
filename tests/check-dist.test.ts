@@ -113,3 +113,26 @@ describe('findProblems', () => {
     expect(findProblems(empty).join('\n')).toContain('no HTML pages');
   });
 });
+
+describe('adapter-style layout (dist/client)', () => {
+  it('checks the client folder as the site root', () => {
+    const root = mkdtempSync(join(tmpdir(), 'dist-adapter-'));
+    const client = join(root, 'client');
+    mkdirSync(join(client, 'og'), { recursive: true });
+    writeFileSync(join(client, 'og', 'kawal-og.png'), 'x');
+    writeFileSync(join(client, 'menu.js'), 'x');
+    writeFileSync(join(client, 'index.html'), page('<a href="/">x</a><script src="/menu.js"></script>'));
+    mkdirSync(join(root, 'server'), { recursive: true });
+    writeFileSync(join(root, 'server', 'entry.mjs'), 'x');
+    expect(findProblems(root)).toEqual([]);
+  });
+  it('still reports problems inside dist/client', () => {
+    const root = mkdtempSync(join(tmpdir(), 'dist-adapter-bad-'));
+    const client = join(root, 'client');
+    mkdirSync(join(client, 'og'), { recursive: true });
+    writeFileSync(join(client, 'og', 'kawal-og.png'), 'x');
+    writeFileSync(join(client, 'index.html'), page('<a href="/nope">x</a>'));
+    expect(findProblems(root).join('\n')).toContain('/nope');
+  });
+});
+

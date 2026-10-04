@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync, rmSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { siteRoot } from './site-root.mjs';
 
 function textFiles(dir) {
   const out = [];
@@ -20,7 +21,8 @@ export function referencedImages(dist) {
   return refs;
 }
 
-export function pruneImages(dist) {
+export function pruneImages(distDir) {
+  const dist = siteRoot(distDir);
   const imgDir = join(dist, 'img');
   if (!existsSync(imgDir)) return { kept: 0, removed: 0 };
   const refs = referencedImages(dist);

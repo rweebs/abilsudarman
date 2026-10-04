@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { join, relative, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { siteRoot } from './site-root.mjs';
 
 const DEFAULT_SITE = 'https://abilsudarman.my.id';
 
@@ -28,7 +29,8 @@ function pathExists(dist, pathname) {
   return existsSync(join(base, 'index.html')) || existsSync(`${base}.html`);
 }
 
-export function findProblems(dist, site = DEFAULT_SITE) {
+export function findProblems(distDir, site = DEFAULT_SITE) {
+  const dist = siteRoot(distDir);
   const files = htmlFiles(dist);
   if (files.length === 0) return [`${dist}: no HTML pages found`];
   const origin = new URL(site).origin;

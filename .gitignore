@@ -9,3 +9,4 @@ dist
 tmp/
 docs/superpowers/specs/
 docs/superpowers/plans/
+.wrangler

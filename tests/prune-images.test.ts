@@ -28,3 +28,16 @@ describe('prune-images', () => {
     expect(pruneImages(empty)).toEqual({ kept: 0, removed: 0 });
   });
 });
+
+describe('prune-images with an adapter-style dist/client layout', () => {
+  it('prunes inside dist/client', () => {
+    const root = mkdtempSync(join(tmpdir(), 'prune-adapter-'));
+    const client = join(root, 'client');
+    mkdirSync(join(client, 'img'), { recursive: true });
+    for (const f of ['used.png', 'unused.png']) writeFileSync(join(client, 'img', f), 'x');
+    writeFileSync(join(client, 'index.html'), '<img src="/img/used.png">');
+    expect(pruneImages(root)).toEqual({ kept: 1, removed: 1 });
+    expect(existsSync(join(client, 'img', 'unused.png'))).toBe(false);
+  });
+});
+
