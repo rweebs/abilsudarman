@@ -76,9 +76,51 @@ export function findProblems(distDir, site = DEFAULT_SITE) {
   return problems;
 }
 
+function pageFileFor(dist, pathname) {
+  const clean = decodeURIComponent(pathname);
+  if (clean === '/' || clean === '') return join(dist, 'index.html');
+  for (const f of [`${join(dist, clean)}.html`, join(dist, clean, 'index.html')]) if (existsSync(f)) return f;
+  return null;
+}
+
+export function findSitemapProblems(distDir, site = DEFAULT_SITE) {
+  const dist = siteRoot(distDir);
+  const origin = new URL(site).origin;
+  const file = join(dist, 'sitemap.xml');
+  if (!existsSync(file)) return [`${dist}: sitemap.xml is missing`];
+  const xml = readFileSync(file, 'utf8');
+  if (!/<urlset[\s>]/.test(xml)) return [`${file}: not a <urlset> sitemap`];
+  const problems = [];
+  const listed = new Set();
+  const blocks = [...xml.matchAll(/<url>([\s\S]*?)<\/url>/g)].map((m) => m[1]);
+  if (blocks.length > 50000) problems.push(`${file}: more than 50,000 URLs`);
+  for (const b of blocks) {
+    const loc = ((b.match(/<loc>([^<]*)<\/loc>/) || [])[1] ?? '').replace(/&amp;/g, '&').trim();
+    const lastmod = (b.match(/<lastmod>([^<]*)<\/lastmod>/) || [])[1];
+    let url;
+    try { url = new URL(loc); } catch { problems.push(`${file}: invalid loc "${loc}"`); continue; }
+    if (listed.has(url.toString())) problems.push(`${file}: duplicate URL ${url}`);
+    listed.add(url.toString());
+    if (lastmod !== undefined && !/^\d{4}-\d{2}-\d{2}$/.test(lastmod)) problems.push(`${file}: malformed lastmod "${lastmod}" for ${loc}`);
+    if (url.origin !== origin) { problems.push(`${file}: URL on another origin ${loc}`); continue; }
+    const page = pageFileFor(dist, url.pathname);
+    if (!page) { problems.push(`${file}: no page for ${url.pathname}`); continue; }
+    if (/<meta[^>]*name="robots"[^>]*content="[^"]*noindex/.test(readFileSync(page, 'utf8'))) {
+      problems.push(`${file}: noindex page listed ${url.pathname}`);
+    }
+  }
+  for (const page of htmlFiles(dist)) {
+    const html = readFileSync(page, 'utf8');
+    if (/<meta[^>]*name="robots"[^>]*content="[^"]*noindex/.test(html)) continue;
+    const expected = new URL(pageUrl(dist, page), origin).toString();
+    if (!listed.has(expected)) problems.push(`${file}: indexable page not in sitemap ${new URL(expected).pathname}`);
+  }
+  return problems;
+}
+
 if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
   const dist = resolve(process.argv[2] ?? 'dist');
-  const problems = findProblems(dist);
+  const problems = [...findProblems(dist), ...findSitemapProblems(dist)];
   if (problems.length) { console.error(problems.join('\n')); process.exit(1); }
   console.log(`dist OK (${htmlFiles(dist).length} pages)`);
 }

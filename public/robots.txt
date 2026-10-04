@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://abilsudarman.my.id/sitemap-index.xml
+Sitemap: https://abilsudarman.my.id/sitemap.xml

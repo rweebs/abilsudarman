@@ -1,0 +1,25 @@
+import type { APIRoute } from 'astro';
+import { getPosts } from '../lib/content';
+import { firstImage } from '../lib/header-image';
+import { buildSitemap, type SitemapEntry } from '../lib/sitemap';
+import { PAGE_LASTMOD, SITE } from '../lib/site';
+
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+
+export const GET: APIRoute = async () => {
+  const posts = await getPosts();
+  const latest = posts.length ? iso(new Date(Math.max(...posts.map((p) => p.data.translationDate.getTime())))) : undefined;
+
+  const entries: SitemapEntry[] = [
+    { path: '/', lastmod: latest },
+    { path: '/artikel', lastmod: latest },
+    { path: '/hak-jawab', lastmod: PAGE_LASTMOD['/hak-jawab'] },
+    { path: '/disclaimer', lastmod: PAGE_LASTMOD['/disclaimer'] },
+    ...posts.map((p) => {
+      const header = firstImage(p.body ?? '');
+      return { path: `/artikel/${p.id}`, lastmod: iso(p.data.translationDate), images: header ? [header.src] : [] };
+    }),
+  ];
+
+  return new Response(buildSitemap(entries, SITE.url), { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
+};
