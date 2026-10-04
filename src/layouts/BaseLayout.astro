@@ -60,7 +60,7 @@ const lds = [
       <div class="container">
         <a href="/" class="brand"><img src="/logo-kawal.svg" alt="" width="32" height="32" />{SITE.name}</a>
         <details class="nav__menu" open>
-          <summary>Menu</summary>
+          <summary aria-label="Menu"><span class="nav__burger" aria-hidden="true"></span></summary>
           <ul class="nav__links">
             {NAV.map((n) => <li><a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a></li>)}
           </ul>
@@ -69,6 +69,7 @@ const lds = [
     </header>
     {crumbs.length > 1 && <Breadcrumbs items={crumbs} />}
     <main><slot /></main>
+    <script>import '../scripts/nav-menu';</script>
     <footer class="footer"><div class="container">
       <p>Konten oleh {SITE.author}. Bukan nasihat hukum. Permintaan koreksi: <a href={`mailto:${SITE.correctionsEmail}`}>{SITE.correctionsEmail}</a>.</p>
     </div></footer>
