@@ -16,9 +16,14 @@ const posts = (await getPosts()).slice(0, 6);
 const answered = questions.filter((q) => q.data.status === 'dijawab').length;
 const claims = questions.map((q) => ({ id: q.id, evidence: q.data.evidence.length }));
 const SECTIONS = ['operasi', 'siapa', 'klaim', 'bukti', 'jawaban'];
+const DESCRIPTION = 'Operasi Ababil: kawal terbuka atas klaim Abil Sudarman. Butir kawal, bukti, terjemahan artikel, dan hak jawab, sebagai catatan dan pendapat, bukan putusan.';
+const websiteLd = {
+  '@context': 'https://schema.org', '@type': 'WebSite', name: 'Kawal Abil Sudarman', alternateName: 'Operasi Ababil',
+  url: 'https://abilsudarman.my.id/', inLanguage: 'id', description: DESCRIPTION,
+};
 const REPORT = 'https://www.pewartanusantara.com/berita/dibungkam-situs-ordal-id-kena-6-000-serangan-siber-usai-bongkar-borok-loker-komdigi/';
 ---
-<BaseLayout title="Operasi Ababil" description="Operasi Ababil: operasi untuk mengungkap Abil Sudarman. Butir kawal terbuka, bukti terbuka, hak jawab terbuka." path="/">
+<BaseLayout title="Operasi Ababil" description={DESCRIPTION} path="/" jsonLd={websiteLd}>
   <SkyStage client:idle claims={claims} sectionIds={SECTIONS} />
   <div class="home-main">
     <section id="operasi" class="home-section container">

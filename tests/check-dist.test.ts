@@ -8,8 +8,14 @@ import { findProblems } from '../scripts/check-dist.mjs';
 let dir: string;
 const NAV = '<details class="nav__menu" open></details>';
 const OG = '<meta property="og:image" content="https://abilsudarman.my.id/og/kawal-og.png" />';
-const page = (body: string, opts: { banner?: boolean; nav?: string; og?: string } = {}) =>
-  `<html><head>${opts.og ?? OG}</head><body>${opts.banner === false ? '' : '<div data-disclaimer></div>'}${opts.nav ?? NAV}${body}</body></html>`;
+const DESC = 'Deskripsi uji yang cukup panjang untuk memenuhi batas minimal tujuh puluh karakter pada halaman uji ini.';
+const urlOf = (rel: string) => 'https://abilsudarman.my.id' + (rel === 'index.html' ? '/' : '/' + rel.replace(/\.html$/, ''));
+const page = (body: string, opts: { banner?: boolean; nav?: string; og?: string; rel?: string; head?: string; h1?: number; lang?: string } = {}) => {
+  const rel = opts.rel ?? 'index.html';
+  const h1 = '<h1>Judul</h1>'.repeat(opts.h1 ?? 1);
+  const head = opts.head ?? `<title>Judul halaman uji</title><meta name="description" content="${DESC}" /><link rel="canonical" href="${urlOf(rel)}" />`;
+  return `<html lang="${opts.lang ?? 'id'}"><head>${head}${opts.og ?? OG}</head><body>${opts.banner === false ? '' : '<div data-disclaimer></div>'}${opts.nav ?? NAV}${h1}${body}</body></html>`;
+};
 
 beforeEach(() => {
   dir = mkdtempSync(join(tmpdir(), 'dist-'));
@@ -18,8 +24,8 @@ beforeEach(() => {
   mkdirSync(join(dir, 'og'), { recursive: true });
   writeFileSync(join(dir, 'og', 'kawal-og.png'), 'x');
   writeFileSync(join(dir, 'img', 'a.png'), 'x');
-  writeFileSync(join(dir, 'artikel.html'), page('ok'));
-  writeFileSync(join(dir, 'artikel', 'x.html'), page('ok'));
+  writeFileSync(join(dir, 'artikel.html'), page('ok', { rel: 'artikel.html' }));
+  writeFileSync(join(dir, 'artikel', 'x.html'), page('ok', { rel: 'artikel/x.html' }));
 });
 
 describe('findProblems', () => {
@@ -48,7 +54,7 @@ describe('findProblems', () => {
     expect(findProblems(dir).join('\n')).toContain('/in/missing');
   });
   it('flags a broken relative link resolved against the page', () => {
-    writeFileSync(join(dir, 'artikel', 'y.html'), page('<a href="rel-missing">x</a>'));
+    writeFileSync(join(dir, 'artikel', 'y.html'), page('<a href="rel-missing">x</a>', { rel: 'artikel/y.html' }));
     writeFileSync(join(dir, 'index.html'), page('ok'));
     expect(findProblems(dir).join('\n')).toContain('rel-missing');
   });
@@ -67,6 +73,40 @@ describe('findProblems', () => {
   it('flags an og:image whose file does not exist', () => {
     writeFileSync(join(dir, 'index.html'), page('ok', { og: '<meta property="og:image" content="https://abilsudarman.my.id/og/missing.png" />' }));
     expect(findProblems(dir).join('\n')).toContain('/og/missing.png');
+  });
+  it('flags a title that is too long', () => {
+    const head = `<title>${'Judul sangat panjang '.repeat(6)}</title><meta name="description" content="${DESC}" /><link rel="canonical" href="https://abilsudarman.my.id/" />`;
+    writeFileSync(join(dir, 'index.html'), page('ok', { head }));
+    expect(findProblems(dir).join('\n')).toContain('title length');
+  });
+  it('flags a missing or too-short meta description', () => {
+    const head = '<title>Judul halaman uji</title><meta name="description" content="pendek" /><link rel="canonical" href="https://abilsudarman.my.id/" />';
+    writeFileSync(join(dir, 'index.html'), page('ok', { head }));
+    expect(findProblems(dir).join('\n')).toContain('meta description');
+  });
+  it('flags a page with zero or several h1', () => {
+    writeFileSync(join(dir, 'index.html'), page('ok', { h1: 0 }));
+    expect(findProblems(dir).join('\n')).toContain('h1');
+    writeFileSync(join(dir, 'index.html'), page('ok', { h1: 2 }));
+    expect(findProblems(dir).join('\n')).toContain('h1');
+  });
+  it('flags a canonical that does not match the page url', () => {
+    const head = `<title>Judul halaman uji</title><meta name="description" content="${DESC}" /><link rel="canonical" href="https://abilsudarman.my.id/lain" />`;
+    writeFileSync(join(dir, 'index.html'), page('ok', { head }));
+    expect(findProblems(dir).join('\n')).toContain('canonical');
+  });
+  it('flags invalid JSON-LD', () => {
+    writeFileSync(join(dir, 'index.html'), page('<script type="application/ld+json">{oops</script>'));
+    expect(findProblems(dir).join('\n')).toContain('JSON-LD');
+  });
+  it('flags a page whose html lang is not id', () => {
+    writeFileSync(join(dir, 'index.html'), page('ok', { lang: 'en' }));
+    expect(findProblems(dir).join('\n')).toContain('lang');
+  });
+  it('does not require description, h1 count or canonical on a noindex page', () => {
+    const head = '<title>Tidak ditemukan</title><meta name="robots" content="noindex" />';
+    writeFileSync(join(dir, 'index.html'), page('ok', { head, h1: 1 }));
+    expect(findProblems(dir)).toEqual([]);
   });
   it('fails when there are zero pages', () => {
     const empty = mkdtempSync(join(tmpdir(), 'dist-empty-'));

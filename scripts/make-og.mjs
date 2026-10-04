@@ -58,3 +58,6 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
 mkdirSync('public/og', { recursive: true });
 await sharp(Buffer.from(svg)).png({ compressionLevel: 9 }).toFile('public/og/kawal-og.png');
 console.log('wrote public/og/kawal-og.png');
+
+await sharp('public/logo-kawal.svg', { density: 384 }).resize(180, 180).png().toFile('public/apple-touch-icon.png');
+console.log('wrote public/apple-touch-icon.png');

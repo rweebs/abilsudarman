@@ -6,6 +6,7 @@ export const SITE = {
   questionEmail: 'abil@assai.id',
   replyEmail: 'rahmat.wibowo21@gmail.com',
   correctionsEmail: 'rahmat.wibowo21@gmail.com',
+  googleVerification: 'S6BE2bc5nmCLvf0eHX7XSPutmGFzsk7EzzdoGtweZyQ',
 } as const;
 
 export const PDKI = {

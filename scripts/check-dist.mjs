@@ -37,6 +37,21 @@ export function findProblems(dist, site = DEFAULT_SITE) {
     const html = readFileSync(file, 'utf8');
     const base = new URL(pageUrl(dist, file), origin);
     if (!html.includes('data-disclaimer')) problems.push(`${file}: missing disclaimer banner`);
+    if (!/<html[^>]*\slang="id"/.test(html)) problems.push(`${file}: html lang is not "id"`);
+    const noindex = /<meta[^>]*name="robots"[^>]*content="[^"]*noindex/.test(html);
+    const title = (html.match(/<title>([^<]*)<\/title>/) || [])[1] ?? '';
+    if (title.length < 10 || title.length > 65) problems.push(`${file}: title length ${title.length} (want 10-65)`);
+    if (!noindex) {
+      const desc = (html.match(/<meta name="description" content="([^"]*)"/) || [])[1] ?? '';
+      if (desc.length < 70 || desc.length > 170) problems.push(`${file}: meta description length ${desc.length} (want 70-170)`);
+      const h1s = (html.match(/<h1[\s>]/g) || []).length;
+      if (h1s !== 1) problems.push(`${file}: expected exactly one h1, found ${h1s}`);
+      const canon = (html.match(/<link rel="canonical" href="([^"]*)"/) || [])[1];
+      if (canon !== base.toString()) problems.push(`${file}: canonical ${canon ?? '(missing)'} does not match ${base.toString()}`);
+    }
+    for (const m of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+      try { JSON.parse(m[1]); } catch { problems.push(`${file}: invalid JSON-LD`); }
+    }
     const og = html.match(/<meta[^>]*property="og:image"[^>]*content="([^"]*)"/);
     if (!og) problems.push(`${file}: missing og:image`);
     else {

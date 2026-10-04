@@ -5,8 +5,9 @@ import ClassificationBadge from '../../components/ClassificationBadge.astro';
 import TranslationNotice from '../../components/TranslationNotice.astro';
 import PostHeader from '../../components/PostHeader.astro';
 import { firstImage } from '../../lib/header-image';
-import { getPosts } from '../../lib/content';
-import { SITE } from '../../lib/site';
+import { getPosts, getQuestions } from '../../lib/content';
+import { SITE, CLASSIFICATION_LABEL } from '../../lib/site';
+import { descriptionFromMarkdown } from '../../lib/seo';
 
 export async function getStaticPaths() {
   return (await getPosts()).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
@@ -15,21 +16,38 @@ const { entry } = Astro.props;
 const p = entry.data;
 const { Content } = await render(entry);
 const header = firstImage(entry.body ?? '');
+const cited = (await getQuestions()).filter((q) => q.data.evidence.includes(entry.id));
+const description = descriptionFromMarkdown(entry.body ?? '')
+  || `Terjemahan Bahasa Indonesia dari “${p.originalTitle}” oleh ${p.author}. ${CLASSIFICATION_LABEL[p.classification]} dalam Kawal Abil Sudarman.`;
 const path = `/artikel/${entry.id}`;
+const url = new URL(path, SITE.url).toString();
+const date = p.translationDate.toISOString().slice(0, 10);
 const jsonLd = {
-  '@context': 'https://schema.org', '@type': 'Article', inLanguage: 'id', headline: p.title,
-  datePublished: p.translationDate.toISOString().slice(0, 10),
+  '@context': 'https://schema.org', '@type': 'Article', inLanguage: 'id', headline: p.title.slice(0, 110),
+  description,
+  datePublished: date,
+  dateModified: date,
   author: { '@type': 'Person', name: p.author },
-  url: new URL(path, SITE.url).toString(),
+  publisher: { '@type': 'Person', name: p.author },
+  isAccessibleForFree: true,
+  image: [new URL('/og/kawal-og.png', SITE.url).toString()],
+  url,
+  mainEntityOfPage: { '@type': 'WebPage', '@id': url },
   ...(p.originalUrl ? { translationOfWork: { '@type': 'CreativeWork', name: p.originalTitle, url: p.originalUrl } } : {}),
 };
 ---
-<BaseLayout title={p.title} description={`Terjemahan: ${p.originalTitle}`} path={path} jsonLd={jsonLd}>
+<BaseLayout title={p.title} description={description} path={path} jsonLd={jsonLd} ogType="article" author={p.author} breadcrumbs={[{ name: 'Artikel', path: '/artikel' }, { name: p.title, path }]}>
   <article class="reading has-header">
     <PostHeader title={p.title} slug={entry.id} image={header} />
     <ClassificationBadge value={p.classification} />
     <h1>{p.title}</h1>
     <TranslationNotice originalTitle={p.originalTitle} originalUrl={p.originalUrl} author={p.author} />
     <div class="prose"><Content /></div>
+    {cited.length > 0 && (
+      <aside class="card notice">
+        <h2 class="card-title">Dikutip pada butir kawal</h2>
+        <ul>{cited.map((q) => <li><a href={`/kawal/${q.id}`}>{q.data.title}</a></li>)}</ul>
+      </aside>
+    )}
   </article>
 </BaseLayout>

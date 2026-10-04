@@ -5,8 +5,10 @@ import PostThumb from '../../components/PostThumb.astro';
 import { firstImage } from '../../lib/header-image';
 import { getPosts } from '../../lib/content';
 const posts = await getPosts();
+const DESCRIPTION = 'Terjemahan Bahasa Indonesia dari artikel Rahmat Wibowo tentang klaim dan kredensial Abil Sudarman, dengan klasifikasi pendapat, fakta berbukti, dan aduan.';
+const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Artikel terjemahan Bahasa Indonesia', url: 'https://abilsudarman.my.id/artikel', inLanguage: 'id', description: DESCRIPTION };
 ---
-<BaseLayout title="Artikel" description="Terjemahan Bahasa Indonesia dari artikel Rahmat Wibowo." path="/artikel">
+<BaseLayout title="Artikel terjemahan Bahasa Indonesia" description={DESCRIPTION} path="/artikel" jsonLd={ld} breadcrumbs={[{ name: 'Artikel', path: '/artikel' }]}>
   <section class="container pad-block">
     <h1>Artikel</h1>
     {posts.length === 0

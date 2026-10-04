@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { DISCLAIMER, SITE } from '../lib/site';
 ---
-<BaseLayout title="Disclaimer" description="Catatan hukum, metodologi, dan kebijakan koreksi." path="/disclaimer">
+<BaseLayout title="Disclaimer dan kebijakan koreksi" description="Catatan hukum situs ini: isi adalah pendapat dan catatan pribadi, klasifikasi artikel, kebijakan koreksi, perlindungan data pribadi, dan praduga tak bersalah." path="/disclaimer" breadcrumbs={[{ name: 'Disclaimer', path: '/disclaimer' }]}>
   <article class="reading">
     <h1>Disclaimer</h1>
     <h2>Sifat konten</h2><p>{DISCLAIMER}</p>

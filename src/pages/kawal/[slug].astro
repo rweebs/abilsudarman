@@ -20,9 +20,16 @@ assertEvidencePublished(
   INCLUDE_DRAFTS,
 );
 const evidence = posts.filter((p): p is NonNullable<typeof p> => Boolean(p));
+const pagePath = `/kawal/${entry.id}`;
+const ld = {
+  '@context': 'https://schema.org', '@type': 'WebPage', name: q.title, description: q.question, inLanguage: 'id',
+  url: `https://abilsudarman.my.id${pagePath}`,
+  isPartOf: { '@type': 'WebSite', name: 'Kawal Abil Sudarman', url: 'https://abilsudarman.my.id/' },
+  ...(q.sentDate ? { datePublished: q.sentDate.toISOString().slice(0, 10) } : {}),
+};
 const fmt = (d?: Date) => d?.toLocaleDateString('id-ID', { dateStyle: 'long' });
 ---
-<BaseLayout title={q.title} description={q.question} path={`/kawal/${entry.id}`}>
+<BaseLayout title={q.title} description={q.question} path={pagePath} jsonLd={ld} breadcrumbs={[{ name: 'Kawal', path: '/kawal' }, { name: q.title, path: pagePath }]}>
   <article class="reading">
     <StatusBadge status={q.status} />
     <h1>{q.title}</h1>
