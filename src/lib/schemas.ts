@@ -34,6 +34,19 @@ export const buktiSchema = z.object({
   order: z.number().int(),
 });
 
+export const bukuSchema = z.object({
+  title: z.string().min(1),
+  author: z.string().min(1),
+  date: z.coerce.date().optional(),
+  version: z.string().min(1).optional(),
+  pages: z.number().int().positive(),
+  file: z.string().regex(/^\/buku\/[A-Za-z0-9_-][A-Za-z0-9._-]*\.pdf$/),
+  cover: z.string().regex(/^\/img\/buku-[A-Za-z0-9_-][A-Za-z0-9._-]*\.jpg$/),
+  description: z.string().min(1),
+  note: z.string().min(1),
+  order: z.number().int(),
+});
+
 export const videoSchema = z.object({
   youtubeId: z.string().regex(/^[A-Za-z0-9_-]{11}$/),
   title: z.string().min(1),
