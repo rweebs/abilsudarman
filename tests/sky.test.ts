@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mulberry32 } from '../src/lib/sky/rng';
-import { stateForSection, SECTION_STATE, CAMERA_POSES, HOME_SECTIONS } from '../src/lib/sky/states';
+import { stateForSection, SECTION_STATE, CAMERA_POSES, HOME_SECTIONS, atPageBottom } from '../src/lib/sky/states';
 import { makeStars } from '../src/lib/sky/layout';
 import { makeFlock, stepFlock, birdTarget, DEFAULT_FLOCK } from '../src/lib/sky/flock';
 
@@ -29,6 +29,21 @@ describe('states', () => {
   it('knows exactly the four home sections, each with a state and a camera pose', () => {
     expect([...HOME_SECTIONS]).toEqual(['operasi', 'siapa', 'bukti', 'jawaban']);
     for (const id of HOME_SECTIONS) expect(CAMERA_POSES[SECTION_STATE[id]]).toBeDefined();
+  });
+});
+
+describe('atPageBottom', () => {
+  it('is true when the viewport bottom touches the page bottom', () => {
+    expect(atPageBottom(2057, 841, 2898)).toBe(true);
+  });
+  it('is true within the tolerance', () => {
+    expect(atPageBottom(2050, 841, 2898)).toBe(true);
+  });
+  it('is false while there is still page below', () => {
+    expect(atPageBottom(1000, 841, 2898)).toBe(false);
+  });
+  it('is false for a page that fits the viewport (nothing to scroll)', () => {
+    expect(atPageBottom(0, 900, 900)).toBe(false);
   });
 });
 

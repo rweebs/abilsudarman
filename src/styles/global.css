@@ -86,7 +86,8 @@ h1, h2, h3 { line-height: 1.2; }
 .player__frame { border: 0; border-radius: 12px; display: block; }
 .player__note { font-size: 0.85rem; margin: 0.75rem 0 0; }
 .hero-sub { font-size: clamp(1.1rem, 2.4vw, 1.5rem); color: var(--accent-amber); margin: 0 0 1rem; }
-.home-section { min-height: 45vh; display: flex; align-items: center; padding-block: 2rem; }
+.home-section { display: flex; align-items: center; padding-block: 0.5rem; }
+.home-main { padding-block: 1rem 0.5rem; }
 .glass { background: rgba(10, 14, 26, 0.5); border: 1px solid var(--bg-glass-border); border-radius: var(--radius-lg); padding: 1.5rem; backdrop-filter: blur(2px); width: 100%; }
 .figure-quote { margin: 0; }
 .figure-quote img { width: 100%; max-width: 26rem; height: auto; display: block; }

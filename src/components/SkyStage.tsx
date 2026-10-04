@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { stateForSection } from '../lib/sky/states';
+import { atPageBottom, stateForSection, type SkyState } from '../lib/sky/states';
 import type { AbabilScene } from '../lib/sky/AbabilScene';
 
 interface Props { sectionIds: string[] }
@@ -30,6 +30,16 @@ export default function SkyStage({ sectionIds }: Props) {
 
     const onResize = () => scene?.resize(window.innerWidth, window.innerHeight);
     const onVisibility = () => scene?.setPaused(document.hidden);
+    const apply = (st: SkyState) => {
+      scene?.setState(st);
+      canvasRef.current?.parentElement?.setAttribute('data-state', st);
+    };
+    const lastId = sectionIds[sectionIds.length - 1];
+    const onScroll = () => {
+      if (lastId && atPageBottom(window.scrollY, window.innerHeight, document.documentElement.scrollHeight)) {
+        apply(stateForSection(lastId));
+      }
+    };
 
     (async () => {
       try {
@@ -41,13 +51,14 @@ export default function SkyStage({ sectionIds }: Props) {
         setMode('webgl');
 
         io = new IntersectionObserver((entries) => {
-          for (const e of entries) if (e.isIntersecting) scene?.setState(stateForSection((e.target as HTMLElement).id));
+          for (const e of entries) if (e.isIntersecting) apply(stateForSection((e.target as HTMLElement).id));
         }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
         for (const id of sectionIds) {
           const el = document.getElementById(id);
           if (el) io.observe(el);
         }
         window.addEventListener('resize', onResize);
+        window.addEventListener('scroll', onScroll, { passive: true });
         document.addEventListener('visibilitychange', onVisibility);
       } catch {
         if (!cancelled) setMode('fallback');
@@ -58,6 +69,7 @@ export default function SkyStage({ sectionIds }: Props) {
       cancelled = true;
       io?.disconnect();
       window.removeEventListener('resize', onResize);
+      window.removeEventListener('scroll', onScroll);
       document.removeEventListener('visibilitychange', onVisibility);
       scene?.dispose();
     };
