@@ -7,3 +7,7 @@ export async function getPosts() {
   const posts = await getCollection('posts', (e) => isPublishedPost(e.data, INCLUDE_DRAFTS));
   return posts.sort((a, b) => b.data.translationDate.getTime() - a.data.translationDate.getTime());
 }
+
+export async function getBukti() {
+  return getCollection('bukti');
+}
