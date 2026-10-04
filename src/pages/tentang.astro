@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AnakLangitChapter from '../components/anak-langit/AnakLangitChapter.tsx';
+import { HERO, chapters, STATS, MESSAGE, SOURCE_URL, LINKEDIN_URL } from '../lib/tentang';
+import { DISCLAIMER, SITE } from '../lib/site';
+const DESCRIPTION = 'Tentang Rahmat Wibowo, penggagas gerakan Operasi Ababil dan pendiri InfraLoka: kisah hidup, perjalanan karier, dan pesan untuk Abil Sudarman serta masyarakat Indonesia.';
+// Chapter 02 (Anak Langit) is the interactive sky between 'nama' and 'itb'.
+const split = chapters.findIndex((c) => c.id === 'nama') + 1;
+const before = chapters.slice(0, split);
+const after = chapters.slice(split);
+const ld = { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'Tentang penggagas', url: `${SITE.url}/tentang`, inLanguage: 'id', description: DESCRIPTION };
+---
+<BaseLayout title="Tentang penggagas" description={DESCRIPTION} path="/tentang" jsonLd={ld} breadcrumbs={[{ name: 'Tentang', path: '/tentang' }]}>
+  <div class="tentang-stars" aria-hidden="true"></div>
+  <article class="reading tentang">
+    <header class="tentang-hero">
+      <div>
+        <p class="eyebrow">{HERO.kicker}</p>
+        <h1>{HERO.title}</h1>
+        <p class="tentang-badges">{HERO.badges.map((b) => <span class="badge">{b}</span>)}</p>
+        <p>{HERO.lead}</p>
+      </div>
+      <img src="/img/rahmat-wibowo.jpg" alt={HERO.photoAlt} width="360" height="480" decoding="async" />
+    </header>
+    <p class="muted">{DISCLAIMER}</p>
+    <p class="muted">Terjemahan bahasa Indonesia dari <a href={SOURCE_URL} rel="noopener">kisah asli di infraloka.co.id/story</a>, ditulis oleh penggagas situs ini. Kisah ini memuat riwayat pribadi dan pernyataan penulis tentang dirinya sendiri; sumbernya adalah halaman asli tersebut.</p>
+
+    {before.map((c) => (
+        <section id={c.id} class="tentang-chapter" aria-labelledby={`${c.id}-h`}>
+          <p class="eyebrow">{c.eyebrow}</p>
+          <h2 id={`${c.id}-h`}>{c.title}</h2>
+          {c.body.map((p) => <p>{p}</p>)}
+          {c.tags && <ul class="tentang-tags">{c.tags.map((t) => <li>{t}</li>)}</ul>}
+          {c.id === 'angka' && (
+            <dl class="tentang-stats">{STATS.map((s) => <div><dd>{s.value}</dd><dt>{s.label}</dt></div>)}</dl>
+          )}
+          {c.pullQuote && <blockquote>{c.pullQuote}</blockquote>}
+        </section>
+    ))}
+  </article>
+
+  <AnakLangitChapter client:visible />
+
+  <article class="reading tentang">
+    {after.map((c) => (
+        <section id={c.id} class="tentang-chapter" aria-labelledby={`${c.id}-h`}>
+          <p class="eyebrow">{c.eyebrow}</p>
+          <h2 id={`${c.id}-h`}>{c.title}</h2>
+          {c.body.map((p) => <p>{p}</p>)}
+          {c.tags && <ul class="tentang-tags">{c.tags.map((t) => <li>{t}</li>)}</ul>}
+          {c.id === 'angka' && (
+            <dl class="tentang-stats">{STATS.map((s) => <div><dd>{s.value}</dd><dt>{s.label}</dt></div>)}</dl>
+          )}
+          {c.pullQuote && <blockquote>{c.pullQuote}</blockquote>}
+        </section>
+    ))}
+
+    <section id="pesan" class="tentang-message callout" aria-labelledby="pesan-h">
+      <h2 id="pesan-h">{MESSAGE.title}</h2>
+      {MESSAGE.paragraphs.map((p) => <p>{p}</p>)}
+      <h3>{MESSAGE.toAbil.title}</h3>
+      {MESSAGE.toAbil.paragraphs.map((p) => <p>{p}</p>)}
+      <h3>{MESSAGE.toPublic.title}</h3>
+      {MESSAGE.toPublic.paragraphs.map((p) => <p>{p}</p>)}
+      {MESSAGE.closing.map((p) => <p>{p}</p>)}
+      <p class="tentang-signature"><em>{MESSAGE.signature}</em></p>
+    </section>
+
+    <p class="muted tentang-foot">Rahmat Wibowo adalah pendiri InfraLoka. Tanggapan atau koreksi: <a href="/hak-jawab">Hak jawab</a> atau <a href={`mailto:${SITE.correctionsEmail}`}>{SITE.correctionsEmail}</a>. Terhubung di <a href={LINKEDIN_URL} rel="noopener nofollow">LinkedIn</a>.</p>
+  </article>
+</BaseLayout>

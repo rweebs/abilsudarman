@@ -19,6 +19,7 @@ export const GET: APIRoute = async () => {
     { path: '/tiktok', lastmod: PAGE_LASTMOD['/tiktok'] },
     { path: '/buku', lastmod: PAGE_LASTMOD['/buku'] },
     { path: '/pagespeed', lastmod: PAGE_LASTMOD['/pagespeed'] },
+    { path: '/tentang', lastmod: PAGE_LASTMOD['/tentang'] },
     { path: '/hak-jawab', lastmod: PAGE_LASTMOD['/hak-jawab'] },
     { path: '/disclaimer', lastmod: PAGE_LASTMOD['/disclaimer'] },
     ...posts.map((p) => {

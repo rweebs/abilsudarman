@@ -20,7 +20,7 @@ export const CLASSIFICATION_LABEL = {
 } as const;
 
 // Date each static page's content last changed (used for sitemap lastmod; update when the text changes).
-export const PAGE_LASTMOD = { '/hak-jawab': '2026-10-04', '/disclaimer': '2026-10-04', '/bukti': '2026-10-04', '/videos': '2026-10-04', '/buku': '2026-10-04', '/tiktok': '2026-10-05', '/pagespeed': '2026-10-05' } as const;
+export const PAGE_LASTMOD = { '/hak-jawab': '2026-10-04', '/disclaimer': '2026-10-04', '/bukti': '2026-10-04', '/videos': '2026-10-04', '/buku': '2026-10-04', '/tiktok': '2026-10-05', '/pagespeed': '2026-10-05', '/tentang': '2026-10-05' } as const;
 
 export const NAV = [
   { href: '/artikel', label: 'Artikel' },
@@ -29,6 +29,7 @@ export const NAV = [
   { href: '/tiktok', label: 'TikTok' },
   { href: '/buku', label: 'Buku' },
   { href: '/pagespeed', label: 'PageSpeed' },
+  { href: '/tentang', label: 'Tentang' },
   { href: '/#kontribusi', label: 'Kontribusi' },
   { href: '/hak-jawab', label: 'Hak jawab' },
   { href: '/disclaimer', label: 'Disclaimer' },
