@@ -11,3 +11,7 @@ export async function getPosts() {
 export async function getBukti() {
   return getCollection('bukti');
 }
+
+export async function getVideos() {
+  return getCollection('videos');
+}

@@ -123,3 +123,23 @@ h1, h2, h3 { line-height: 1.2; }
 .bukti-limits { margin-top: auto; color: var(--text-secondary); border-left: 3px solid var(--accent-amber); padding-left: 0.75rem; }
 .bukti-source { font-size: 0.85rem; color: var(--text-secondary); }
 .bukti-more { display: flex; flex-wrap: wrap; gap: 0.75rem; font-size: 0.9rem; }
+
+/* Videos page */
+.video-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.video-grid > li { padding: 0.75rem; }
+.video-card { display: flex; flex-direction: column; gap: 0.6rem; height: 100%; color: inherit; text-decoration: none; }
+.video-thumb { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius-md); background: var(--bg-secondary); }
+.video-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 0; }
+.video-play { position: absolute; inset: 0; display: grid; place-items: center; }
+.video-play::before { content: ''; grid-area: 1 / 1; width: 3.5rem; height: 3.5rem; border-radius: 50%; background: rgba(10, 14, 26, 0.75); border: 2px solid var(--text-primary); }
+.video-play::after { content: ''; grid-area: 1 / 1; margin-left: 0.25rem; border-style: solid; border-width: 0.6rem 0 0.6rem 1rem; border-color: transparent transparent transparent var(--text-primary); }
+.video-card:hover .video-play::before, .video-card:focus-visible .video-play::before { background: var(--accent-blue); }
+.video-title { font-weight: 600; font-size: 1rem; line-height: 1.35; }
+.video-dialog { width: min(960px, 100% - 1rem); padding: 0; border: 1px solid var(--bg-glass-border); border-radius: var(--radius-lg); background: var(--bg-secondary); color: var(--text-primary); }
+.video-dialog::backdrop { background: rgba(0, 0, 0, 0.75); }
+.video-dialog__body { padding: 1rem; display: grid; gap: 0.75rem; }
+.video-dialog__bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.video-dialog__bar h2 { font-size: 1rem; margin: 0; }
+.video-stage { aspect-ratio: 16 / 9; background: #000; border-radius: var(--radius-md); overflow: hidden; }
+.video-stage iframe { display: block; width: 100%; height: 100%; border: 0; }
+.video-note { margin: 0; font-size: 0.85rem; }
