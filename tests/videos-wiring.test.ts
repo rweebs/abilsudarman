@@ -20,7 +20,7 @@ describe('videos wiring', () => {
     const csp = read('public/_headers').match(/Content-Security-Policy:([^\n]*)/)?.[1] ?? '';
     const frame = csp.match(/frame-src([^;]*)/)?.[1] ?? '';
     expect(frame).toContain('https://www.youtube-nocookie.com');
-    expect(frame).toContain('https://open.spotify.com');
+    expect(frame).not.toContain('spotify');
     expect(frame).not.toContain('*');
     expect(csp).toMatch(/img-src 'self' data:(;|$)/);
   });

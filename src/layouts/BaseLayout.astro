@@ -3,6 +3,7 @@ import '../styles/global.css';
 import DisclaimerBanner from '../components/DisclaimerBanner.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { NAV_GROUPS, SITE, isActive } from '../lib/site';
+import ThemeSong from '../components/ThemeSong.astro';
 import { serializeJsonLd } from '../lib/jsonld';
 import { buildTitle, truncateAtWord, breadcrumbLd } from '../lib/seo';
 
@@ -78,6 +79,7 @@ const lds = [
     </header>
     {crumbs.length > 1 && <Breadcrumbs items={crumbs} />}
     <main><slot /></main>
+    <ThemeSong />
     <script>import '../scripts/nav-menu';</script>
     <footer class="footer"><div class="container">
       <p>Konten oleh {SITE.author}. Bukan nasihat hukum. Permintaan koreksi: <a href={`mailto:${SITE.correctionsEmail}`}>{SITE.correctionsEmail}</a>.</p>

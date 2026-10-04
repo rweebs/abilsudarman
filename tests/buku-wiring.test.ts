@@ -21,7 +21,7 @@ describe('buku wiring', () => {
   });
   it('adds no CSP source for pdfs (they open as plain links, not frames)', () => {
     const csp = read('public/_headers').match(/Content-Security-Policy:([^\n]*)/)?.[1] ?? '';
-    expect(csp).toMatch(/frame-src https:\/\/open\.spotify\.com https:\/\/www\.youtube-nocookie\.com https:\/\/www\.tiktok\.com(;|$)/);
+    expect(csp).toMatch(/frame-src https:\/\/www\.youtube-nocookie\.com https:\/\/www\.tiktok\.com(;|$)/);
   });
   it('the page offers Baca and Unduh links and embeds no viewer', () => {
     const page = read('src/pages/buku.astro');

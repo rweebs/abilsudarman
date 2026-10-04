@@ -20,7 +20,7 @@ Bagian utamanya:
 - **Klaim yang sedang ditinjau.** Daftar klaim tentang Bapak Sudarman yang pernah dipublikasikan atau dikutip, masing-masing dengan status verifikasi. Situs ini menyatakan bahwa "belum ada konfirmasi" tidak berarti suatu klaim salah.
 - **Artikel terjemahan.** Artikel tentang beliau, diterjemahkan agar lebih banyak orang dapat membacanya.
 - **Halaman hak jawab dan disclaimer.** Keduanya ditautkan dari navigasi utama.
-- **Pemutar lagu tema.** Pemutar Spotify pihak ketiga baru dimuat setelah pengunjung menekan tombol putar, dan tidak memerlukan login Spotify.
+- **Pemutar lagu tema.** Pemutar YouTube pihak ketiga baru dimuat setelah pengunjung menekan tombol "Lagu tema", dan lagunya diputar penuh tanpa perlu login.
 
 Situs ini berbahasa Indonesia. Kunjungi di [abilsudarman.my.id](https://abilsudarman.my.id).
 

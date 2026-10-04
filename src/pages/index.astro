@@ -4,7 +4,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PostThumb from '../components/PostThumb.astro';
 import ClassificationBadge from '../components/ClassificationBadge.astro';
 import SkyStage from '../components/SkyStage.tsx';
-import SpotifyPlayer from '../components/SpotifyPlayer.tsx';
 import TiltCard from '../components/motion/TiltCard.tsx';
 import { getPosts } from '../lib/content';
 import { ALLEGATIONS } from '../lib/allegations';
@@ -33,7 +32,6 @@ const REPORT = 'https://www.pewartanusantara.com/berita/dibungkam-situs-ordal-id
           <p class="lead muted">Seperti kawanan ababil yang membawa batu kecil satu per satu, operasi ini mengumpulkan bukti dan terjemahan artikel secara terbuka. Ini catatan dan pendapat Rahmat Wibowo, bukan putusan. Abil Sudarman berhak menanggapi setiap tulisan.</p>
           <a class="btn" href="/artikel">Baca artikel terjemahan</a>
         </div>
-        <SpotifyPlayer client:visible />
       </div>
     </section>
 

@@ -1,0 +1,19 @@
+---
+import { THEME_SONG, musicUrl } from '../lib/theme-song';
+---
+<div class="theme-song" data-theme-song data-video-id={THEME_SONG.videoId} data-title={`${THEME_SONG.title} · ${THEME_SONG.artist}`}>
+  <section id="theme-song-panel" class="theme-song__panel" aria-label="Lagu tema Operasi Ababil" hidden>
+    <p class="theme-song__title">Lagu tema: {THEME_SONG.title} · {THEME_SONG.artist}</p>
+    <div class="theme-song__stage"></div>
+    <div class="theme-song__actions">
+      <button type="button" class="btn theme-song__stop">Berhenti</button>
+      <a class="btn" href={musicUrl()} target="_blank" rel="noopener noreferrer">Buka di YouTube Music</a>
+    </div>
+    <p class="muted theme-song__note">Pemutar YouTube (pihak ketiga) baru dimuat setelah Anda menekan tombol. Lagu berulang otomatis dan berhenti saat Anda pindah halaman.</p>
+  </section>
+  <button type="button" class="theme-song__toggle" aria-expanded="false" aria-controls="theme-song-panel">
+    <span class="theme-song__icon" aria-hidden="true">♪</span>
+    <span class="theme-song__label">Lagu tema</span>
+  </button>
+</div>
+<script>import '../scripts/theme-song';</script>
