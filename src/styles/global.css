@@ -75,3 +75,5 @@ h1, h2, h3 { line-height: 1.2; }
 .hue-10 { background: linear-gradient(135deg, hsl(300 55% 22%), hsl(330 55% 12%)); }
 .hue-11 { background: linear-gradient(135deg, hsl(330 55% 22%), hsl(0 55% 12%)); }
 .has-header .prose > p:first-child:has(> img:only-child) { display: none; }
+.tilt { will-change: transform; transform-style: preserve-3d; }
+.post-header img { transform-origin: center; }

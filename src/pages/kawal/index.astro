@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
+import TiltCard from '../../components/motion/TiltCard.tsx';
 import { getQuestions } from '../../lib/content';
 const items = await getQuestions();
 ---
@@ -10,8 +11,8 @@ const items = await getQuestions();
     {items.length === 0
       ? <p class="muted">Belum ada butir kawal yang dipublikasikan.</p>
       : <div class="grid">{items.map((q) => (
-          <a class="card card--link card-link" href={`/kawal/${q.id}`}>
+          <TiltCard client:visible href={`/kawal/${q.id}`}>
             <StatusBadge status={q.data.status} /><h2 class="card-title">{q.data.title}</h2><p class="muted">{q.data.question}</p>
-          </a>))}</div>}
+          </TiltCard>))}</div>}
   </section>
 </BaseLayout>
