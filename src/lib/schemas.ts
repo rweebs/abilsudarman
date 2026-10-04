@@ -33,3 +33,10 @@ export const buktiSchema = z.object({
   capturedAt: z.coerce.date().optional(),
   order: z.number().int(),
 });
+
+export const videoSchema = z.object({
+  youtubeId: z.string().regex(/^[A-Za-z0-9_-]{11}$/),
+  title: z.string().min(1),
+  start: z.number().int().min(0).optional(),
+  order: z.number().int(),
+});
