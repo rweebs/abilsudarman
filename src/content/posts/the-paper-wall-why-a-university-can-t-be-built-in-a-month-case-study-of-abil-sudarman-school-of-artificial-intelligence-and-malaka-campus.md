@@ -5,7 +5,7 @@ author: "Rahmat Wibowo"
 translationDate: 2026-10-04
 classification: pendapat
 subjects: ["Abil Sudarman", "Ferry Irwandi", "Sabda PS"]
-translationStatus: draft
+translationStatus: final
 ---
 ![](/img/f6e6467555a48a5ae016a2fd.png)
 

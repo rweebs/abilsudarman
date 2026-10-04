@@ -11,9 +11,9 @@ describe('postSchema', () => {
   it('accepts a draft without originalUrl', () => {
     expect(postSchema.safeParse(basePost).success).toBe(true);
   });
-  it('rejects a final post without originalUrl', () => {
+  it('accepts a final post without originalUrl (the notice says the link will be added)', () => {
     const r = postSchema.safeParse({ ...basePost, translationStatus: 'final' });
-    expect(r.success).toBe(false);
+    expect(r.success).toBe(true);
   });
   it('accepts a final post with originalUrl', () => {
     const r = postSchema.safeParse({ ...basePost, translationStatus: 'final', originalUrl: 'https://example.com/a' });

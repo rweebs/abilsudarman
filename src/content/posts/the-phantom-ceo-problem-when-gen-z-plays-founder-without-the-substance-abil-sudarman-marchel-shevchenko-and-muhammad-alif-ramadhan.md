@@ -5,7 +5,7 @@ author: "Rahmat Wibowo"
 translationDate: 2026-10-04
 classification: pendapat
 subjects: ["Abil Sudarman", "Marchel Shevchenko", "Muhammad Alif Ramadhan"]
-translationStatus: draft
+translationStatus: final
 ---
 ![](/img/7cba8141610c8c74ff429b3e.png)
 

@@ -5,7 +5,7 @@ author: "Rahmat Wibowo"
 translationDate: 2026-10-04
 classification: laporan-aduan
 subjects: ["Abil Sudarman"]
-translationStatus: draft
+translationStatus: final
 ---
 ![Catatan perkara: Abil Sudarman, disebut dalam Aduan No. 068/ADUAN/RW/09/2026](/img/aduan-068-abil-sudarman-001.png)
 

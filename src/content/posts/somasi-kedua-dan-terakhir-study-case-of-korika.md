@@ -5,7 +5,7 @@ author: "Rahmat Wibowo"
 translationDate: 2026-10-04
 classification: laporan-aduan
 subjects: ["Hammam Riza", "Abil Sudarman", "Luca Cada Lora"]
-translationStatus: draft
+translationStatus: final
 ---
 ![](/img/b1480811ac4530f11cc49452.png)
 

@@ -5,7 +5,7 @@ author: "Rahmat Wibowo"
 translationDate: 2026-10-04
 classification: pendapat
 subjects: ["Abil Sudarman", "Rahmat Wibowo"]
-translationStatus: draft
+translationStatus: final
 ---
 ![](/img/case-studies-image-fixed.png)
 

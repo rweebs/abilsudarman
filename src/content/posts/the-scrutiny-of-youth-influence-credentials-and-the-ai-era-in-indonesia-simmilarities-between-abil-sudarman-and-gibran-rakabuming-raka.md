@@ -5,7 +5,7 @@ author: "Rahmat Wibowo"
 translationDate: 2026-10-04
 classification: pendapat
 subjects: ["Abil Sudarman", "Gibran Rakabuming Raka", "Joko Widodo", "Endang Sudarman"]
-translationStatus: draft
+translationStatus: final
 ---
 ![](/img/a66a5e6964ca4b95d4fd1be3.png)
 

@@ -5,7 +5,7 @@ author: "Rahmat Wibowo"
 translationDate: 2026-10-04
 classification: pendapat
 subjects: ["Rahmat Wibowo", "Abil Sudarman", "Endang Sudarman", "Hammam Riza", "Joko Priyono", "Moch Rafi Adnan", "Setiadipura"]
-translationStatus: draft
+translationStatus: final
 ---
 ![](/img/39f3321ef42cc2cf03244451.png)
 

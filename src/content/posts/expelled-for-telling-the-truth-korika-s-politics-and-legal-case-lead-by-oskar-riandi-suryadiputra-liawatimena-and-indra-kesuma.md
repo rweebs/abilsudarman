@@ -5,7 +5,7 @@ author: "Rahmat Wibowo"
 translationDate: 2026-10-04
 classification: pendapat
 subjects: ["Rahmat Wibowo", "Abil Sudarman", "Oskar Riandi", "Suryadiputra Liawatimena", "Indra Kesuma"]
-translationStatus: draft
+translationStatus: final
 ---
 ![](/img/5b5ea19822aee6022d5fcfbc.png)
 
