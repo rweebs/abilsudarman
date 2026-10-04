@@ -46,4 +46,24 @@ describe('bukti content', () => {
   it('every group has at least one entry', () => {
     expect(groupBukti(entries).map((g) => g.id)).toEqual(BUKTI_GROUPS.map((g) => g.id));
   });
+
+  // Final-review findings: the page describes a named real person, so wording must not overclaim.
+  const byId = (id: string) => entries.find((e) => e.id === id)!.data;
+  it('a limit that says something is absent scopes it to the image ("pada gambar")', () => {
+    for (const e of entries) {
+      if (/tidak ada/i.test(e.data.limits)) expect(e.data.limits, e.id).toMatch(/pada gambar/i);
+    }
+  });
+  it('entry 12 does not present the Abil S. comment as a reply to the forwarded UNESCO statement', () => {
+    const d = byId('12-utas-unesco');
+    expect(d.shows + d.images[0].alt).not.toMatch(/balasan/i);
+    expect(d.shows).toMatch(/komentar akun/i);
+    expect(d.limits).toMatch(/44m/);
+  });
+  it('entry 1 names no source or page heading that the image does not show, and says the attribution is the author\'s', () => {
+    const d = byId('01-pddikti');
+    expect(d.source).toBeUndefined();
+    expect(d.shows).not.toContain('Biodata Mahasiswa');
+    expect(d.limits).toMatch(/atribusi ke PDDikti berasal dari penulis/i);
+  });
 });
