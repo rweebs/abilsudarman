@@ -7,7 +7,7 @@ function textFiles(dir) {
   const out = [];
   for (const name of readdirSync(dir)) {
     const p = join(dir, name);
-    if (statSync(p).isDirectory()) { if (name !== 'img') out.push(...textFiles(p)); }
+    if (statSync(p).isDirectory()) { if (name !== 'img' && name !== 'thumb') out.push(...textFiles(p)); }
     else if (/\.(html|css|js|xml|json)$/.test(name)) out.push(p);
   }
   return out;
@@ -16,21 +16,23 @@ function textFiles(dir) {
 export function referencedImages(dist) {
   const refs = new Set();
   for (const f of textFiles(dist)) {
-    for (const m of readFileSync(f, 'utf8').matchAll(/\/img\/([^"'\s)?#<>]+)/g)) refs.add(decodeURIComponent(m[1]));
+    for (const m of readFileSync(f, 'utf8').matchAll(/\/(?:img|thumb)\/([^"'\s)?#<>]+)/g)) refs.add(decodeURIComponent(m[1]));
   }
   return refs;
 }
 
 export function pruneImages(distDir) {
   const dist = siteRoot(distDir);
-  const imgDir = join(dist, 'img');
-  if (!existsSync(imgDir)) return { kept: 0, removed: 0 };
   const refs = referencedImages(dist);
   let kept = 0;
   let removed = 0;
-  for (const name of readdirSync(imgDir)) {
-    if (refs.has(name)) kept += 1;
-    else { rmSync(join(imgDir, name)); removed += 1; }
+  for (const dirName of ['img', 'thumb']) {
+    const dir = join(dist, dirName);
+    if (!existsSync(dir)) continue;
+    for (const name of readdirSync(dir)) {
+      if (refs.has(name)) kept += 1;
+      else { rmSync(join(dir, name)); removed += 1; }
+    }
   }
   return { kept, removed };
 }

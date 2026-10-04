@@ -41,9 +41,17 @@ export default function SkyStage({ sectionIds }: Props) {
       }
     };
 
+    const whenSettled = (): Promise<void> => new Promise((resolve) => {
+      const go = () => window.setTimeout(resolve, 1200);
+      if (document.readyState === 'complete') go();
+      else window.addEventListener('load', go, { once: true });
+    });
+
     (async () => {
       try {
         if (forceFallback) throw new Error('webgl disabled by query');
+        await whenSettled();
+        if (cancelled) return;
         const { createScene } = await import('../lib/sky/AbabilScene');
         if (cancelled || !canvasRef.current) return;
         scene = createScene({ canvas: canvasRef.current, reducedMotion: reduced });

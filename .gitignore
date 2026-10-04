@@ -10,3 +10,4 @@ tmp/
 docs/superpowers/specs/
 docs/superpowers/plans/
 .wrangler
+public/thumb/

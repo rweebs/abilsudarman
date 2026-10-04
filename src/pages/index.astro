@@ -5,7 +5,6 @@ import PostThumb from '../components/PostThumb.astro';
 import ClassificationBadge from '../components/ClassificationBadge.astro';
 import SkyStage from '../components/SkyStage.tsx';
 import SpotifyPlayer from '../components/SpotifyPlayer.tsx';
-import Reveal from '../components/motion/Reveal.tsx';
 import TiltCard from '../components/motion/TiltCard.tsx';
 import { getPosts } from '../lib/content';
 import { firstImage } from '../lib/header-image';
@@ -26,12 +25,12 @@ const REPORT = 'https://www.pewartanusantara.com/berita/dibungkam-situs-ordal-id
   <div class="home-main">
     <section id="operasi" class="home-section container">
       <div class="glass stack">
-        <Reveal client:visible>
+        <div class="stack">
           <h1>Operasi Ababil</h1>
           <p class="hero-sub">Operasi untuk mengungkap Abil Sudarman</p>
           <p class="lead muted">Seperti kawanan ababil yang membawa batu kecil satu per satu, operasi ini mengumpulkan bukti dan terjemahan artikel secara terbuka. Ini catatan dan pendapat Rahmat Wibowo, bukan putusan. Abil Sudarman berhak menanggapi setiap tulisan.</p>
           <a class="btn" href="/artikel">Baca artikel terjemahan</a>
-        </Reveal>
+        </div>
         <SpotifyPlayer client:visible />
       </div>
     </section>

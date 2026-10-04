@@ -41,3 +41,14 @@ describe('prune-images with an adapter-style dist/client layout', () => {
   });
 });
 
+describe('prune-images also prunes /thumb', () => {
+  it('keeps referenced thumbs and removes the rest', () => {
+    const root = mkdtempSync(join(tmpdir(), 'prune-thumb-'));
+    mkdirSync(join(root, 'thumb'), { recursive: true });
+    for (const f of ['a.webp', 'b.webp']) writeFileSync(join(root, 'thumb', f), 'x');
+    writeFileSync(join(root, 'index.html'), '<img src="/thumb/a.webp">');
+    expect(pruneImages(root)).toEqual({ kept: 1, removed: 1 });
+    expect(existsSync(join(root, 'thumb', 'b.webp'))).toBe(false);
+  });
+});
+
