@@ -1,0 +1,10 @@
+---
+import { hueFromSlug } from '../lib/header-image';
+const { slug, image } = Astro.props as { title: string; slug: string; image: { src: string; alt: string } | null };
+const hueClass = `hue-${Math.floor(hueFromSlug(slug) / 30)}`;
+---
+<div class="thumb">
+  {image
+    ? <img src={image.src} alt="" loading="lazy" decoding="async" />
+    : <div class={`thumb__fallback ${hueClass}`} aria-hidden="true"></div>}
+</div>

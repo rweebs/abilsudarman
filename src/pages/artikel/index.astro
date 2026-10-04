@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ClassificationBadge from '../../components/ClassificationBadge.astro';
+import PostThumb from '../../components/PostThumb.astro';
+import { firstImage } from '../../lib/header-image';
 import { getPosts } from '../../lib/content';
 const posts = await getPosts();
 ---
@@ -11,6 +13,7 @@ const posts = await getPosts();
       ? <p class="muted">Belum ada artikel yang dipublikasikan.</p>
       : <div class="grid">{posts.map((p) => (
           <a class="card card--link card-link" href={`/artikel/${p.id}`}>
+            <PostThumb title={p.data.title} slug={p.id} image={firstImage(p.body ?? '')} />
             <ClassificationBadge value={p.data.classification} /><h2 class="card-title">{p.data.title}</h2>
             <p class="muted">Terjemahan dari: {p.data.originalTitle}</p>
           </a>))}</div>}

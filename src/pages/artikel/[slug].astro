@@ -3,6 +3,8 @@ import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ClassificationBadge from '../../components/ClassificationBadge.astro';
 import TranslationNotice from '../../components/TranslationNotice.astro';
+import PostHeader from '../../components/PostHeader.astro';
+import { firstImage } from '../../lib/header-image';
 import { getPosts } from '../../lib/content';
 import { SITE } from '../../lib/site';
 
@@ -12,6 +14,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const p = entry.data;
 const { Content } = await render(entry);
+const header = firstImage(entry.body ?? '');
 const path = `/artikel/${entry.id}`;
 const jsonLd = {
   '@context': 'https://schema.org', '@type': 'Article', inLanguage: 'id', headline: p.title,
@@ -22,10 +25,11 @@ const jsonLd = {
 };
 ---
 <BaseLayout title={p.title} description={`Terjemahan: ${p.originalTitle}`} path={path} jsonLd={jsonLd}>
-  <article class="reading">
+  <article class="reading has-header">
+    <PostHeader title={p.title} slug={entry.id} image={header} />
     <ClassificationBadge value={p.classification} />
     <h1>{p.title}</h1>
     <TranslationNotice originalTitle={p.originalTitle} originalUrl={p.originalUrl} author={p.author} />
-    <Content />
+    <div class="prose"><Content /></div>
   </article>
 </BaseLayout>
