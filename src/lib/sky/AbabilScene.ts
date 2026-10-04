@@ -24,9 +24,9 @@ function birdGeometry(phases: Float32Array): THREE.BufferGeometry {
 }
 
 export function createScene({ canvas, reducedMotion }: SceneInit): AbabilScene {
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  const small = window.matchMedia('(max-width: 768px)').matches;
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small ? 1.5 : 2));
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: dpr <= 1, alpha: true, powerPreference: 'low-power' });
+  renderer.setPixelRatio(dpr);
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 200);
 

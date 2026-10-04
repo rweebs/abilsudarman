@@ -41,10 +41,29 @@ export default function SkyStage({ sectionIds }: Props) {
       }
     };
 
+    // The static SVG sky is already on screen, so the heavy WebGL scene waits for
+    // the first sign of a real visitor, or a long idle fallback, and stays out of
+    // the load window where it would count as blocking time.
+    const IDLE_FALLBACK_MS = 8000;
+    const WAKE_EVENTS = ['pointerdown', 'pointermove', 'keydown', 'scroll', 'touchstart', 'wheel'] as const;
+    let stopWaiting = () => {};
     const whenSettled = (): Promise<void> => new Promise((resolve) => {
-      const go = () => window.setTimeout(resolve, 1200);
-      if (document.readyState === 'complete') go();
-      else window.addEventListener('load', go, { once: true });
+      let timer = 0;
+      const wake = () => {
+        stopWaiting();
+        const run = () => resolve();
+        if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(run, { timeout: 1000 });
+        else window.setTimeout(run, 200);
+      };
+      const onLoad = () => { timer = window.setTimeout(wake, IDLE_FALLBACK_MS); };
+      stopWaiting = () => {
+        window.clearTimeout(timer);
+        window.removeEventListener('load', onLoad);
+        for (const ev of WAKE_EVENTS) window.removeEventListener(ev, wake);
+      };
+      for (const ev of WAKE_EVENTS) window.addEventListener(ev, wake, { once: true, passive: true });
+      if (document.readyState === 'complete') onLoad();
+      else window.addEventListener('load', onLoad, { once: true });
     });
 
     (async () => {
@@ -75,6 +94,7 @@ export default function SkyStage({ sectionIds }: Props) {
 
     return () => {
       cancelled = true;
+      stopWaiting();
       io?.disconnect();
       window.removeEventListener('resize', onResize);
       window.removeEventListener('scroll', onScroll);
