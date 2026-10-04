@@ -1,0 +1,36 @@
+---
+import { statSync } from 'node:fs';
+import { join } from 'node:path';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getBuku } from '../lib/content';
+import { formatBytes, sortBuku } from '../lib/buku';
+import { thumbFor } from '../lib/bukti';
+import { DISCLAIMER, SITE } from '../lib/site';
+const dateFmt = new Intl.DateTimeFormat('id-ID', { dateStyle: 'long', timeZone: 'UTC' });
+const books = sortBuku(await getBuku()).map((b) => ({ ...b, size: formatBytes(statSync(join('public', b.data.file)).size) }));
+const DESCRIPTION = 'Kumpulan laporan dan dokumen kritik Rahmat Wibowo tentang klaim Abil Sudarman dan ASSAI, dapat dibaca dan diunduh dalam format PDF.';
+const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Buku dan laporan kritik', url: `${SITE.url}/buku`, inLanguage: 'id', description: DESCRIPTION };
+---
+<BaseLayout title="Buku dan laporan kritik" description={DESCRIPTION} path="/buku" jsonLd={ld} breadcrumbs={[{ name: 'Buku', path: '/buku' }]}>
+  <section class="container pad-block">
+    <h1>Buku</h1>
+    <p class="muted">{DISCLAIMER}</p>
+    <p class="muted">Dokumen berikut adalah pendapat dan analisis penulis. Setiap kartu memuat catatan tentang batas cakupan dan apa yang dinyatakan dokumennya sendiri.</p>
+    {books.length === 0
+      ? <p class="muted">Belum ada dokumen yang dipublikasikan.</p>
+      : <ul class="buku-grid">{books.map((b) => (
+          <li class="card buku-item">
+            <a class="buku-cover" href={b.data.file} target="_blank" rel="noopener">
+              <img src={thumbFor(b.data.cover)} alt={`Sampul ${b.data.title}`} width="640" height="905" loading="lazy" decoding="async" />
+            </a>
+            <h2>{b.data.title}</h2>
+            <p class="buku-meta">{[b.data.author, b.data.date && dateFmt.format(b.data.date), b.data.version && `versi ${b.data.version}`, `${b.data.pages} halaman`, `PDF ${b.size}`].filter(Boolean).join(' · ')}</p>
+            <p>{b.data.description}</p>
+            <p class="buku-note"><strong>Catatan:</strong> {b.data.note}</p>
+            <div class="buku-actions">
+              <a class="btn" href={b.data.file} target="_blank" rel="noopener">Baca</a>
+              <a class="btn" href={b.data.file} download>Unduh PDF ({b.size})</a>
+            </div>
+          </li>))}</ul>}
+  </section>
+</BaseLayout>

@@ -143,3 +143,14 @@ h1, h2, h3 { line-height: 1.2; }
 .video-stage { aspect-ratio: 16 / 9; background: #000; border-radius: var(--radius-md); overflow: hidden; }
 .video-stage iframe { display: block; width: 100%; height: 100%; border: 0; }
 .video-note { margin: 0; font-size: 0.85rem; }
+
+/* Buku page */
+.buku-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.buku-item { display: flex; flex-direction: column; gap: 0.6rem; padding: 1rem; }
+.buku-item h2 { font-size: 1.1rem; margin: 0; }
+.buku-item p { margin: 0; }
+.buku-cover { display: block; aspect-ratio: 3 / 4; background: var(--bg-secondary); border-radius: var(--radius-md); overflow: hidden; }
+.buku-cover img { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: 0; }
+.buku-meta { font-size: 0.85rem; color: var(--text-secondary); }
+.buku-note { color: var(--text-secondary); border-left: 3px solid var(--accent-amber); padding-left: 0.75rem; }
+.buku-actions { margin-top: auto; display: flex; flex-wrap: wrap; gap: 0.75rem; padding-top: 0.5rem; }

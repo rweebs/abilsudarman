@@ -12,6 +12,10 @@ export async function getBukti() {
   return getCollection('bukti');
 }
 
+export async function getBuku() {
+  return getCollection('buku');
+}
+
 export async function getVideos() {
   return getCollection('videos');
 }
