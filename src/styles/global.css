@@ -120,8 +120,7 @@ h1, h2, h3 { line-height: 1.2; }
 .bukti-item p { margin: 0; }
 .bukti-thumb { display: block; aspect-ratio: 4 / 3; background: var(--bg-secondary); border-radius: var(--radius-md); overflow: hidden; }
 .bukti-thumb img { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: 0; }
-.bukti-limits { margin-top: auto; color: var(--text-secondary); border-left: 3px solid var(--accent-amber); padding-left: 0.75rem; }
-.bukti-source { font-size: 0.85rem; color: var(--text-secondary); }
+.bukti-source { margin-top: auto; font-size: 0.85rem; color: var(--text-secondary); }
 .bukti-more { display: flex; flex-wrap: wrap; gap: 0.75rem; font-size: 0.9rem; }
 
 /* Videos page */

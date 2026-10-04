@@ -24,9 +24,9 @@ describe('bukti wiring', () => {
       expect(img).toMatch(/height:\s*100%/);
       expect(img).not.toMatch(/max-height/);
     });
-    it('stretches cards to equal height per row and pins the limits and source block to the bottom', () => {
+    it('stretches cards to equal height per row and pins the source block to the bottom', () => {
       expect(rule('.bukti-grid')).not.toMatch(/align-items:\s*start/);
-      expect(rule('.bukti-limits')).toMatch(/margin-top:\s*auto/);
+      expect(rule('.bukti-source')).toMatch(/margin-top:\s*auto/);
     });
   });
   it('the page is a real route and lists /bukti in the sitemap source', () => {

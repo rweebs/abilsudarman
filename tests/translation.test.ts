@@ -8,7 +8,7 @@ const allow: Array<{ contains: string; reason: string }> = JSON.parse(readFileSy
 
 describe('translations are Indonesian (per paragraph)', () => {
   const files = readdirSync(DIR).filter((f) => f.endsWith('.md'));
-  it('has 14 posts', () => expect(files.length).toBe(14));
+  it('has 15 posts', () => expect(files.length).toBe(15));
   for (const f of files) {
     it(`${f} has no untranslated English block`, () => {
       const blocks = findEnglishBlocks(readFileSync(join(DIR, f), 'utf8'))
