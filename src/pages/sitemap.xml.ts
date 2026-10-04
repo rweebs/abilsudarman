@@ -17,6 +17,7 @@ export const GET: APIRoute = async () => {
     { path: '/bukti', lastmod: PAGE_LASTMOD['/bukti'], images: bukti.flatMap((e) => e.data.images.map((i) => i.src)) },
     { path: '/videos', lastmod: PAGE_LASTMOD['/videos'] },
     { path: '/buku', lastmod: PAGE_LASTMOD['/buku'] },
+    { path: '/pagespeed', lastmod: PAGE_LASTMOD['/pagespeed'] },
     { path: '/hak-jawab', lastmod: PAGE_LASTMOD['/hak-jawab'] },
     { path: '/disclaimer', lastmod: PAGE_LASTMOD['/disclaimer'] },
     ...posts.map((p) => {

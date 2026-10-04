@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../lib/site';
+const DESCRIPTION = 'Hasil Google PageSpeed Insights untuk abilsudarman.my.id: nilai seluler dan desktop, cara membacanya, dan batasannya.';
+const RERUN = 'https://pagespeed.web.dev/analysis/https-abilsudarman-my-id/zlqqztsswy?form_factor=desktop&category=performance&category=accessibility&category=best-practices&category=seo&category=agentic-browsing&hl=id';
+const SCORES = [
+  { label: 'Performance', value: '100' },
+  { label: 'Accessibility', value: '100' },
+  { label: 'Best Practices', value: '100' },
+  { label: 'SEO', value: '100' },
+  { label: 'Agentic Browsing', value: '2/2' },
+];
+const ld = { '@context': 'https://schema.org', '@type': 'WebPage', name: 'Hasil PageSpeed', url: `${SITE.url}/pagespeed`, inLanguage: 'id', description: DESCRIPTION };
+---
+<BaseLayout title="Hasil PageSpeed" description={DESCRIPTION} path="/pagespeed" jsonLd={ld} breadcrumbs={[{ name: 'PageSpeed', path: '/pagespeed' }]}>
+  <article class="reading">
+    <h1>Hasil PageSpeed</h1>
+    <p>Saya menjalankan Google PageSpeed Insights pada halaman utama abilsudarman.my.id pada 5 Oktober 2026 pukul 00.40. Laporan seluler maupun desktop sama-sama memberi nilai berikut.</p>
+    <ul>
+      {SCORES.map((s) => <li><strong>{s.label}:</strong> {s.value}</li>)}
+    </ul>
+    <img src="/img/peluncuran-situs-004.png" alt="Laporan desktop PageSpeed Insights untuk abilsudarman.my.id" width="1200" loading="lazy" decoding="async" />
+    <p>Anda dapat <a href={RERUN} rel="noopener nofollow">menjalankan ulang laporannya sendiri</a>.</p>
+    <h2>Batasan</h2>
+    <ul>
+      <li>Ini hasil uji lab dari satu kali percobaan. Laporan mencatat bahwa skor bersifat perkiraan dan dapat bervariasi.</li>
+      <li>Google belum memiliki data lapangan dari pengguna nyata untuk situs ini.</li>
+      <li>Nilai ini hanya menilai kecepatan, aksesibilitas, praktik terbaik, dan SEO teknis situs ini. Nilai ini tidak menilai isi atau kebenaran klaim di dalamnya.</li>
+    </ul>
+    <p class="muted">Sumber: <a href="/artikel/meluncurkan-abilsudarman-my-id-situs-cek-fakta-open-source-dibuat-dengan-tangan-bukan-di-wix">Meluncurkan abilsudarman.my.id</a>.</p>
+  </article>
+</BaseLayout>
