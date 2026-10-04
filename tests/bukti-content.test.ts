@@ -18,8 +18,8 @@ const FORBIDDEN = [
 ];
 
 describe('bukti content', () => {
-  it('has the 15 reviewed entries', () => {
-    expect(entries).toHaveLength(15);
+  it('has the 16 reviewed entries', () => {
+    expect(entries).toHaveLength(16);
   });
   it('every entry validates against the schema (parsing above) and has a unique order', () => {
     expect(new Set(entries.map((e) => e.data.order)).size).toBe(entries.length);
