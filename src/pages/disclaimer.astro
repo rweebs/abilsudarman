@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { DISCLAIMER, SITE } from '../lib/site';
+---
+<BaseLayout title="Disclaimer" description="Catatan hukum, metodologi, dan kebijakan koreksi." path="/disclaimer">
+  <article class="reading">
+    <h1>Disclaimer</h1>
+    <h2>Sifat konten</h2><p>{DISCLAIMER}</p>
+    <h2>Klasifikasi</h2>
+    <ul>
+      <li><strong>Pendapat</strong>: penilaian pribadi penulis.</li>
+      <li><strong>Fakta dengan bukti</strong>: pernyataan faktual yang disertai sumber atau bukti yang dapat diperiksa.</li>
+      <li><strong>Laporan/aduan</strong>: laporan atau surat resmi yang disampaikan penulis; bukan temuan lembaga yang menerimanya.</li>
+    </ul>
+    <h2>Terjemahan</h2><p>Artikel adalah terjemahan Bahasa Indonesia dari tulisan asli berbahasa Inggris karya {SITE.author}. Jika terdapat perbedaan makna, teks asli yang dirujuk.</p>
+    <h2>Koreksi</h2><p>Permintaan koreksi atau penghapusan dapat dikirim ke <a href={`mailto:${SITE.correctionsEmail}`}>{SITE.correctionsEmail}</a> dengan menyebut halaman dan bagian yang dimaksud.</p>
+    <h2>Data pribadi</h2><p>Satu-satunya alamat yang dimuat adalah alamat yang tercatat pada pangkalan data resmi PDKI, dengan tautan sumbernya, dan hanya sebagai alamat pengiriman pertanyaan.</p>
+    <h2>Bukan nasihat hukum</h2><p>Situs ini bukan nasihat hukum.</p>
+  </article>
+</BaseLayout>

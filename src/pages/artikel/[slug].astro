@@ -1,0 +1,31 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ClassificationBadge from '../../components/ClassificationBadge.astro';
+import TranslationNotice from '../../components/TranslationNotice.astro';
+import { getPosts } from '../../lib/content';
+import { SITE } from '../../lib/site';
+
+export async function getStaticPaths() {
+  return (await getPosts()).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const p = entry.data;
+const { Content } = await render(entry);
+const path = `/artikel/${entry.id}`;
+const jsonLd = {
+  '@context': 'https://schema.org', '@type': 'Article', inLanguage: 'id', headline: p.title,
+  datePublished: p.translationDate.toISOString().slice(0, 10),
+  author: { '@type': 'Person', name: p.author },
+  url: new URL(path, SITE.url).toString(),
+  ...(p.originalUrl ? { translationOfWork: { '@type': 'CreativeWork', name: p.originalTitle, url: p.originalUrl } } : {}),
+};
+---
+<BaseLayout title={p.title} description={`Terjemahan: ${p.originalTitle}`} path={path} jsonLd={jsonLd}>
+  <article class="reading">
+    <ClassificationBadge value={p.classification} />
+    <h1>{p.title}</h1>
+    <TranslationNotice originalTitle={p.originalTitle} originalUrl={p.originalUrl} author={p.author} />
+    <Content />
+  </article>
+</BaseLayout>

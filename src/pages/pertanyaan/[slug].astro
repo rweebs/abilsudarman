@@ -1,0 +1,43 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import DeliveryAddress from '../../components/DeliveryAddress.astro';
+import { getQuestions } from '../../lib/content';
+
+export async function getStaticPaths() {
+  return (await getQuestions()).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const q = entry.data;
+const { Content } = await render(entry);
+const evidence = await Promise.all(q.evidence.map(async (id: string) => {
+  const post = await getEntry('posts', id);
+  if (!post) throw new Error(`Pertanyaan ${entry.id} merujuk artikel yang tidak ada: ${id}`);
+  return post;
+}));
+const fmt = (d?: Date) => d?.toLocaleDateString('id-ID', { dateStyle: 'long' });
+---
+<BaseLayout title={q.title} description={q.question} path={`/pertanyaan/${entry.id}`}>
+  <article class="reading">
+    <StatusBadge status={q.status} />
+    <h1>{q.title}</h1>
+    <h2>Pertanyaan</h2>
+    <p>{q.question}</p>
+    <h2>Dugaan yang mendasari</h2>
+    <p class="muted">Berikut dugaan menurut Rahmat Wibowo, bukan fakta yang telah dibuktikan di pengadilan: {q.allegation}</p>
+    <Content />
+    {evidence.length > 0 && <>
+      <h2>Bukti dan bacaan terkait</h2>
+      <ul>{evidence.map((p) => <li><a href={`/artikel/${p.id}`}>{p.data.title}</a></li>)}</ul></>}
+    <h2>Pengiriman</h2>
+    {q.sentDate
+      ? <p>Dikirim {fmt(q.sentDate)} melalui {q.deliveryChannel === 'email' ? 'email' : 'surat'}.</p>
+      : <p class="muted">Belum dikirim.</p>}
+    <DeliveryAddress />
+    <h2>Jawaban</h2>
+    {q.status === 'dijawab'
+      ? <><blockquote style="white-space:pre-wrap">{q.reply}</blockquote><p class="muted">Dimuat apa adanya pada {fmt(q.replyDate)}.</p></>
+      : <p class="muted">Belum ada jawaban{q.sentDate ? ` per ${fmt(q.sentDate)}` : ''}. Jawaban yang diterima akan dimuat apa adanya. Lihat <a href="/hak-jawab">hak jawab</a>.</p>}
+  </article>
+</BaseLayout>
