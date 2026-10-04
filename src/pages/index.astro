@@ -37,10 +37,11 @@ const REPORT = 'https://www.pewartanusantara.com/berita/dibungkam-situs-ordal-id
       </div>
     </section>
 
-    <section id="siapa" class="home-section container">
+    <section id="siapa" class="home-section container home-pair">
       <div class="glass stack">
         <h2>Siapa Abil Sudarman</h2>
         <p class="muted lead">Kreator konten dan konselor karier, menurut pemberitaan. Konteks berikut bukan tuduhan.</p>
+        <p class="lead">Ringkasnya, klaim yang sedang diperiksa menyangkut {ALLEGATIONS.map((a) => a.label).join(', ').replace(/, ([^,]*)$/, ' dan $1')}. Rincian dan statusnya ada di daftar klaim.</p>
         <figure class="figure-quote">
           <Image src={poskota} alt="Tangkapan gambar dari pemberitaan: Abil Sudarman berbicara, dengan teks “6000+ cyberattack sejak siang tadi”" width={520} />
           <figcaption>
@@ -50,10 +51,7 @@ const REPORT = 'https://www.pewartanusantara.com/berita/dibungkam-situs-ordal-id
           </figcaption>
         </figure>
       </div>
-    </section>
-
-    <section id="dugaan" class="home-section container">
-      <div class="glass stack">
+      <div class="glass stack" id="dugaan">
         <h2>Klaim yang sedang diperiksa</h2>
         <p class="muted lead">Ringkasan klaim tentang Abil Sudarman yang dipublikasikan atau dikutip, beserta status pemeriksaannya. Ini bukan tuduhan dan bukan putusan; belum ada konfirmasi bukan berarti klaimnya salah.</p>
         <ul class="dugaan-list">

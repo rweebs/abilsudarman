@@ -1,12 +1,11 @@
 export interface Vec3 { x: number; y: number; z: number }
 export type SkyState = 'circle' | 'status';
 
-export const HOME_SECTIONS = ['operasi', 'siapa', 'dugaan', 'bukti', 'kontribusi', 'jawaban'] as const;
+export const HOME_SECTIONS = ['operasi', 'siapa', 'bukti', 'kontribusi', 'jawaban'] as const;
 
 export const SECTION_STATE: Record<string, SkyState> = {
   operasi: 'circle',
   siapa: 'circle',
-  dugaan: 'circle',
   bukti: 'circle',
   kontribusi: 'circle',
   jawaban: 'status',

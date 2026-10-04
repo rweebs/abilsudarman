@@ -93,7 +93,9 @@ h1, h2, h3 { line-height: 1.2; }
 .brand { display: inline-flex; align-items: center; gap: 0.6rem; }
 .brand img { border-radius: 50%; }
 .player__slot { min-height: 152px; }
-#operasi .glass, #siapa .glass { max-width: 44rem; }
+#operasi .glass { max-width: 44rem; }
+.home-pair { display: grid; gap: 1rem; align-items: stretch; }
+@media (min-width: 900px) { .home-pair { grid-template-columns: 1fr 1fr; } }
 .dugaan-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.9rem; }
 .dugaan-item { border-left: 3px solid var(--accent-amber); padding-left: 0.85rem; }
 .dugaan-item h3 { font-size: 1.05rem; margin: 0 0 0.25rem; }
