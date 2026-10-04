@@ -7,4 +7,4 @@ evidence:
 draft: true
 ---
 
-Pertanyaan ini hanya meminta klarifikasi. Penulis tidak menyatakan bahwa Abil Sudarman bersalah atas suatu tindak pidana. Penentuan ada atau tidaknya pelanggaran sepenuhnya menjadi wewenang aparat penegak hukum dan pengadilan.
+Butir kawal ini hanya meminta klarifikasi. Penulis tidak menyatakan bahwa Abil Sudarman bersalah atas suatu tindak pidana. Penentuan ada atau tidaknya pelanggaran sepenuhnya menjadi wewenang aparat penegak hukum dan pengadilan.

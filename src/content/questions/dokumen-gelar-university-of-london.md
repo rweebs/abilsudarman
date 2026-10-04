@@ -8,4 +8,4 @@ evidence:
 draft: true
 ---
 
-Pertanyaan ini terbuka bagi Abil Sudarman untuk menunjukkan dokumen yang relevan. Jawaban yang diterima akan dimuat apa adanya.
+Butir kawal ini terbuka bagi Abil Sudarman untuk menunjukkan dokumen yang relevan. Jawaban yang diterima akan dimuat apa adanya.

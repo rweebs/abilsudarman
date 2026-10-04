@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import { getQuestions } from '../../lib/content';
+const items = await getQuestions();
+---
+<BaseLayout title="Kawal Abil Sudarman" description="Daftar butir kawal terbuka atas klaim Abil Sudarman." path="/kawal">
+  <section class="container pad-block">
+    <h1>Kawal Abil Sudarman</h1>
+    {items.length === 0
+      ? <p class="muted">Belum ada butir kawal yang dipublikasikan.</p>
+      : <div class="grid">{items.map((q) => (
+          <a class="card card--link card-link" href={`/kawal/${q.id}`}>
+            <StatusBadge status={q.data.status} /><h2 class="card-title">{q.data.title}</h2><p class="muted">{q.data.question}</p>
+          </a>))}</div>}
+  </section>
+</BaseLayout>

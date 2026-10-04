@@ -36,7 +36,7 @@ export const questionSchema = z
   })
   .superRefine((q, ctx) => {
     if (!q.draft && (!q.sentDate || !q.deliveryChannel)) {
-      ctx.addIssue({ code: 'custom', path: ['sentDate'], message: 'Pertanyaan terbit wajib punya sentDate dan deliveryChannel' });
+      ctx.addIssue({ code: 'custom', path: ['sentDate'], message: 'Butir kawal terbit wajib punya sentDate dan deliveryChannel' });
     }
     if (q.status === 'dijawab' && (!q.reply || !q.replyDate)) {
       ctx.addIssue({ code: 'custom', path: ['reply'], message: 'Status dijawab wajib punya reply dan replyDate' });

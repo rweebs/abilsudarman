@@ -8,16 +8,16 @@ const posts = (await getPosts()).slice(0, 3);
 ---
 <BaseLayout title="Beranda" description={SITE.description} path="/">
   <section class="hero"><div class="container">
-    <h1>Pertanyaan untuk Abil Sudarman</h1>
-    <p class="muted lead">Kumpulan pertanyaan terbuka yang disampaikan kepada Abil Sudarman, lengkap dengan bukti, status jawaban, dan terjemahan artikel pendukung. Setiap jawaban yang diterima akan dimuat apa adanya.</p>
-    <a class="btn" href="/pertanyaan">Lihat semua pertanyaan</a>
+    <h1>Kawal Abil Sudarman</h1>
+    <p class="muted lead">Kumpulan butir kawal terbuka yang disampaikan kepada Abil Sudarman, lengkap dengan bukti, status jawaban, dan terjemahan artikel pendukung. Setiap jawaban yang diterima akan dimuat apa adanya.</p>
+    <a class="btn" href="/kawal">Lihat semua butir kawal</a>
   </div></section>
   <section class="container pad-block">
-    <h2>Pertanyaan</h2>
+    <h2>Butir kawal</h2>
     {questions.length === 0
-      ? <p class="muted">Belum ada pertanyaan yang dipublikasikan.</p>
+      ? <p class="muted">Belum ada butir kawal yang dipublikasikan.</p>
       : <div class="grid">{questions.map((q) => (
-          <a class="card card--link card-link" href={`/pertanyaan/${q.id}`}>
+          <a class="card card--link card-link" href={`/kawal/${q.id}`}>
             <StatusBadge status={q.data.status} /><h3>{q.data.title}</h3><p class="muted">{q.data.question}</p>
           </a>))}</div>}
     <h2 class="section-gap">Artikel terbaru</h2>

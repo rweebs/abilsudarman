@@ -13,16 +13,16 @@ const q = entry.data;
 const { Content } = await render(entry);
 const evidence = await Promise.all(q.evidence.map(async (id: string) => {
   const post = await getEntry('posts', id);
-  if (!post) throw new Error(`Pertanyaan ${entry.id} merujuk artikel yang tidak ada: ${id}`);
+  if (!post) throw new Error(`Butir kawal ${entry.id} merujuk artikel yang tidak ada: ${id}`);
   return post;
 }));
 const fmt = (d?: Date) => d?.toLocaleDateString('id-ID', { dateStyle: 'long' });
 ---
-<BaseLayout title={q.title} description={q.question} path={`/pertanyaan/${entry.id}`}>
+<BaseLayout title={q.title} description={q.question} path={`/kawal/${entry.id}`}>
   <article class="reading">
     <StatusBadge status={q.status} />
     <h1>{q.title}</h1>
-    <h2>Pertanyaan</h2>
+    <h2>Yang ditanyakan</h2>
     <p>{q.question}</p>
     <h2>Dugaan yang mendasari</h2>
     <p class="muted">Berikut dugaan menurut Rahmat Wibowo, bukan fakta yang telah dibuktikan di pengadilan: {q.allegation}</p>

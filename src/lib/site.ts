@@ -1,6 +1,6 @@
 export const SITE = {
-  name: 'Pertanyaan untuk Abil Sudarman',
-  description: 'Pertanyaan terbuka kepada Abil Sudarman beserta terjemahan Bahasa Indonesia dari artikel Rahmat Wibowo.',
+  name: 'Kawal Abil Sudarman',
+  description: 'Kawal terbuka atas klaim Abil Sudarman: butir kawal, bukti, dan terjemahan artikel Rahmat Wibowo.',
   url: 'https://abilsudarman.my.id',
   author: 'Rahmat Wibowo',
   questionEmail: 'abil@assai.id',
@@ -27,7 +27,7 @@ export const CLASSIFICATION_LABEL = {
 export const STATUS_LABEL = { 'belum-dijawab': 'Belum dijawab', 'dijawab': 'Dijawab' } as const;
 
 export const NAV = [
-  { href: '/pertanyaan', label: 'Pertanyaan' },
+  { href: '/kawal', label: 'Kawal Abil Sudarman' },
   { href: '/artikel', label: 'Artikel' },
   { href: '/hak-jawab', label: 'Hak jawab' },
   { href: '/disclaimer', label: 'Disclaimer' },
