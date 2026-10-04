@@ -38,6 +38,8 @@ Wappalyzer, yang dijalankan pada situs langsung, mendeteksi Astro, React, Framer
 
 Saya menjalankan Google PageSpeed Insights pada halaman utama pada 5 Oktober 2026 pukul 00.40. Laporan seluler maupun desktop sama-sama memberi nilai **100** untuk Performance, Accessibility, Best Practices, dan SEO, serta **2/2** untuk Agentic Browsing. Ini adalah hasil uji lab dari satu kali percobaan, dan laporan mencatat bahwa skor bersifat perkiraan dan dapat bervariasi. Google belum memiliki data lapangan dari pengguna nyata untuk situs ini.
 
+![Laporan seluler PageSpeed Insights untuk abilsudarman.my.id](/img/pagespeed-mobile.png)
+
 ![Laporan desktop PageSpeed Insights untuk abilsudarman.my.id](/img/peluncuran-situs-004.png)
 
 Anda dapat [menjalankan ulang laporannya sendiri](https://pagespeed.web.dev/analysis/https-abilsudarman-my-id/zlqqztsswy?form_factor=desktop&category=performance&category=accessibility&category=best-practices&category=seo&category=agentic-browsing&hl=id).
