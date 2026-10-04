@@ -5,13 +5,13 @@ import { getPosts } from '../../lib/content';
 const posts = await getPosts();
 ---
 <BaseLayout title="Artikel" description="Terjemahan Bahasa Indonesia dari artikel Rahmat Wibowo." path="/artikel">
-  <section class="container" style="padding-block:2rem">
+  <section class="container pad-block">
     <h1>Artikel</h1>
     {posts.length === 0
       ? <p class="muted">Belum ada artikel yang dipublikasikan.</p>
       : <div class="grid">{posts.map((p) => (
-          <a class="card" href={`/artikel/${p.id}`} style="text-decoration:none;color:inherit">
-            <ClassificationBadge value={p.data.classification} /><h2 style="font-size:1.1rem">{p.data.title}</h2>
+          <a class="card card--link card-link" href={`/artikel/${p.id}`}>
+            <ClassificationBadge value={p.data.classification} /><h2 class="card-title">{p.data.title}</h2>
             <p class="muted">Terjemahan dari: {p.data.originalTitle}</p>
           </a>))}</div>}
   </section>

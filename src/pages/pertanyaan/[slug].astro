@@ -37,7 +37,7 @@ const fmt = (d?: Date) => d?.toLocaleDateString('id-ID', { dateStyle: 'long' });
     <DeliveryAddress />
     <h2>Jawaban</h2>
     {q.status === 'dijawab'
-      ? <><blockquote style="white-space:pre-wrap">{q.reply}</blockquote><p class="muted">Dimuat apa adanya pada {fmt(q.replyDate)}.</p></>
+      ? <><blockquote class="pre-wrap">{q.reply}</blockquote><p class="muted">Dimuat apa adanya pada {fmt(q.replyDate)}.</p></>
       : <p class="muted">Belum ada jawaban{q.sentDate ? ` per ${fmt(q.sentDate)}` : ''}. Jawaban yang diterima akan dimuat apa adanya. Lihat <a href="/hak-jawab">hak jawab</a>.</p>}
   </article>
 </BaseLayout>

@@ -5,13 +5,13 @@ import { getQuestions } from '../../lib/content';
 const questions = await getQuestions();
 ---
 <BaseLayout title="Pertanyaan" description="Daftar pertanyaan terbuka kepada Abil Sudarman." path="/pertanyaan">
-  <section class="container" style="padding-block:2rem">
+  <section class="container pad-block">
     <h1>Pertanyaan</h1>
     {questions.length === 0
       ? <p class="muted">Belum ada pertanyaan yang dipublikasikan.</p>
       : <div class="grid">{questions.map((q) => (
-          <a class="card" href={`/pertanyaan/${q.id}`} style="text-decoration:none;color:inherit">
-            <StatusBadge status={q.data.status} /><h2 style="font-size:1.1rem">{q.data.title}</h2><p class="muted">{q.data.question}</p>
+          <a class="card card--link card-link" href={`/pertanyaan/${q.id}`}>
+            <StatusBadge status={q.data.status} /><h2 class="card-title">{q.data.title}</h2><p class="muted">{q.data.question}</p>
           </a>))}</div>}
   </section>
 </BaseLayout>

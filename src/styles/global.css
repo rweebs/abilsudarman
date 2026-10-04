@@ -48,3 +48,12 @@ h1, h2, h3 { line-height: 1.2; }
 }
 .footer { border-top: 1px solid var(--bg-glass-border); padding: 2rem 0; color: var(--text-secondary); font-size: 0.9rem; }
 .address { font-style: normal; border-left: 3px solid var(--accent-amber); padding-left: 1rem; }
+.card-link { text-decoration: none; color: inherit; display: block; }
+.card--link:hover { border-color: rgba(96, 165, 250, 0.4); }
+.lead { max-width: 60ch; }
+.notice p { margin: 0; }
+.pre-wrap { white-space: pre-wrap; }
+.brand { font-weight: 700; }
+.section-gap { margin-top: 2.5rem; }
+.pad-block { padding-block: 2rem; }
+.card-title { font-size: 1.1rem; }
