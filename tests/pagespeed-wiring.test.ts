@@ -5,10 +5,9 @@ import { NAV, PAGE_LASTMOD } from '../src/lib/site';
 const read = (p: string) => readFileSync(p, 'utf8');
 
 describe('pagespeed wiring', () => {
-  it('puts PageSpeed in the nav right after Buku', () => {
-    const hrefs = NAV.map((n) => n.href as string);
-    expect(hrefs.indexOf('/pagespeed')).toBe(hrefs.indexOf('/buku') + 1);
-    expect(NAV.find((n) => n.href === '/pagespeed')?.label).toBe('PageSpeed');
+  it('has Hasil PageSpeed in the menu', () => {
+    expect(NAV.filter((n) => n.href === '/pagespeed')).toHaveLength(1);
+    expect(NAV.find((n) => n.href === '/pagespeed')?.label).toBe('Hasil PageSpeed');
   });
   it('has a YYYY-MM-DD lastmod and a sitemap entry', () => {
     expect((PAGE_LASTMOD as Record<string, string>)['/pagespeed']).toMatch(/^\d{4}-\d{2}-\d{2}$/);

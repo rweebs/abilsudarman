@@ -1,3 +1,4 @@
+import { EVENTS, eventUrl } from '../lib/linimasa';
 import type { APIRoute } from 'astro';
 import { getBukti, getPosts } from '../lib/content';
 import { firstImage } from '../lib/header-image';
@@ -20,6 +21,8 @@ export const GET: APIRoute = async () => {
     { path: '/buku', lastmod: PAGE_LASTMOD['/buku'] },
     { path: '/pagespeed', lastmod: PAGE_LASTMOD['/pagespeed'] },
     { path: '/tentang', lastmod: PAGE_LASTMOD['/tentang'] },
+    { path: '/linimasa', lastmod: PAGE_LASTMOD['/linimasa'] },
+    ...EVENTS.map((e) => ({ path: eventUrl(e), lastmod: e.date })),
     { path: '/hak-jawab', lastmod: PAGE_LASTMOD['/hak-jawab'] },
     { path: '/disclaimer', lastmod: PAGE_LASTMOD['/disclaimer'] },
     ...posts.map((p) => {

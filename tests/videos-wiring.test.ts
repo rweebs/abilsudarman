@@ -5,9 +5,8 @@ import { NAV, PAGE_LASTMOD } from '../src/lib/site';
 const read = (p: string) => readFileSync(p, 'utf8');
 
 describe('videos wiring', () => {
-  it('puts Videos in the nav right after Bukti', () => {
-    const hrefs = NAV.map((n) => n.href as string);
-    expect(hrefs.indexOf('/videos')).toBe(hrefs.indexOf('/bukti') + 1);
+  it('has Videos in the menu', () => {
+    expect(NAV.filter((n) => n.href === '/videos')).toHaveLength(1);
     expect(NAV.find((n) => n.href === '/videos')?.label).toBe('Videos');
   });
   it('has a YYYY-MM-DD lastmod and a sitemap entry', () => {

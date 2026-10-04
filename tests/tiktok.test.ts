@@ -44,9 +44,8 @@ describe('tiktok content', () => {
 });
 
 describe('tiktok wiring', () => {
-  it('puts TikTok in the nav right after Videos', () => {
-    const hrefs = NAV.map((n) => n.href as string);
-    expect(hrefs.indexOf('/tiktok')).toBe(hrefs.indexOf('/videos') + 1);
+  it('has TikTok in the menu', () => {
+    expect(NAV.filter((n) => n.href === '/tiktok')).toHaveLength(1);
     expect(NAV.find((n) => n.href === '/tiktok')?.label).toBe('TikTok');
   });
   it('has a lastmod, a sitemap entry and a registered collection', () => {

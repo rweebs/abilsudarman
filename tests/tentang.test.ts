@@ -31,10 +31,9 @@ describe('tentang content', () => {
 });
 
 describe('tentang wiring', () => {
-  it('puts Tentang in the nav right after PageSpeed', () => {
-    const hrefs = NAV.map((n) => n.href as string);
-    expect(hrefs.indexOf('/tentang')).toBe(hrefs.indexOf('/pagespeed') + 1);
-    expect(NAV.find((n) => n.href === '/tentang')?.label).toBe('Tentang');
+  it('has Tentang penggagas in the menu', () => {
+    expect(NAV.filter((n) => n.href === '/tentang')).toHaveLength(1);
+    expect(NAV.find((n) => n.href === '/tentang')?.label).toBe('Tentang penggagas');
   });
   it('has a lastmod and a sitemap entry', () => {
     expect((PAGE_LASTMOD as Record<string, string>)['/tentang']).toMatch(/^\d{4}-\d{2}-\d{2}$/);

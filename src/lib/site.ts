@@ -20,17 +20,35 @@ export const CLASSIFICATION_LABEL = {
 } as const;
 
 // Date each static page's content last changed (used for sitemap lastmod; update when the text changes).
-export const PAGE_LASTMOD = { '/hak-jawab': '2026-10-04', '/disclaimer': '2026-10-04', '/bukti': '2026-10-04', '/videos': '2026-10-04', '/buku': '2026-10-04', '/tiktok': '2026-10-05', '/pagespeed': '2026-10-05', '/tentang': '2026-10-05' } as const;
+export const PAGE_LASTMOD = { '/hak-jawab': '2026-10-04', '/disclaimer': '2026-10-04', '/bukti': '2026-10-04', '/videos': '2026-10-04', '/buku': '2026-10-04', '/tiktok': '2026-10-05', '/pagespeed': '2026-10-05', '/tentang': '2026-10-05', '/linimasa': '2026-10-05' } as const;
 
-export const NAV = [
+export interface NavLink { href: string; label: string }
+export type NavEntry = NavLink | { label: string; items: readonly NavLink[] };
+
+// Grouped by what a visitor wants to do: read, check, follow the chronology, watch or download, learn about the project, reply.
+export const NAV_GROUPS: readonly NavEntry[] = [
   { href: '/artikel', label: 'Artikel' },
   { href: '/bukti', label: 'Bukti' },
-  { href: '/videos', label: 'Videos' },
-  { href: '/tiktok', label: 'TikTok' },
-  { href: '/buku', label: 'Buku' },
-  { href: '/pagespeed', label: 'PageSpeed' },
-  { href: '/tentang', label: 'Tentang' },
-  { href: '/#kontribusi', label: 'Kontribusi' },
+  { href: '/linimasa', label: 'Linimasa' },
+  { label: 'Media', items: [
+    { href: '/videos', label: 'Videos' },
+    { href: '/tiktok', label: 'TikTok' },
+    { href: '/buku', label: 'Buku' },
+  ] },
+  { label: 'Tentang', items: [
+    { href: '/tentang', label: 'Tentang penggagas' },
+    { href: '/#kontribusi', label: 'Kontribusi' },
+    { href: '/pagespeed', label: 'Hasil PageSpeed' },
+    { href: '/disclaimer', label: 'Disclaimer' },
+  ] },
   { href: '/hak-jawab', label: 'Hak jawab' },
-  { href: '/disclaimer', label: 'Disclaimer' },
-] as const;
+];
+
+/** Every link in the menu, flattened. */
+export const NAV: readonly NavLink[] = NAV_GROUPS.flatMap((e) => ('items' in e ? e.items : [e]));
+
+/** Exact match or a child path, so /artikel is active on /artikel/x but /buku is not active on /bukti. Anchors are never active. */
+export function isActive(path: string, href: string): boolean {
+  if (href.includes('#')) return false;
+  return path === href || path.startsWith(`${href}/`);
+}

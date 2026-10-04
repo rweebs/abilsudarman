@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import DisclaimerBanner from '../components/DisclaimerBanner.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import { NAV, SITE } from '../lib/site';
+import { NAV_GROUPS, SITE, isActive } from '../lib/site';
 import { serializeJsonLd } from '../lib/jsonld';
 import { buildTitle, truncateAtWord, breadcrumbLd } from '../lib/seo';
 
@@ -62,7 +62,16 @@ const lds = [
         <details class="nav__menu" open>
           <summary aria-label="Menu"><span class="nav__burger" aria-hidden="true"></span></summary>
           <ul class="nav__links">
-            {NAV.map((n) => <li><a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a></li>)}
+            {NAV_GROUPS.map((e) => 'items' in e ? (
+              <li class="nav__group-item">
+                <details class="nav__group">
+                  <summary class:list={{ 'is-active': e.items.some((i) => isActive(path, i.href)) }}>{e.label}</summary>
+                  <ul>{e.items.map((i) => <li><a href={i.href} aria-current={isActive(path, i.href) ? 'page' : undefined}>{i.label}</a></li>)}</ul>
+                </details>
+              </li>
+            ) : (
+              <li><a href={e.href} aria-current={isActive(path, e.href) ? 'page' : undefined}>{e.label}</a></li>
+            ))}
           </ul>
         </details>
       </div>

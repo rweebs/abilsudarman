@@ -3,9 +3,8 @@ import { readFileSync } from 'node:fs';
 import { NAV, PAGE_LASTMOD } from '../src/lib/site';
 
 describe('bukti wiring', () => {
-  it('puts Bukti in the nav right after Artikel', () => {
-    const hrefs = NAV.map((n) => n.href as string);
-    expect(hrefs.indexOf('/bukti')).toBe(hrefs.indexOf('/artikel') + 1);
+  it('has Bukti in the menu', () => {
+    expect(NAV.filter((n) => n.href === '/bukti')).toHaveLength(1);
     expect(NAV.find((n) => n.href === '/bukti')?.label).toBe('Bukti');
   });
   it('has a YYYY-MM-DD lastmod for the sitemap', () => {

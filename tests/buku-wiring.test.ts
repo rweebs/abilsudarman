@@ -5,9 +5,8 @@ import { NAV, PAGE_LASTMOD } from '../src/lib/site';
 const read = (p: string) => readFileSync(p, 'utf8');
 
 describe('buku wiring', () => {
-  it('puts Buku in the nav right after TikTok', () => {
-    const hrefs = NAV.map((n) => n.href as string);
-    expect(hrefs.indexOf('/buku')).toBe(hrefs.indexOf('/tiktok') + 1);
+  it('has Buku in the menu', () => {
+    expect(NAV.filter((n) => n.href === '/buku')).toHaveLength(1);
     expect(NAV.find((n) => n.href === '/buku')?.label).toBe('Buku');
   });
   it('has a YYYY-MM-DD lastmod and a sitemap entry', () => {
