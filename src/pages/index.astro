@@ -7,6 +7,8 @@ import SkyStage from '../components/SkyStage.tsx';
 import SpotifyPlayer from '../components/SpotifyPlayer.tsx';
 import TiltCard from '../components/motion/TiltCard.tsx';
 import { getPosts } from '../lib/content';
+import { ALLEGATIONS } from '../lib/allegations';
+import { SITE } from '../lib/site';
 import { firstImage } from '../lib/header-image';
 import { HOME_SECTIONS } from '../lib/sky/states';
 import poskota from '../assets/home/poskota-cyberattack.png';
@@ -50,6 +52,21 @@ const REPORT = 'https://www.pewartanusantara.com/berita/dibungkam-situs-ordal-id
       </div>
     </section>
 
+    <section id="dugaan" class="home-section container">
+      <div class="glass stack">
+        <h2>Klaim yang sedang diperiksa</h2>
+        <p class="muted lead">Ringkasan klaim tentang Abil Sudarman yang dipublikasikan atau dikutip, beserta status pemeriksaannya. Ini bukan tuduhan dan bukan putusan; belum ada konfirmasi bukan berarti klaimnya salah.</p>
+        <ul class="dugaan-list">
+          {ALLEGATIONS.map((a) => (
+            <li class="dugaan-item">
+              <h3>{a.claim}</h3>
+              <p class="muted">{a.status}</p>
+            </li>))}
+        </ul>
+        <p class="muted dugaan-note">Gambar dan keterangan lengkap, termasuk apa yang tidak dibuktikan, ada di <a href="/bukti">halaman Bukti</a>.</p>
+      </div>
+    </section>
+
     <section id="bukti" class="home-section container">
       <div class="glass stack">
         <h2>Bukti dan artikel</h2>
@@ -61,6 +78,23 @@ const REPORT = 'https://www.pewartanusantara.com/berita/dibungkam-situs-ordal-id
                 <ClassificationBadge value={p.data.classification} />
                 <h3 class="card-title">{p.data.title}</h3>
               </TiltCard>))}</div>}
+      </div>
+    </section>
+
+    <section id="kontribusi" class="home-section container">
+      <div class="glass stack">
+        <h2>Ikut mengumpulkan bukti</h2>
+        <p class="lead">Kode situs ini open source. Punya dokumen, tangkapan layar, atau sumber yang dapat diperiksa, baik yang memperkuat maupun yang membantah klaim di atas? Kirim lewat GitHub.</p>
+        <ul class="kontribusi-rules muted">
+          <li>Sertakan sumber yang dapat diperiksa dan tanggal pengambilan.</li>
+          <li>Tutup NIK, NIM, nomor telepon, dan data pribadi lain.</li>
+          <li>Tulis apa yang ditunjukkan dan apa yang tidak dibuktikan.</li>
+          <li>Tanpa rumor, tanpa data pribadi orang yang tidak terkait.</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn" href={`${SITE.repo}/blob/master/CONTRIBUTING.md`} rel="noopener" target="_blank">Cara berkontribusi</a>
+          <a class="btn" href={`${SITE.repo}/issues/new`} rel="noopener" target="_blank">Kirim bukti (Issue)</a>
+        </div>
       </div>
     </section>
 

@@ -2,6 +2,7 @@ export const SITE = {
   name: 'Kawal Abil Sudarman',
   description: 'Kawal terbuka atas klaim Abil Sudarman: terjemahan artikel Rahmat Wibowo beserta bukti dan hak jawab.',
   url: 'https://abilsudarman.my.id',
+  repo: 'https://github.com/rweebs/abilsudarman',
   author: 'Rahmat Wibowo',
   replyEmail: 'rahmat.wibowo21@gmail.com',
   correctionsEmail: 'rahmat.wibowo21@gmail.com',
@@ -24,6 +25,7 @@ export const PAGE_LASTMOD = { '/hak-jawab': '2026-10-04', '/disclaimer': '2026-1
 export const NAV = [
   { href: '/artikel', label: 'Artikel' },
   { href: '/bukti', label: 'Bukti' },
+  { href: '/#kontribusi', label: 'Kontribusi' },
   { href: '/hak-jawab', label: 'Hak jawab' },
   { href: '/disclaimer', label: 'Disclaimer' },
 ] as const;
