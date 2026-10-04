@@ -1,440 +1,122 @@
 ---
-title: "Indonesia's Blind Spot: The Foreign Degree Loophole That Lets Fraud Thrive in Plain Sight, Abil Sudarman and Marchel Shevchenko"
+title: "Titik Buta Indonesia: Celah Gelar Luar Negeri yang Membuat Penipuan Tumbuh di Depan Mata, Abil Sudarman dan Marchel Shevchenko"
 originalTitle: "Indonesia's Blind Spot: The Foreign Degree Loophole That Lets Fraud Thrive in Plain Sight, Abil Sudarman and Marchel Shevchenko"
 author: "Rahmat Wibowo"
 translationDate: 2026-10-04
 classification: pendapat
-subjects: []
+subjects: ["Abil Sudarman", "Marchel Shevchenko"]
 translationStatus: draft
 ---
 ![](/img/50246d468130f4788e4ba8bb.jpg)
 
-*When a degree comes from abroad, Indonesia's entire verification infrastructure goes silent. The Abil Sudarman and Marchel Shevchenko case is not the problem. It is the symptom.*
+*Ketika sebuah gelar berasal dari luar negeri, seluruh infrastruktur verifikasi Indonesia membisu. Kasus Abil Sudarman dan Marchel Shevchenko bukanlah masalahnya. Itu adalah gejalanya.*
 
+Ada celah dalam sistem pengakuan kredensial pendidikan Indonesia yang cukup lebar untuk dilewati sebuah karier. Celah itu sudah ada bertahun-tahun, sebagian besar diabaikan oleh kementerian yang tugasnya menutupnya.
 
+Mari kita bicarakan apa yang terjadi dengan Abil Sudarman dan Marchel Shevchenko.
 
+### Kasus Abil Sudarman: Cermin bagi Masalah Sistemik
 
+![Isi artikel](/img/69b7b4cf8258e3b33608f45a.png)
 
+![Isi artikel](/img/348da810e9976df2fad5dd58.png)
 
+Abil Sudarman, yang nama lengkapnya Abigail Aryaputra Sudarman, naik menjadi sosok publik yang menonjol pada 2026. Ia membangun dasbor pemantauan pengadaan berbasis AI bernama Nemesis Assai, diliput media-media besar termasuk [Tempo.co](http://Tempo.co), dan memosisikan dirinya di hadapan publik sebagai pakar AI, konselor karier, Direktur Eksekutif di KORIKA (Kolaborasi Riset dan Inovasi Industri AI Indonesia), manajer proyek AI UNESCO, dan Responsible AI Fellow di Stimson Center di Washington D.C.
 
-There is a crack in Indonesia's education credentialing system wide enough to drive a career through. And it has been there for years, largely ignored by the very ministry whose job it is to close it.
+Profil publiknya mencantumkan pendidikannya sebagai Ilmu Komputer di University of London.
 
+Sumber lain menyebut University of Liverpool.
 
+Ada perbedaan antara kedua institusi itu. Keduanya bukan universitas yang sama. University of London adalah sistem federasi yang mencakup beberapa kolese. University of Liverpool adalah institusi Russell Group yang berdiri sendiri dan terpisah, berperingkat 150 besar dunia menurut QS World University Rankings 2026. Keduanya tidak dapat dipertukarkan, dan menukarnya begitu saja dalam profil profesional setidaknya merupakan tanda bahaya yang patut diperiksa.
 
+Sekarang inilah pertanyaan yang menyingkap masalah sesungguhnya: dapatkah Anda memverifikasi apakah Abil Sudarman benar-benar lulus dari salah satu institusi tersebut melalui sistem pemerintah Indonesia mana pun?
 
+[Marchel Shevchenko](https://www.linkedin.com/in/marchelshevchenko/) juga mengklaim pernah menjadi mahasiswa riset di [Massachusetts Institute of Technology](https://www.linkedin.com/school/mit/)
 
+![Isi artikel](/img/fc2cf0407aac517a25b7031f.png)
 
+### PDDIKTI: Sangat Baik untuk Gelar Dalam Negeri, Membisu untuk Gelar Luar Negeri
 
-Let us talk about what happened with Abil Sudarman and Marchel Shevchenko.
+Pangkalan Data Pendidikan Tinggi Indonesia, atau PDDIKTI, sungguh mengesankan untuk tujuan perancangannya. Setiap pemberi kerja, institusi, atau anggota masyarakat dapat mengunjungi [pddikti.kemdikbud.go.id](http://pddikti.kemdikbud.go.id) dan mencari seorang mahasiswa berdasarkan nama, nomor mahasiswa, institusi, atau program studi. Sistem itu menampilkan status kelulusan, masa studi, dan informasi gelar untuk setiap lulusan pendidikan tinggi Indonesia yang terdaftar. Layanannya gratis, dapat diakses publik, dan relatif komprehensif untuk institusi dalam negeri.
 
+Namun begitu gelar yang diklaim berasal dari universitas luar negeri, PDDIKTI sepenuhnya gelap.
 
+![Isi artikel](/img/b64f8bb40f317e6c64d6dd9e.png)
 
+Tidak ada pangkalan data yang dapat dicari tentang pemegang gelar luar negeri di Indonesia. Tidak ada integrasi antara sistem PDDIKTI dalam negeri dan verifikasi kredensial luar negeri. Seorang pemberi kerja di Jakarta tidak dapat membuka satu pun portal pemerintah untuk memastikan bahwa seseorang yang mengaku bergelar dari University of Liverpool, University of Manchester, RMIT, atau Cornell benar-benar memegang kredensial tersebut.
 
+Inilah celah yang dilewati penipuan setiap hari.
 
+### Sistem Penyetaraan Gelar yang Ada tetapi Tidak Ditegakkan
 
+Agar adil terhadap Kementerian Pendidikan Tinggi, Sains, dan Teknologi (Kemendiktisaintek), proses penyetaraan gelar luar negeri memang ada. Namanya Penyetaraan Ijazah Luar Negeri, dikelola melalui portal piln.kemdiktisaintek.go.id. Proses ini mensyaratkan pengunggahan pindaian berwarna ijazah asli, transkrip akademik, halaman paspor selama masa studi, Letter of Acceptance dari universitas luar negeri, dokumen akreditasi dari institusi di luar negeri, dan kurikulum atau silabus program yang diikuti.
 
-### The Abil Sudarman Case: A Mirror for a Systemic Problem
+Setelah selesai, pemohon menerima Surat Keputusan Penyetaraan, keputusan resmi pemerintah yang menegaskan bahwa gelar luar negeri itu diakui dan setara dengan kualifikasi Indonesia pada jenjang yang sesuai.
 
+Kedengarannya menyeluruh. Di atas kertas, seharusnya masalah ini teratasi.
 
+Dalam praktiknya tidak, karena prosesnya **bersifat sukarela**.
 
+> *"Urgensi proses ini dikembalikan kepada masing-masing individu disesuaikan dengan kebutuhannya."* Bahasa resmi Kemendiktisaintek mengenai proses penyetaraan
 
+Dengan kata lain: urgensi proses ini diserahkan kepada masing-masing individu sesuai kebutuhannya sendiri.
 
+Begitulah adanya. Pemerintah Indonesia membangun sistem penyetaraan, menjadikannya opsional, lalu bertanya-tanya mengapa penipuan kredensial yang melibatkan gelar luar negeri sulit dideteksi.
 
+*Aura prestise adalah vektor penipuannya. Semakin terkenal institusi secara internasional, semakin tinggi kemungkinan klaimnya tidak dipertanyakan.*
 
-![Article content](/img/69b7b4cf8258e3b33608f45a.png)
+Bila Anda mengaku dari Harvard, MIT, Cambridge, atau Liverpool, perekrut Indonesia rata-rata kecil kemungkinannya memverifikasi, karena namanya sendiri memicu rasa segan. Pemeriksaan, tanpa pangkalan data terpadu, tidak konsisten, bergantung pada masing-masing departemen SDM, dan mudah dilewati ketika institusi yang disebut terdengar cukup prestisius untuk mengurungkan pemeriksaan.
 
+### Premi Prestise dan Mengapa Gelar Luar Negeri Menjadi Wahana Sempurna bagi Penipuan
 
+Indonesia memiliki budaya pemujaan kredensial yang terdokumentasi dengan baik. Sebagaimana dinyatakan dengan lugas oleh ketua Akademi Ilmu Pengetahuan Indonesia Sangkot Marzuki, fenomena gelar palsu ada karena permintaan pasar untuknya ada. Ketika kemajuan karier, kenaikan pangkat pegawai negeri, dan legitimasi profesional begitu erat terkait dengan kredensial pendidikan formal, pasar untuk kredensial palsu muncul dengan sendirinya.
 
+Gelar luar negeri memperbesar dinamika ini dengan cara tertentu. Gelar itu membawa premi prestise yang sering tidak dapat disaingi gelar dalam negeri dalam persepsi. Sebuah gelar dari universitas Inggris yang dikenal, bahkan yang disebut secara tidak konsisten di berbagai profil publik, memicu respons sosial berupa anggapan keabsahan yang sangat sulit dipatahkan tanpa bukti.
 
+Hal ini tidak khas Indonesia. Penipuan kredensial yang memanfaatkan nama universitas luar negeri terdokumentasi di seluruh dunia. Namun yang khas Indonesia adalah bahwa infrastruktur verifikasi untuk menangkapnya hampir sepenuhnya tidak ada.
 
+Bandingkan dengan gelar dalam negeri. Jika seseorang secara keliru mengaku bergelar dari Universitas Indonesia, Universitas Gadjah Mada, atau Institut Teknologi Bandung, setiap profesional SDM yang memiliki akses internet dapat memeriksa PDDIKTI dalam hitungan menit. Penipuannya langsung terbongkar. Sistemnya bekerja persis sebagaimana dimaksudkan untuk kredensial dalam negeri.
 
-![Article content](/img/348da810e9976df2fad5dd58.png)
+Tetapi bila mengaku bergelar dari University of Liverpool atau University of London, Anda telah memasuki ruang hampa verifikasi. Beban pembuktian bergeser sepenuhnya kepada pihak yang berusaha membantah klaim, yang merupakan standar pembuktian yang nyaris mustahil dalam konteks profesional.
 
+### Apa yang Harus Dilakukan Kementerian: Tuntutan Kebijakan yang Konkret
 
+Solusinya tidak rumit. Ia membutuhkan kemauan politik, koordinasi administratif, dan kesediaan menuntut akuntabilitas dari setiap warga Indonesia yang mengaku bergelar luar negeri dalam kapasitas profesional, publik, atau pemerintahan.
 
+Inilah yang harus diterapkan Kemendiktisaintek:
 
+1. **Jadikan Penyetaraan Ijazah Luar Negeri wajib bagi siapa pun yang memiliki pengaruh publik.** Ini harus berlaku bagi setiap warga negara Indonesia yang memegang peran yang diakui publik di lembaga pemerintah, badan usaha milik negara, organisasi nasional, atau badan yang didanai publik. Jika Anda memperkenalkan diri sebagai pakar bergelar luar negeri dalam kapasitas yang memengaruhi orang Indonesia lain, negara memiliki kepentingan yang sah untuk memverifikasi kredensial itu.
+2. **Buat perluasan PDDIKTI yang dapat dicari publik untuk pemegang gelar luar negeri yang terverifikasi.** Setiap Surat Keputusan Penyetaraan yang telah diterbitkan harus diindeks dalam PDDIKTI bersama lulusan dalam negeri. Seorang pemberi kerja harus dapat mencari nama dan universitas lalu menerima catatan penyetaraan yang terkonfirmasi atau tidak sama sekali. Ketiadaan catatan itu sendiri harus ditandai secara menonjol.
+3. **Tetapkan jendela pendaftaran wajib berbatas waktu bagi pemegang gelar luar negeri yang sudah ada di peran publik.** Siapa pun yang saat ini menduduki posisi berpengaruh publik dan mengaku bergelar luar negeri harus diwajibkan menyelesaikan proses penyetaraan dalam dua belas bulan sejak kebijakan diterapkan, atau melepaskan klaim kredensial dalam representasi publiknya. Ini bukan hukuman retroaktif. Ini persyaratan administratif sederhana: buktikan apa yang Anda klaim.
+4. **Berkoordinasi dengan perwakilan diplomatik Indonesia untuk membangun kanal verifikasi langsung dengan universitas luar negeri.** Kedutaan besar Indonesia di Inggris, Australia, Amerika Serikat, Belanda, Jerman, Jepang, Korea Selatan, dan Malaysia harus membangun protokol penghubung verifikasi resmi dengan badan mutu pendidikan tinggi di negara masing-masing. Sistem universitas Inggris memiliki infrastruktur verifikasi alumni yang luas. Australia memelihara register TEQSA. Sistem-sistem ini ada. Indonesia tinggal membangun jembatan menuju sistem tersebut.
+5. **Buat konsekuensi hukum atas penyampaian kredensial luar negeri yang keliru dalam konteks profesional dan publik.** Indonesia sudah memiliki UU No. 20 Tahun 2003 tentang Sistem Pendidikan Nasional dan ketentuan KUHP yang berlaku mengenai pemalsuan dokumen. Yang belum ada adalah penerapan yang spesifik dan terarah pada penyampaian kredensial luar negeri yang keliru, terutama dalam profil profesional digital seperti LinkedIn, tempat klaim dipublikasikan kepada puluhan ribu orang tanpa persyaratan verifikasi sama sekali.
 
+### Ironi Melingkar Abil Sudarman
 
+Ironi yang Tercatat
 
+Abil Sudarman memperoleh ketenaran nasional dengan membangun alat untuk mendeteksi penipuan dalam pengadaan pemerintah. Ia memosisikan diri sebagai orang yang membongkar sistem yang beroperasi tanpa akuntabilitas. Ia menamai dasbor pengadaannya Nemesis Assai, rujukan pada dewi Yunani pembalasan terhadap keangkuhan dan kejahatan.
 
+Namun, kredensial pendidikan yang ia klaim di hadapan publik tidak dapat diverifikasi melalui sistem pemerintah Indonesia mana pun. Institusi tempat ia belajar berubah-ubah antar sumber. Biografi publiknya menyebut Ilmu Komputer di University of London. Media lain menyebut University of Liverpool. Keduanya bukan sinonim. Keduanya universitas berbeda dengan lokasi berbeda, struktur akreditasi berbeda, dan sistem pencatatan berbeda.
 
+Jika seorang pejabat pemerintah mencantumkan informasi gelar yang tidak konsisten di berbagai sumber resmi, naluri akuntabilitas publik yang sama yang menghidupkan proyek Nemesis Assai akan menuntut verifikasi. Standar itu tidak boleh diterapkan secara selektif tergantung pada apakah pengklaim kredensial berada di pihak kepentingan publik atau tidak.
 
+Ini bukan dakwaan pribadi terhadap Abil Sudarman. Ia mungkin memegang kredensial yang sepenuhnya sah dari institusi Inggris yang sah. Namun intinya adalah bahwa tidak seorang pun dapat memverifikasinya melalui sistem publik Indonesia mana pun, dan itulah skandalnya. Bukan individunya. Melainkan ketiadaan mekanisme yang membuat pertanyaan itu dapat dijawab sama sekali.
 
-Abil Sudarman, whose full name is Abigail Aryaputra Sudarman, rose to significant public prominence in 2026. He built an AI-powered procurement monitoring dashboard called Nemesis Assai, received coverage from major outlets including [Tempo.co](http://Tempo.co), and positioned himself publicly as an AI expert, career counselor, Executive Director at KORIKA (Kolaborasi Riset dan Inovasi Industri AI Indonesia), a UNESCO AI project manager, and a Responsible AI Fellow at the Stimson Center in Washington D.C.
+**Penutup**
 
+### Apa yang Hilang dari Indonesia Tanpa Reformasi Ini
 
+Setiap tahun, pemberi kerja di Indonesia membuat keputusan perekrutan berdasarkan klaim gelar luar negeri yang tidak dapat mereka verifikasi. Setiap tahun, tokoh publik dengan kredensial luar negeri yang belum terverifikasi membentuk wacana, kebijakan, dan pasar pendidikan profesional. Setiap tahun, lulusan Indonesia yang sungguh-sungguh berjuang meraih gelar luar negeri yang sah dan menyelesaikan proses penyetaraan bersaing di pasar profesional yang sama dengan orang-orang yang mungkin memalsukan atau melebih-lebihkan kredensial tersebut.
 
+Para lulusan luar negeri yang sah itu, dalam arti tertentu, dirugikan karena kepatuhan mereka. Mereka telah menempuh dokumentasi paspor, terjemahan tersumpah, verifikasi LoA, dan proses portal PILN. Mereka melakukan semuanya dengan benar. Dan mereka tidak memperoleh manfaat verifikasi publik dari semua itu, karena tidak seorang pun dapat melihat catatannya.
 
+Surat Keputusan Penyetaraan tersimpan di dalam berkas. PDDIKTI tetap membisu. Dan penipuan terus berlangsung.
 
+***Indonesia pantas mendapatkan yang lebih baik dari ini. Para mahasiswa yang belajar di luar negeri secara sah pantas mendapatkan yang lebih baik dari ini. Para pemberi kerja yang perlu membuat keputusan perekrutan yang terinformasi pantas mendapatkan yang lebih baik dari ini. Dan masyarakat Indonesia, yang semakin sering diminta memercayai pakar, influencer, pendidik, dan pembuat kebijakan yang kualifikasinya tidak dapat dikonfirmasi secara independen, sungguh pantas mendapatkan yang lebih baik dari ini.***
 
+Celah gelar luar negeri bukanlah kelalaian administratif kecil. Ini adalah kegagalan integritas struktural dalam infrastruktur pengakuan kredensial Indonesia, dan Kemendiktisaintek memiliki baik kewenangan maupun kewajiban untuk menutupnya.
 
-His public profiles listed his education as Computer Science at the University of London.
+Pertanyaannya adalah apakah kemauan politik untuk melakukannya benar-benar ada.
 
-
-
-
-
-
-
-Other sources cited the University of Liverpool.
-
-
-
-
-
-
-
-There is a difference between those two institutions. They are not the same university. The University of London is a federated system encompassing multiple colleges. The University of Liverpool is a separate, standalone Russell Group institution ranked in the top 150 globally by QS World University Rankings 2026. These are not interchangeable, and casually swapping them in a professional profile is, at the very minimum, a red flag worth scrutinizing.
-
-
-
-
-
-
-
-Now here is the question that exposes the real problem: Can you verify whether Abil Sudarman actually graduated from either of those institutions through any Indonesian government system?
-
-
-
-
-
-
-
-Also [Marchel Shevchenko](/in/marchelshevchenko/) claim he was a research student at [Massachusetts Institute of Technology](https://www.linkedin.com/school/mit/)
-
-
-
-
-
-
-
-![Article content](/img/fc2cf0407aac517a25b7031f.png)
-
-
-
-
-
-
-### PDDIKTI: Excellent for Domestic Degrees, Silent on Foreign Ones
-
-
-
-
-
-
-
-Indonesia's Pangkalan Data Pendidikan Tinggi, or PDDIKTI, is genuinely impressive for what it was designed to do. Any employer, institution, or member of the public can visit [pddikti.kemdikbud.go.id](http://pddikti.kemdikbud.go.id) and search for a student by name, student number, institution, or study program. The system returns graduate status, study period, and degree information for every registered Indonesian higher education graduate. It is free, publicly accessible, and relatively comprehensive for domestic institutions.
-
-
-
-
-
-
-
-The moment the claimed degree comes from a foreign university, however, PDDIKTI goes completely dark.
-
-
-
-
-
-
-
-![Article content](/img/b64f8bb40f317e6c64d6dd9e.png)
-
-
-
-
-
-
-There is no searchable database of foreign degree holders in Indonesia. There is no integration between the domestic PDDIKTI system and foreign credential verification. An employer in Jakarta cannot go to any single government portal and confirm that someone who claims a degree from the University of Liverpool, the University of Manchester, RMIT, or Cornell actually holds that credential.
-
-
-
-
-
-
-
-This is the gap that fraud walks through every single day.
-
-
-
-
-
-
-
-### A Degree Equivalency System That Exists But Is Not Enforced
-
-
-
-
-
-
-
-To be fair to Kementerian Pendidikan Tinggi, Sains, dan Teknologi (Kemendiktisaintek), a foreign degree equivalency process does exist. It is called Penyetaraan Ijazah Luar Negeri, managed through the portal piln.kemdiktisaintek.go.id. The process requires submitting a colored scan of the original diploma, an academic transcript, passport pages from the study period, a Letter of Acceptance from the foreign university, accreditation documents from the institution abroad, and a curriculum or syllabus from the program attended.
-
-
-
-
-
-
-
-When completed, the applicant receives a Surat Keputusan Penyetaraan, an official government decree confirming that the foreign degree is recognized and equivalent to an Indonesian qualification at the appropriate level.
-
-
-
-
-
-
-
-This sounds thorough. On paper, it should solve the problem.
-
-
-
-
-
-
-
-In practice, it does not, because the process is **voluntary**.
-
-
-
-
-
-
-> *"Urgensi proses ini dikembalikan kepada masing-masing individu disesuaikan dengan kebutuhannya."Official language from Kemendiktisaintek on the equivalency process*
-
-
-
-
-
-
-
-Translation: the urgency of this process is left to each individual based on their own needs.
-
-
-
-
-
-
-
-There it is. Indonesia's government built an equivalency system, made it optional, and then wondered why credential fraud involving foreign degrees is difficult to detect.
-
-
-
-
-
-
-
-*The prestige halo is the fraud vector. The more internationally renowned the institution, the higher the probability that the claim goes unchallenged.*
-
-
-
-
-
-
-
-If you claim Harvard, MIT, Cambridge, or Liverpool, the average Indonesian recruiter is less likely to verify because the name itself triggers deference. The checking, in the absence of a unified database, is inconsistent, dependent on individual HR departments, and easily skipped when the institution named sounds prestigious enough to discourage scrutiny.
-
-
-
-
-
-
-
-### The Prestige Premium and Why Foreign Degrees Are Perfect Vehicles for Fraud
-
-
-
-
-
-
-
-Indonesia has a deeply documented culture of credential fetishism. As the Indonesian Academy of Sciences chairman Sangkot Marzuki stated bluntly, the fake degree phenomenon exists because market demand for it exists. When career advancement, civil service promotions, and professional legitimacy are tied so heavily to formal educational credentials, the market for fraudulent ones follows naturally.
-
-
-
-
-
-
-
-Foreign degrees amplify this dynamic in a specific way. They carry a prestige premium that domestic degrees often cannot match in perception. A degree from a recognizable British university, even one cited inconsistently across different public profiles, triggers a social response of assumed legitimacy that is very difficult to override without evidence.
-
-
-
-
-
-
-
-This is not unique to Indonesia. Credential fraud exploiting foreign university names is documented globally. But what is specific to Indonesia is that the verification infrastructure for catching it is almost entirely absent.
-
-
-
-
-
-
-
-Compare this to domestic degrees. If someone falsely claims a degree from Universitas Indonesia, Universitas Gadjah Mada, or Institut Teknologi Bandung, any HR professional with internet access can check PDDIKTI within minutes. The fraud is immediately exposed. The system works exactly as intended for domestic credentials.
-
-
-
-
-
-
-
-But claim a degree from the University of Liverpool or the University of London, and you have entered a verification vacuum. The burden of proof shifts entirely to the party trying to disprove the claim, which is a near-impossible evidentiary standard in a professional context.
-
-
-
-
-
-
-
-### What the Ministry Must Do: A Concrete Policy Demand
-
-
-
-
-
-
-
-The solution is not complicated. It requires political will, administrative coordination, and the willingness to demand accountability from every Indonesian who claims a foreign degree in a professional, public, or government capacity.
-
-
-
-
-
-
-
-Here is what Kemendiktisaintek must implement:
-
-
-
-
-
-
-
-1. **Make Penyetaraan Ijazah Luar Negeri mandatory for anyone exercising public influence.**This should apply to any Indonesian citizen who holds a publicly recognized role in a government institution, state-owned enterprise, national organization, or publicly funded body. If you represent yourself as an expert with a foreign degree in a capacity that influences other Indonesians, the state has a legitimate interest in verifying that credential.
-2. **Create a publicly searchable PDDIKTI extension for verified foreign degree holders.**Every Surat Keputusan Penyetaraan that has been issued should be indexed in PDDIKTI alongside domestic graduates. An employer should be able to search a name and university and receive either a confirmed equivalency record or nothing. That absence of a record should itself be prominently flagged.
-3. **Establish a time-bound mandatory registration window for existing foreign degree holders in public roles.**Anyone currently occupying a position of public influence who claims a foreign degree should be required to complete the equivalency process within twelve months of policy implementation, or relinquish the credential claim in their public representation. This is not retroactive punishment. It is a simple administrative requirement: prove what you claim.
-4. **Coordinate with Indonesian diplomatic missions to establish direct verification channels with foreign universities.**Indonesian embassies in the United Kingdom, Australia, the United States, the Netherlands, Germany, Japan, South Korea, and Malaysia should establish formal verification liaison protocols with their countries' higher education quality bodies. The British university system has extensive alumni verification infrastructure. Australia maintains the TEQSA register. These systems exist. Indonesia simply needs to build a bridge to them.
-5. **Create legal consequences for misrepresentation of foreign credentials in professional and public contexts.**Indonesia already has UU No. 20 Tahun 2003 on the National Education System and applicable Criminal Code provisions on document falsification. What is lacking is specific, targeted application to foreign credential misrepresentation, particularly in digital professional profiles like LinkedIn, where claims are published to audiences of tens of thousands with zero verification requirement.
-
-
-
-
-
-
-
-### The Circular Irony of Abil Sudarman
-
-
-
-
-
-
-
-Irony on Record
-
-
-
-
-
-
-
-Abil Sudarman gained national prominence by building tools to detect fraud in government procurement. He positioned himself as someone who exposes systems that operate without accountability. He named his procurement dashboard Nemesis Assai, a reference to the Greek goddess of retribution against arrogance and wrongdoing.
-
-
-
-
-
-
-
-And yet, the education credentials he publicly claimed could not be verified through any Indonesian government system. The institution he attended shifted between sources. His public biography cited Computer Science at the University of London. Other media cited the University of Liverpool. These are not synonyms. They are different universities with different locations, different accreditation structures, and different records systems.
-
-
-
-
-
-
-
-If a government official had listed inconsistent degree information across official sources, the same public accountability instinct that animated the Nemesis Assai project would demand verification. The standard cannot be applied selectively based on whether the credential claimant is on the side of public interest or not.
-
-
-
-
-
-
-
-This is not a personal indictment of Abil Sudarman. He may hold entirely legitimate credentials from a legitimate British institution. But the point is that no one can verify this through any Indonesian public system, and that is the scandal. Not the individual. The absence of a mechanism that would make the question answerable at all.
-
-
-
-
-
-
-
-**Closing**
-
-
-
-
-
-
-
-### What Indonesia Loses Without This Reform
-
-
-
-
-
-
-
-Every year, Indonesian employers make hiring decisions based on foreign degree claims they cannot verify. Every year, public figures with unverified foreign credentials shape discourse, policy, and professional education markets. Every year, Indonesian graduates who did the real work of earning legitimate foreign degrees and completing the equivalency process compete in the same professional market as people who may have fabricated or exaggerated those credentials.
-
-
-
-
-
-
-
-The legitimate overseas graduates are, in a sense, penalized for their compliance. They went through the passport documentation, the sworn translations, the LoA verification, the PILN portal process. They did everything right. And they receive no public verification benefit from having done so, because no one can see the record.
-
-
-
-
-
-
-
-The Surat Keputusan Penyetaraan sits in a file. PDDIKTI remains silent. And the fraud continues.
-
-
-
-
-
-
-
-***Indonesia deserves better than this. The students who studied abroad legitimately deserve better than this. The employers who need to make informed hiring decisions deserve better than this. And the Indonesian public, which is increasingly asked to trust experts, influencers, educators, and policymakers whose qualifications cannot be independently confirmed, absolutely deserves better than this.***
-
-
-
-
-
-
-
-The foreign degree loophole is not a minor administrative oversight. It is a structural integrity failure in Indonesia's credentialing infrastructure, and Kemendiktisaintek has both the authority and the obligation to close it.
-
-
-
-
-
-
-
-The question is whether the political will to do so actually exists.
-
-
-
-
-
-
-
-#HigherEducation #Indonesia #CredentialFraud #PDDIKTI #Kemendiktisaintek #ForeignDegree #PolicyReform #DigitalTransformation #Accountability #Education#HRIndonesia #LinkedInIndonesia #AkuntabilitasPublik #IjazahLuarNegeri #AIIndonesia
+#PendidikanTinggi #Indonesia #PenipuanKredensial #PDDIKTI #Kemendiktisaintek #GelarLuarNegeri #ReformasiKebijakan #TransformasiDigital #Akuntabilitas #Pendidikan #HRIndonesia #LinkedInIndonesia #AkuntabilitasPublik #IjazahLuarNegeri #AIIndonesia

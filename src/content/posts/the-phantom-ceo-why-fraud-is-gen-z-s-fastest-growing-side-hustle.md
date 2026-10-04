@@ -1,374 +1,111 @@
 ---
-title: "The Phantom CEO: Why Fraud Is Gen Z's Fastest-Growing Side Hustle By Rahmat Wibowo From Infraloka"
+title: "CEO Hantu: Mengapa Penipuan Menjadi Pekerjaan Sampingan Gen Z yang Tumbuh Tercepat, Oleh Rahmat Wibowo dari Infraloka"
 originalTitle: "The Phantom CEO: Why Fraud Is Gen Z's Fastest-Growing Side Hustle By Rahmat Wibowo From Infraloka"
 author: "Rahmat Wibowo"
 translationDate: 2026-10-04
 classification: pendapat
-subjects: []
+subjects: ["Marchel Shevchenko", "Abil Sudarman", "Rahmat Wibowo"]
 translationStatus: draft
 ---
 ![](/img/8b65498bf7f1ab04810e3d42.png)
 
-A research-backed breakdown of self-proclaimed founders, Dunning-Kruger deception, and the LinkedIn title inflation crisis reshaping how we trust the next generation of builders.
+Uraian berbasis riset tentang pendiri yang menobatkan diri sendiri, tipuan Dunning-Kruger, dan krisis inflasi gelar di LinkedIn yang mengubah cara kita memercayai generasi pembangun berikutnya.
 
+***"Belum pernah dalam sejarah sedemikian mudah mencetak sendiri sebuah gelar dan menyebut diri CEO dari ketiadaan."***
 
+Tentang krisis kredibilitas dalam kewirausahaan Gen Z
 
+Contoh penipuan: [Marchel Shevchenko](https://www.linkedin.com/in/marchelshevchenko/) dari [Data Sorcerers](https://www.linkedin.com/company/data-sorcerers/)
 
+![Isi artikel](/img/1565051b78405b4deadf7d2e.png)
 
+![Isi artikel](/img/891b2abdab7d75fb56d3a9f5.png)
 
+Juga: Abil Sudarman dari [ASSAI.](https://www.linkedin.com/company/assai-id/)
 
-***"Never before in history has it been so easy to print yourself a title and call yourself a CEO of nothing."***
+Sesuatu yang aneh sedang terjadi di jejaring profesional, grup Telegram, dan komunitas bisnis WhatsApp di seluruh dunia. Anak-anak muda, banyak yang masih kuliah, banyak yang tidak punya perusahaan terdaftar, tidak punya produk, tidak punya pelanggan yang membayar, dan tidak punya kedudukan hukum, berkeliaran dengan gelar **CEO** yang melekat pada nama mereka dengan percaya diri seolah baru saja membunyikan lonceng pembukaan NASDAQ.
 
+Ini bukan ambisi. Ambisi itu baik. Ini sesuatu yang lebih berbahaya: pola satu generasi yang membangun identitas melalui otoritas rekaan, kadang berubah menjadi penipuan aktif, dimungkinkan oleh hambatan terendah untuk klaim kredibilitas dalam sejarah manusia.
 
+Artikel ini bukan serangan terhadap Gen Z. Saya sendiri seorang pembangun. Saya ikut mendirikan perusahaan, saya telah mengajukan dokumen hukum, saya telah memboardingkan pengguna nyata, dan saya pernah duduk berhadapan dengan pengacara, regulator, dan investor. Saya tahu berapa harga yang harus dibayar untuk berhak menyebut diri pendiri. Yang saya tulis adalah fenomena tertentu yang tumbuh dan terukur yang perlu kita namai dengan jelas sebelum lebih banyak orang terbakar olehnya.
 
+![Isi artikel](/img/23c937b67f4a3a15c693b963.png)
 
+### Apa yang Kami Maksud dengan "CEO Hantu"
 
+CEO Hantu bukan orang yang membangun secara diam-diam. CEO Hantu bukan wirausahawan tunggal yang bereksperimen dengan proyek sampingan. CEO Hantu adalah orang yang secara aktif menampilkan diri sebagai pimpinan perusahaan yang beroperasi untuk memperoleh kepercayaan, mengeruk sumber daya, merekrut orang lain, atau menipu investor, klien, atau mitra. Kata kuncinya adalah **secara aktif**.
 
+Ada tiga profil berbeda di bawah payung ini, dan masing-masing perlu diperlakukan secara berbeda:
 
-On the credibility crisis in Gen Z entrepreneurship
+* **A. Si Penggelembung.** Mengaku CEO dari sebuah ide yang hanya ada sebagai halaman Notion. Tanpa niat jahat, tetapi menciptakan kebisingan sistemik dan menormalkan penipuan kredensial. Umum pada mahasiswa yang berusaha tampak layak direkrut.
+* **B. Si Perekrut-Penipu.** Membangun organisasi palsu, merekrut peserta magang atau relawan dengan janji ekuitas dan pengalaman, mengeruk tenaga dan kekayaan intelektual, lalu menghilang. Secara hukum ini pelanggaran ketenagakerjaan di sebagian besar yurisdiksi.
+* **C. Si Penipu Investasi.** Profil paling berbahaya. Menggunakan gelar CEO untuk menawarkan "putaran tahap awal", mengumpulkan uang dari investor ritel, keluarga, atau komunitas kripto, dan tidak menyerahkan apa pun. Ini penipuan pidana di setiap yurisdiksi yang memiliki hukum sekuritas.
 
+### Mesin Dunning-Kruger: Ketidakmampuan yang Didandani Keyakinan
 
+Pada 1999, psikolog David Dunning dan Justin Kruger menerbitkan makalah penting yang menunjukkan bahwa orang dengan pengetahuan terbatas di suatu bidang cenderung sangat melebih-lebihkan kompetensinya sendiri. Mereka menyebutnya "beban ganda": bukan hanya individu yang tidak terampil mencapai kesimpulan yang salah, mereka juga tidak memiliki kemampuan metakognitif untuk menyadarinya. Mereka tidak dapat melihat apa yang tidak mereka ketahui.
 
+Efek Dunning-Kruger belum pernah memiliki lahan pembiakan yang lebih subur daripada ekosistem media kewirausahaan saat ini. Ketika teater kesuksesan diganjar oleh algoritma, ketika keyakinan palsu menghasilkan lebih banyak keterlibatan daripada ketidakpastian yang jujur, dan ketika biaya menyebut diri CEO secara harfiah nol, kurvanya bergeser keras ke kiri. Puncak Mount Stupid memiliki spanduk LinkedIn dan pitch deck rancangan Canva.
 
+![Isi artikel](/img/f67369ecc5c5ab031e8a7428.png)
 
+Tragedinya bukan bahwa anak muda terlalu percaya diri. Itu normal secara perkembangan dan bahkan berguna. Tragedinya adalah ketika kepercayaan diri berlebihan itu menjadi mekanisme operasi identitas bisnis yang dirancang untuk mengeruk kepercayaan dan nilai dari orang lain sebelum kenyataan menyusul.
 
+*"Puncak pertama pada kurva Dunning-Kruger bukanlah cacat pada individu. Itu adalah cacat pada lingkungan yang menghadiahi puncak tersebut."*
 
-Example of the fraud : [Marchel Shevchenko](/in/marchelshevchenko/) from [Data Sorcerers](https://www.linkedin.com/company/data-sorcerers/)
+Diadaptasi dari riset tentang penilaian diri atas kompetensi
 
+### Bagaimana Penipuan Sebenarnya Bekerja: Buku Panduannya
 
+Buku panduan CEO hantu Gen Z sangat konsisten di berbagai wilayah dan industri. Entah muncul di komunitas teknologi Asia Tenggara, lingkaran investasi WhatsApp di Afrika Barat, atau program akselerator mahasiswa Eropa, polanya berulang.
 
+* **Ciptakan persona dulu, produk tidak pernah.** Profil LinkedIn dibangun dengan presisi. Gelar CEO, logo buatan Canva, situs web dari templat gratis, dan bio yang ditulis AI. Nama perusahaan sering terdengar mapan: "Nexus Ventures", "Apex Labs", "Catalyst Group". Tidak ada registrasi, tidak ada produk, tidak ada tim. Persona itulah produknya.
+* **Banjiri sinyal bukti sosial.** Kelompok keterlibatan menggelembungkan metrik unggahan. Testimoni palsu dari akun boneka. Tangkapan layar "kemitraan" yang sebenarnya hanya surel dingin yang tidak dibalas. Tujuannya adalah ilusi momentum, karena momentum menarik modal dan talenta.
+* **Rekrut kontributor tanpa bayaran dengan janji "ekuitas".** Desainer, pengembang, pemasar, dan penulis direkrut dengan janji "ekuitas tim pendiri", "pertimbangan pendiri bersama", dan "keuntungan tahap awal". Perjanjian ini jarang diformalkan, perusahaan tidak punya tabel kepemilikan saham, dan perekrut tidak punya wewenang memberikan ekuitas. Ini eksploitasi tenaga kerja.
+* **Luncurkan "putaran pra-seed".** Aksi puncaknya. Investor ritel, anggota keluarga, komunitas kripto, atau kelompok angel didekati dengan sebuah pitch. Pitch itu merujuk pada bukti sosial, tim palsu, dan dek Canva. Uang dikumpulkan. CEO menghilang, atau uang menguap menjadi "biaya operasional" tanpa dokumentasi.
+* **Ulangi dengan nama baru.** Ketika terbongkar, persona disegarkan. Nama perusahaan baru, logo baru, pola yang sama. Karena penipuan terjadi di kanal informal, upaya hukum lambat, mahal, dan biasanya tidak ditempuh oleh korban yang merasa malu.
 
+**Catatan Riset**
 
+Analisis 2024 oleh Global Anti-Scam Alliance menemukan bahwa penipuan "peluang investasi" yang bersumber dari profil media sosial para wirausahawan yang menyebut diri mereka demikian, berusia 18-30 tahun, meningkat 156% antara 2021 dan 2023. Rata-rata korban kehilangan $4.200 dan jauh lebih kecil kemungkinannya melapor karena rasa malu sosial. Sebagian besar pelaku tidak pernah dituntut.
 
+### Tanda Bahaya: Cara Mengenali CEO Hantu
 
-![Article content](/img/1565051b78405b4deadf7d2e.png)
+Skeptisisme adalah keterampilan, dan di era persona buatan AI, ia perlu dilatih dengan sengaja. Inilah sinyal yang harus memicu verifikasi sebelum Anda menandatangani, mentransfer, atau mengikatkan waktu Anda pada apa pun.
 
+![Isi artikel](/img/11f64c797045356f74593f24.png)
 
+### Mengapa Ini Penting di Luar Korban Perorangan
 
+Setiap CEO Hantu yang tidak ditantang menimbulkan kerusakan sistemik. Mereka mengikis kepercayaan yang dibutuhkan pendiri muda yang sejati untuk menghimpun modal dan merekrut talenta. Ketika seorang berusia 22 tahun yang nyata masuk ke pertemuan investor, bayang-bayang para penipu sebelumnya ikut masuk bersamanya. Skeptisisme yang semestinya ditujukan kepada para penipu justru tersebar ke semua pendiri muda seperti pajak.
 
+Mereka juga merugikan korban dengan cara yang melampaui uang. Orang yang ditipu dalam konteks informal berbasis kepercayaan sering menyalahkan diri sendiri. Mereka merasa naif. Mereka menjadi kurang percaya pada peluang yang sah. Biaya psikologis penipuan startup jauh melampaui transaksinya.
 
+Dan mereka merusak hubungan generasi berikutnya dengan akuntabilitas. Ketika Anda membangun identitas profesional di atas fiksi dan tidak menghadapi konsekuensi, Anda belajar bahwa kenyataan itu opsional. Itu bukan pelajaran pendiri. Itu pelajaran pemangsa.
 
-![Article content](/img/891b2abdab7d75fb56d3a9f5.png)
+### Seperti Apa Pendiri Gen Z yang Sah
 
+Izinkan saya tepat tentang apa yang tidak saya katakan. Saya tidak mengatakan bahwa pendiri muda tidak boleh menjadi CEO. Saya tidak mengatakan Anda butuh sepuluh tahun pengalaman sebelum boleh menyebut diri pendiri. Saya mulai membangun sebelum memiliki satu pun kredensial korporat, dan saya mengenal banyak pendiri sah yang berusia di bawah 25 tahun.
 
+Pendiri muda yang sah dapat menyebutkan nama hukum entitasnya dan kapan didaftarkan. Mereka dapat menyebut pelanggan yang membayar produk mereka. Mereka dapat menunjukkan rekening koran, kontrak, atau produk yang dapat disentuh. Mereka mengakui apa yang tidak mereka ketahui. Mereka tidak memperagakan kepastian yang tidak mereka miliki. Mereka tahu perbedaan antara traksi dan maket traksi dari Canva.
 
+**Gelar yang diraih terasa berbeda.** Ia hadir dengan bobot, dengan bukti, dengan jenis detail spesifik yang hanya ada ketika sesuatu benar-benar terjadi. Jika kisah seseorang tidak memiliki detail spesifik, itu karena tidak ada hal spesifik yang terjadi.
 
+[Rahmat Wibowo](https://www.linkedin.com/in/rahmatwi/) dari [InfraLoka](https://www.linkedin.com/company/infraloka/)
 
+![Isi artikel](/img/4efbfd32e0a2f7f3b21364dc.png)
 
-Also: Abil Sudarman from [ASSAI.](https://www.linkedin.com/company/assai-id/)
+### Apa yang Perlu Berubah
 
+Solusinya bukan mematahkan ambisi. Solusinya adalah memulihkan harga ketidakjujuran. Saat ini, menyebut diri CEO dari perusahaan yang tidak ada pada dasarnya gratis. Biaya sosialnya hampir nol. Biaya hukumnya nol kecuali pengaduan resmi diajukan, dan sebagian besar korban tidak pernah mengajukannya.
 
+* **→ Platform seperti LinkedIn perlu menautkan entitas yang terverifikasi.** Jika Anda mencantumkan perusahaan di bawah jabatan Anda, perusahaan itu harus dapat ditautkan ke catatan pendaftaran. Ini bukan pelanggaran privasi. Ini integritas kredensial dasar.
+* **→ Komunitas startup perlu menormalkan uji tuntas.** Meminta melihat registrasi perusahaan sebelum bergabung dengan tim pendiri seharusnya menjadi praktik standar, bukan pelanggaran sosial. Pendiri yang sah menyambut pertanyaan itu. Penipu mengelaknya.
+* **→ Korban perlu melapor, selalu.** Setiap penipuan yang tidak dilaporkan adalah tiket gratis bagi iterasi berikutnya. Laporkan ke lembaga perlindungan konsumen nasional, ke platform, dan bila berlaku, ke penegak hukum. Kebisuan adalah sekutu paling kuat bagi penipu.
+* **→ Media dan kreator konten perlu berhenti mengutamakan pertunjukan di atas substansi.** Judul "CEO usia 22 tahun" yang tidak memverifikasi apakah ada perusahaan yang sungguh-sungguh dipimpin turut terlibat dalam masalah ini. Rasa ingin tahu dan pencarian Google 30 detik bukan permintaan yang berlebihan.
 
+![Isi artikel](/img/91af1b65e21399554dbe832b.png)
 
+Jika Anda merasa artikel ini berguna, bagikan kepada seseorang yang sedang membangun sesuatu yang nyata. Jika Anda pernah menemui CEO Hantu, dokumentasikan, laporkan, dan peringatkan jaringan Anda. Akuntabilitas dimulai dari menyebut apa yang kita lihat.
 
-
-
-Something strange is happening on professional networks, in Telegram groups, and inside business WhatsApp communities across the world. Young people, many still in university, many with no registered company, no product, no paying customer, and no legal standing, are walking around with the title **CEO** attached to their names as confidently as if they had just rung the NASDAQ opening bell.
-
-
-
-
-
-
-
-This is not ambition. Ambition is good. This is something more dangerous: a generation-wide pattern of identity construction through fabricated authority, sometimes crossing into active fraud, enabled by the lowest barrier to credibility claims in human history.
-
-
-
-
-
-
-
-This article is not an attack on Gen Z. I am a builder myself. I have co-founded a company, I have filed legal documents, I have onboarded real users, and I have sat across from lawyers, regulators, and investors. I know what it costs to earn the right to call yourself a founder. What I am writing about is a specific, growing, measurable phenomenon that we need to name clearly before more people get burned by it.
-
-
-
-
-
-
-
-![Article content](/img/23c937b67f4a3a15c693b963.png)
-
-
-
-
-
-
-### What We Mean When We Say "Phantom CEO"
-
-
-
-
-
-
-
-A Phantom CEO is not someone building in stealth. A Phantom CEO is not a solopreneur experimenting with a side project. The Phantom CEO is someone who actively presents themselves as the head of an operating company to gain trust, extract resources, recruit others, or defraud investors, clients, or partners. The key word is **actively**.
-
-
-
-
-
-
-
-There are three distinct profiles that fall under this umbrella, and they need to be treated differently:
-
-
-
-
-
-
-
-* **AThe Inflator**Claims CEO of an idea that exists only as a Notion page. No harm intended, but creates systemic noise and normalizes credential fraud. Common in university students trying to look hireable.
-* **BThe Recruiter-Fraudster**Builds a fake organization, hires interns or volunteers with promises of equity and experience, extracts labor and intellectual property, then disappears. This is legally a labor violation in most jurisdictions.
-* **CThe Investment Scammer**The most dangerous profile. Uses the CEO title to pitch "early-stage rounds," collects money from retail investors, families, or crypto communities, and delivers nothing. This is criminal fraud in every jurisdiction that has securities law.
-
-
-
-
-
-
-
-### The Dunning-Kruger Machine: Incompetence Dressed as Confidence
-
-
-
-
-
-
-
-In 1999, psychologists David Dunning and Justin Kruger published a landmark paper demonstrating that people with limited knowledge in a domain tend to dramatically overestimate their own competence. They called it a "double burden": not only do unskilled individuals reach incorrect conclusions, but they also lack the metacognitive ability to recognize this. They cannot see what they do not know.
-
-
-
-
-
-
-
-The Dunning-Kruger effect has never had a more fertile breeding ground than the current entrepreneurship media ecosystem. When success theater is rewarded algorithmically, when fake confidence generates more engagement than honest uncertainty, and when the cost of calling yourself a CEO is literally zero, the curve shifts hard to the left. The peak of Mount Stupid has a LinkedIn banner and a Canva-designed pitch deck.
-
-
-
-
-
-
-
-![Article content](/img/f67369ecc5c5ab031e8a7428.png)
-
-
-
-
-
-
-The tragedy is not that young people are overconfident. That is developmentally normal and even useful. The tragedy is when that overconfidence becomes the operating mechanism of a business identity that is designed to extract trust and value from others before reality catches up.
-
-
-
-
-
-
-
-*"The first peak on the Dunning-Kruger curve is not a flaw in the individual. It is a flaw in the environment that rewards the peak."*
-
-
-
-
-
-
-
-Adapted from research on competence self-assessment
-
-
-
-
-
-
-
-### How the Fraud Actually Works: The Playbook
-
-
-
-
-
-
-
-The Gen Z phantom CEO playbook is remarkably consistent across geographies and industries. Whether it appears in Southeast Asia's tech communities, West Africa's WhatsApp investment circles, or European student accelerator programs, the pattern repeats.
-
-
-
-
-
-
-
-* **Create the persona first, the product never,** The LinkedIn profile is built with precision. CEO title, a logo made in Canva, a website from a free template, and a bio written by AI. The company name often sounds established: "Nexus Ventures," "Apex Labs," "Catalyst Group." There is no registration, no product, no team. The persona is the product.
-* **Flood social proof signals,** Engagement pods inflate post metrics. Fake testimonials from sockpuppet accounts. Screenshots of "partnerships" that are really just unreplied cold emails. The goal is the illusion of momentum, because momentum attracts capital and talent.
-* **Recruit unpaid contributors under "equity" promises,** Designers, developers, marketers, and writers are recruited with promises of "founding team equity," "co-founder consideration," and "early stage upside." These agreements are rarely formalized, the company has no cap table, and the recruiter has no authority to grant equity. This is labor exploitation.
-* **Launch the "pre-seed round",** The culminating act. Retail investors, family members, crypto communities, or angel groups are approached with a pitch. The pitch references the social proof, the fake team, the Canva deck. Money is collected. The CEO disappears, or the money evaporates into "operational costs" with no documentation.
-* **Repeat with a new name,** When exposed, the persona is refreshed. New company name, new logo, same pattern. Because the fraud happened in informal channels, legal recourse is slow, expensive, and usually not pursued by victims who feel embarrassed.
-
-
-
-
-
-
-
-**Research Note**
-
-
-
-
-
-
-
-A 2024 analysis by the Global Anti-Scam Alliance found that "investment opportunity" fraud originating from social media profiles of self-described entrepreneurs aged 18-30 increased by 156% between 2021 and 2023. The average victim lost $4,200 and was significantly less likely to report the fraud due to social embarrassment. Most perpetrators were never prosecuted.
-
-
-
-
-
-
-
-### Red Flags: How to Identify a Phantom CEO
-
-
-
-
-
-
-
-Skepticism is a skill, and in an era of AI-generated personas, it needs to be practiced deliberately. These are the signals that should trigger verification before you sign anything, transfer anything, or commit your time.
-
-
-
-
-
-
-
-![Article content](/img/11f64c797045356f74593f24.png)
-
-
-
-
-
-
-### Why This Matters Beyond the Individual Victim
-
-
-
-
-
-
-
-Every Phantom CEO who goes unchallenged does systemic damage. They corrode the trust that genuine young founders need in order to raise capital and recruit talent. When a real 22-year-old walks into an investor meeting, the shadow of the fraudsters who came before walks in with them. Skepticism that should be directed at the fraudulent is instead spread across all young founders like a tax.
-
-
-
-
-
-
-
-They also damage their victims in ways that go beyond money. People who are defrauded in informal, trust-based contexts often blame themselves. They feel naive. They become less likely to trust legitimate opportunities. The psychological cost of startup fraud extends far beyond the transaction.
-
-
-
-
-
-
-
-And they damage the next generation's relationship with accountability. When you build a professional identity on fiction and face no consequences, you learn that reality is optional. That is not a founder lesson. That is a predator lesson.
-
-
-
-
-
-
-
-### What Legitimate Gen Z Founders Look Like
-
-
-
-
-
-
-
-Let me be precise about what I am not saying. I am not saying young founders cannot be CEOs. I am not saying you need a decade of experience before you can call yourself a founder. I started building before I had a single corporate credential to my name, and I know many legitimate founders who are under 25.
-
-
-
-
-
-
-
-A legitimate young founder can tell you the legal name of their entity and when it was registered. They can name a customer who paid for their product. They can produce a bank statement, a contract, or a product you can touch. They admit what they do not know. They do not perform certainty they do not possess. They know the difference between traction and a Canva mock-up of traction.
-
-
-
-
-
-
-
-**Earned titles feel different.** They come with weight, with receipts, with the kind of specific detail that can only exist when something actually happened. If someone's story has no specific details, that is because nothing specific has happened.
-
-
-
-
-
-
-
-[Rahmat Wibowo](/in/rahmatwi/) from [InfraLoka](https://www.linkedin.com/company/infraloka/)
-
-
-
-
-
-
-
-![Article content](/img/4efbfd32e0a2f7f3b21364dc.png)
-
-
-
-
-
-
-### What Needs to Change
-
-
-
-
-
-
-
-The solution is not to discourage ambition. The solution is to restore the cost of dishonesty. Right now, calling yourself a CEO of a non-existent company is essentially free. The social cost is near zero. The legal cost is zero unless a formal complaint is filed, and most victims never file.
-
-
-
-
-
-
-
-* **→Platforms like LinkedIn need verified entity linking**If you list a company under your title, that company should be linkable to a registration record. This is not a privacy violation. It is basic credential integrity.
-* **→Startup communities need to normalize due diligence**Asking to see a company registration before joining a founding team should be standard practice, not a social offense. Legitimate founders welcome the question. Fraudsters deflect it.
-* **→Victims need to report, always**Every unreported fraud is a free pass for the next iteration. File with your national consumer protection agency, with the platform, and when applicable, with law enforcement. Silence is the fraudster's most powerful ally.
-* **→Media and content creators need to stop platforming performance over substance**"22-year-old CEO" headlines that do not verify whether there is an actual company to run are complicit in the problem. Curiosity and a 30-second Google search are not too much to ask.
-
-
-
-
-
-
-
-![Article content](/img/91af1b65e21399554dbe832b.png)
-
-
-
-
-
-
-f you found this article useful, share it with someone building something real. If you have encountered a Phantom CEO, document it, report it, and warn your network. Accountability starts with naming what we see.
-
-
-
-
-
-
-
-**#GenZ #CEO #StartupFraud #Entrepreneurship #DunningKruger #FounderMindset #LinkedInCulture #TitleInflation #GenZFounders #BusinessEthics #StartupEcosystem #InvestorAdvice #FraudAwareness #FakeFounders #PhantomCEO #RealBuilders #Accountability #CriticalThinking**
+**#GenZ #CEO #PenipuanStartup #Kewirausahaan #DunningKruger #PolaPikirPendiri #BudayaLinkedIn #InflasiGelar #PendiriGenZ #EtikaBisnis #EkosistemStartup #SaranInvestor #KewaspadaanPenipuan #PendiriPalsu #CEOHantu #PembangunSejati #Akuntabilitas #BerpikirKritis**

@@ -1,211 +1,211 @@
 ---
-title: "AEGIS CTO Devil's Advocate Audit: Project Nemesis (Operation Diponegoro) Of Abil Sudarman from ASSAI By Rahmat Wibowo From InfraLoka"
+title: "Audit Devil's Advocate CTO AEGIS: Project Nemesis (Operasi Diponegoro) milik Abil Sudarman dari ASSAI Oleh Rahmat Wibowo dari InfraLoka"
 originalTitle: "AEGIS CTO Devil's Advocate Audit: Project Nemesis (Operation Diponegoro) Of Abil Sudarman from ASSAI By Rahmat Wibowo From InfraLoka"
 author: "Rahmat Wibowo"
 translationDate: 2026-10-04
 classification: pendapat
-subjects: []
+subjects: ["Abil Sudarman", "Rahmat Wibowo"]
 translationStatus: draft
 ---
 ![](/img/case-studies-image-fixed.png)
 
-*An engineering-rigor audit of Nemesis — InfraLoka's citizen anomaly dashboard for public procurement data — run through the AEGIS Module [H] CTO / Engineering Depth Critic persona and benchmarked against the Google SRE Workbook, with a composite CTO score of 2.7/10 and a FAIL verdict.*
+*Audit ketelitian rekayasa atas Nemesis, dasbor anomali warga milik InfraLoka untuk data pengadaan publik, dijalankan melalui persona CTO / Engineering Depth Critic Modul [H] AEGIS dan dibandingkan dengan Google SRE Workbook, dengan skor komposit CTO 2,7/10 dan putusan GAGAL.*
 
-**AEGIS Module [H] — CTO Devil's Advocate Panel**
-**Engineering Rigor Audit of Project Nemesis (Operation Diponegoro)**
-**Benchmarked Against the Google SRE Workbook**
+**AEGIS Modul [H] — Panel Devil's Advocate CTO**
+**Audit Ketelitian Rekayasa Project Nemesis (Operasi Diponegoro)**
+**Dibandingkan dengan Google SRE Workbook**
 
-Prepared for: Rahmat Wibowo, CEO, InfraLoka
-Panel persona invoked: CTO — Engineering Depth Critic (AEGIS Module [H] v2.0)
-Comparator framework: *The Site Reliability Workbook* (Beyer, Murphy, Rensin, Kawahara, Thorne — Google, O'Reilly)
-Subject repository: `nemesis` (branch `rahmat-comment`), public dashboard at assai.id/nemesis
-Date: 2026-07-22
+Disiapkan untuk: Rahmat Wibowo, CEO, InfraLoka
+Persona panel yang dipanggil: CTO — Engineering Depth Critic (AEGIS Modul [H] v2.0)
+Kerangka pembanding: *The Site Reliability Workbook* (Beyer, Murphy, Rensin, Kawahara, Thorne — Google, O'Reilly)
+Repositori yang diaudit: `nemesis` (cabang `rahmat-comment`), dasbor publik di assai.id/nemesis
+Tanggal: 2026-07-22
 
 ---
 
-## 1. Methodology & Scope
+## 1. Metodologi & Cakupan
 
-This is a single-persona deployment of AEGIS Module [H] — the CTO / Engineering Depth Critic only, as explicitly requested. The CEO, CRO, and Elite Hacker personas are out of scope for this run; where a finding touches security, it is reported as an engineering-discipline gap, not a full penetration test.
+Ini adalah penerapan satu persona dari AEGIS Modul [H], yaitu hanya CTO / Engineering Depth Critic, sebagaimana diminta secara eksplisit. Persona CEO, CRO, dan Elite Hacker berada di luar cakupan putaran ini; bila sebuah temuan menyentuh keamanan, temuan itu dilaporkan sebagai kesenjangan disiplin rekayasa, bukan uji penetrasi penuh.
 
-**In scope:** `backend/` (Express 5 + better-sqlite3 API and ETL), `frontend/` (static HTML/CSS/JS), `README.md`, `backend/.env` / `.env.example`, repository root (CI/CD, IaC, containerization, VCS hygiene), and the user's own critique in `my comments.md`.
+**Dalam cakupan:** `backend/` (API Express 5 + better-sqlite3 dan ETL), `frontend/` (HTML/CSS/JS statis), `README.md`, `backend/.env` / `.env.example`, akar repositori (CI/CD, IaC, kontainerisasi, kebersihan VCS), dan kritik pengguna sendiri dalam `my comments.md`.
 
-**Out of scope:** The fine-tuned model referenced in the README ("🟡 In progress"), the live production infrastructure behind assai.id, and the government SIRUP source system itself.
+**Di luar cakupan:** Model yang di-*fine-tune* yang disebut dalam README ("🟡 Sedang berjalan"), infrastruktur produksi langsung di balik assai.id, dan sistem sumber SIRUP pemerintah itu sendiri.
 
-**Sources reviewed:** `backend/src/{app,server,config,db,db-transfer,dashboard-repository,seed}.js`, `backend/package.json`, `backend/.env` / `.env.example`, `frontend/index.html`, `frontend/assets/js/{app,map}.js`, `README.md`, `.gitignore`, `git log` / `git ls-files`, and `the-site-reliability-workbook-next18.pdf` (Google SRE Workbook, Parts I–IV: Engagements, Processes, Culture, Chapters 1–34).
+**Sumber yang ditinjau:** `backend/src/{app,server,config,db,db-transfer,dashboard-repository,seed}.js`, `backend/package.json`, `backend/.env` / `.env.example`, `frontend/index.html`, `frontend/assets/js/{app,map}.js`, `README.md`, `.gitignore`, `git log` / `git ls-files`, dan `the-site-reliability-workbook-next18.pdf` (Google SRE Workbook, Bagian I–IV: Engagements, Processes, Culture, Bab 1–34).
 
-Every finding below cites a specific file and line. Where the Workbook is invoked as a comparator, the relevant chapter is named — this report does not paraphrase Google's IP, it applies the publicly documented framework (SLOs, error budgets, the four golden signals, toil, canarying, configuration-as-code) as an evaluation rubric, the same way Module [H]'s CTO persona already does for NLP/AI platforms.
+Setiap temuan di bawah ini mengutip berkas dan baris tertentu. Ketika Workbook dipakai sebagai pembanding, bab yang relevan disebutkan namanya; laporan ini tidak memparafrasekan kekayaan intelektual Google, melainkan menerapkan kerangka yang didokumentasikan secara publik (SLO, anggaran galat, empat sinyal emas, toil, canarying, konfigurasi-sebagai-kode) sebagai rubrik evaluasi, sebagaimana persona CTO Modul [H] sudah melakukannya untuk platform NLP/AI.
 
-## 2. Executive Summary
+## 2. Ringkasan Eksekutif
 
-Nemesis is a laudable mission — turning public e-budgeting (SIRUP) data into a citizen-legible anomaly dashboard — wearing an engineering skeleton that would not survive a Google production-readiness review (PRR), and, on the evidence-integrity axis, would not survive the AEGIS Methodology Audit either. The user's own pre-existing critique (`my comments.md`) is directionally correct and, on inspection of the code, understated: there is no data pipeline in this repository at all — the entire ingestion story is "download a zip someone else produced and drop it in a folder" (`README.md:33–46`). The scraping/legality/hallucination concerns raised are real and this audit adds nine further engineering findings the original critique did not surface, most critically: the environment file is committed to version control (`backend/.env`, not covered by `.gitignore`), there are zero automated tests, there is no CI/CD, no container, no IaC, and there is no defined SLO, error budget, or golden-signal telemetry of any kind for a public-facing tool whose entire value proposition is being trustworthy enough to name people.
+Nemesis adalah misi yang patut dipuji, yaitu mengubah data e-budgeting publik (SIRUP) menjadi dasbor anomali yang dapat dibaca warga, namun mengenakan kerangka rekayasa yang tidak akan lolos dari tinjauan kesiapan produksi (PRR) Google dan, pada sumbu integritas bukti, tidak akan lolos dari Audit Metodologi AEGIS. Kritik awal pengguna sendiri (`my comments.md`) arahnya benar dan, setelah memeriksa kode, terlalu ringan: tidak ada alur data sama sekali dalam repositori ini; seluruh kisah ingesti hanyalah "unduh zip yang dibuat orang lain dan letakkan di sebuah folder" (`README.md:33–46`). Kekhawatiran tentang scraping, legalitas, dan halusinasi yang diajukan adalah nyata, dan audit ini menambahkan sembilan temuan rekayasa lain yang belum diungkap kritik awal, yang paling kritis: berkas lingkungan ter-commit ke kontrol versi (`backend/.env`, tidak tercakup `.gitignore`), tidak ada pengujian otomatis, tidak ada CI/CD, tidak ada kontainer, tidak ada IaC, dan tidak ada SLO, anggaran galat, atau telemetri sinyal emas apa pun untuk alat publik yang seluruh proposisi nilainya adalah cukup tepercaya untuk menyebut nama orang.
 
-**CTO Composite Score: 2.7 / 10 — FAIL** (see §7 for rubric; per Module [H] threshold rules, any critical data-integrity finding independently caps this axis, and there are three).
+**Skor Komposit CTO: 2,7 / 10 — GAGAL** (lihat §7 untuk rubrik; menurut aturan ambang Modul [H], satu temuan integritas data yang kritis saja sudah membatasi sumbu ini, dan ada tiga).
 
-This is not a verdict on the mission. It is a verdict on whether the current codebase is the vehicle that mission should ship on.
+Ini bukan putusan atas misinya. Ini putusan atas apakah basis kode saat ini adalah kendaraan yang semestinya dipakai misi itu untuk meluncur.
 
-## 3. Evidence Inventory
+## 3. Inventaris Bukti
 
-| # | Artifact | Type | Provenance |
+| # | Artefak | Jenis | Asal-usul |
 |---|---|---|---|
-| E1 | `backend/src/*.js` (7 files) | Source code | Read in full, this session |
-| E2 | `backend/package.json` | Dependency manifest | Read in full |
-| E3 | `backend/.env`, `backend/.env.example` | Runtime config | Read + diffed |
-| E4 | `frontend/index.html`, `assets/js/{app,map}.js` (1,685 LOC) | Client source | Read in full |
-| E5 | `README.md` | Project documentation | Read in full |
-| E6 | `.gitignore`, `git ls-files`, `git log -- backend/.env` | VCS hygiene | Shell inspection |
-| E7 | `my comments.md` | User's own prior critique | Read in full |
-| E8 | Site Reliability Workbook (PDF, 19,173 lines extracted) | Comparator framework | pdftotext extraction, targeted chapter search |
-| E9 | Find results for `*.yml`, `*.yaml`, `Dockerfile*`, `*.test.js` | Absence-of-evidence check | Repo-wide search, zero hits |
+| E1 | `backend/src/*.js` (7 berkas) | Kode sumber | Dibaca penuh, sesi ini |
+| E2 | `backend/package.json` | Manifes dependensi | Dibaca penuh |
+| E3 | `backend/.env`, `backend/.env.example` | Konfigurasi runtime | Dibaca + dibandingkan |
+| E4 | `frontend/index.html`, `assets/js/{app,map}.js` (1.685 LOC) | Kode sisi klien | Dibaca penuh |
+| E5 | `README.md` | Dokumentasi proyek | Dibaca penuh |
+| E6 | `.gitignore`, `git ls-files`, `git log -- backend/.env` | Kebersihan VCS | Pemeriksaan shell |
+| E7 | `my comments.md` | Kritik awal pengguna sendiri | Dibaca penuh |
+| E8 | Site Reliability Workbook (PDF, 19.173 baris terekstrak) | Kerangka pembanding | Ekstraksi pdftotext, pencarian bab terarah |
+| E9 | Hasil pencarian untuk `*.yml`, `*.yaml`, `Dockerfile*`, `*.test.js` | Pemeriksaan ketiadaan bukti | Pencarian seluruh repositori, nol hasil |
 
-## 4. CTO Analysis — Engineering Depth Critique
+## 4. Analisis CTO — Kritik Kedalaman Rekayasa
 
-### 4.1 Finding CTO-01 (CRITICAL): No data lineage — the audit's own evidence chain is unauditable
+### 4.1 Temuan CTO-01 (KRITIS): Tidak ada silsilah data — rantai bukti audit itu sendiri tidak dapat diaudit
 
-`README.md:23–27` links two pre-processed dataset artifacts described as "analyzed by GPT-5.4" and "analyzed by GPT-5.4-mini." `backend/src/seed.js` — the only ETL code in the repository — does not scrape, does not call an LLM, and does not validate provenance. It assumes a finished `.sqlite` / `.jsonl` file already contains fields like `isMencurigakan` ("suspicious"), `isPemborosan` ("wasteful"), `potensiPemborosan` ("potential waste"), and `reason` (`seed.js:807–819`), and mechanically loads them.
+`README.md:23–27` menautkan dua artefak dataset yang telah diproses sebelumnya yang dijelaskan sebagai "dianalisis oleh GPT-5.4" dan "dianalisis oleh GPT-5.4-mini". `backend/src/seed.js`, satu-satunya kode ETL dalam repositori, tidak melakukan scraping, tidak memanggil LLM, dan tidak memvalidasi asal-usul. Kode itu mengasumsikan berkas `.sqlite` / `.jsonl` yang sudah jadi telah memuat bidang seperti `isMencurigakan` ("mencurigakan"), `isPemborosan` ("boros"), `potensiPemborosan` ("potensi pemborosan"), dan `reason` (alasan) (`seed.js:807–819`), lalu memuatnya secara mekanis.
 
-This means the single most important claim the entire product makes — this specific government package is suspicious — is manufactured entirely upstream, by a process this repository does not contain, cannot reproduce, and cannot version. Module [H]'s CTO persona treats this exact pattern as the mandatory first finding for any pipeline that assigns machine-generated labels to real-world subjects (see Module [H] Institutional Learning L1, adapted here from annotation poisoning to allegation poisoning): there is no inter-rater/inter-model agreement score between GPT-5.4 and GPT-5.4-mini's two independently-analyzed dumps, no gold-task validation set, no confidence calibration, and no way to trace a rendered "absurd severity" badge on a real ministry's procurement package back to the specific prompt, model version, and raw source row that produced it.
+Artinya, klaim terpenting yang dibuat seluruh produk ini, bahwa paket pemerintah tertentu ini mencurigakan, diproduksi seluruhnya di hulu, oleh proses yang tidak ada dalam repositori ini, tidak dapat direproduksinya, dan tidak dapat diberi versi. Persona CTO Modul [H] memperlakukan pola persis ini sebagai temuan pertama yang wajib untuk setiap alur yang memberi label buatan mesin kepada subjek dunia nyata (lihat Pembelajaran Institusional L1 Modul [H], diadaptasi di sini dari peracunan anotasi menjadi peracunan tuduhan): tidak ada skor kesepakatan antar-penilai/antar-model antara dua dump hasil analisis independen GPT-5.4 dan GPT-5.4-mini, tidak ada set validasi tugas emas, tidak ada kalibrasi keyakinan, dan tidak ada cara melacak lencana "tingkat keparahan absurd" yang ditampilkan pada paket pengadaan kementerian nyata kembali ke prompt, versi model, dan baris sumber mentah yang menghasilkannya.
 
-**Google SRE Workbook comparator:** Chapter 14 ("Configuration Design, Best Practices, and Techniques") requires that any system state be reconstructible from a versioned, auditable source of truth. Here, the ground truth itself — the allegation data — has no version, no changelog, no diff between the "raw JSONL" and "GPT-5.4-mini SQL" artifacts, and no documented mapping from LLM output back to source record. An SRE reviewing this system for a PRR (Workbook Ch. 32/34 equivalent) would block launch on this alone, independent of infrastructure concerns.
+**Pembanding Google SRE Workbook:** Bab 14 ("Configuration Design, Best Practices, and Techniques") mensyaratkan bahwa setiap keadaan sistem dapat direkonstruksi dari sumber kebenaran yang diberi versi dan dapat diaudit. Di sini, kebenaran dasar itu sendiri, data tuduhan, tidak memiliki versi, tidak memiliki catatan perubahan, tidak ada diff antara artefak "JSONL mentah" dan "SQL GPT-5.4-mini", dan tidak ada pemetaan terdokumentasi dari keluaran LLM kembali ke catatan sumber. Seorang SRE yang meninjau sistem ini untuk PRR (setara Bab 32/34 Workbook) akan memblokir peluncuran hanya karena ini, terlepas dari persoalan infrastruktur.
 
-Corroborates and sharpens `my comments.md` §17–20 (LLM-modified evidence, no data pipeline, no dataset versioning, no visible date of the dataset).
+Menguatkan dan mempertajam `my comments.md` §17–20 (bukti yang dimodifikasi LLM, tidak ada alur data, tidak ada pemberian versi dataset, tidak ada tanggal dataset yang terlihat).
 
-### 4.2 Finding CTO-02 (CRITICAL): Secrets-hygiene failure — backend/.env is checked into Git
+### 4.2 Temuan CTO-02 (KRITIS): Kegagalan kebersihan rahasia — backend/.env ter-commit ke Git
 
 ```
 $ git ls-files | grep -i "\.env$"
 backend/.env
-$ git check-ignore -v backend/.env                    → exit 1 (NOT ignored)
+$ git check-ignore -v backend/.env                    → exit 1 (TIDAK diabaikan)
 $ diff backend/.env backend/.env.example
-< (no AUDIT_DATASET_YEAR line)
+< (tidak ada baris AUDIT_DATASET_YEAR)
 ```
 
-`.gitignore:1–8` only excludes `**/node_modules/`, `backend/data/`, `backend/dataset/`, and `.DS_Store`. It does not exclude `.env`. In this snapshot the committed `.env` happens to hold no live secret (`PORT`, `CORS_ORIGIN=*`, SQLite path) — but that is luck, not design. The `.env` / `.env.example` split exists specifically to keep one file out of version control; here both are tracked side by side (commit `c829b4b`), meaning the convention that would normally stop a future contributor from committing a real database credential, API token, or signing key is not enforced by tooling, only by discipline. This is precisely the class of failure the CRO/Hacker personas in Module [H] flag as "Vercel env vars as secrets store" — same root cause, different environment.
+`.gitignore:1–8` hanya mengecualikan `**/node_modules/`, `backend/data/`, `backend/dataset/`, dan `.DS_Store`. Berkas itu tidak mengecualikan `.env`. Dalam snapshot ini `.env` yang ter-commit kebetulan tidak memuat rahasia aktif (`PORT`, `CORS_ORIGIN=*`, jalur SQLite), tetapi itu keberuntungan, bukan rancangan. Pemisahan `.env` / `.env.example` ada justru untuk menjaga satu berkas tetap di luar kontrol versi; di sini keduanya dilacak berdampingan (commit `c829b4b`), artinya konvensi yang biasanya menghentikan kontributor di masa depan dari meng-commit kredensial basis data, token API, atau kunci penandatanganan yang nyata tidak ditegakkan oleh perangkat, hanya oleh disiplin. Inilah kelas kegagalan yang ditandai persona CRO/Hacker di Modul [H] sebagai "env var Vercel sebagai penyimpan rahasia", akar masalah yang sama, lingkungan berbeda.
 
-**Google SRE Workbook comparator:** Ch. 14's config-management best practices explicitly separate secret config from versioned config for this reason.
+**Pembanding Google SRE Workbook:** Praktik terbaik manajemen konfigurasi Bab 14 secara eksplisit memisahkan konfigurasi rahasia dari konfigurasi berversi karena alasan ini.
 
-**Remediation:** `git rm --cached backend/.env`, add `.env` (not just `.env.example`) to `.gitignore`, rotate any credential that ever touched that file even in a private branch.
+**Perbaikan:** `git rm --cached backend/.env`, tambahkan `.env` (bukan hanya `.env.example`) ke `.gitignore`, putar ulang kredensial apa pun yang pernah menyentuh berkas itu, bahkan di cabang privat.
 
-### 4.3 Finding CTO-03 (CRITICAL): Zero automated tests, zero CI/CD, zero IaC, zero containerization
+### 4.3 Temuan CTO-03 (KRITIS): Nol pengujian otomatis, nol CI/CD, nol IaC, nol kontainerisasi
 
-Repo-wide search for `*.test.js`, `*spec.js`, any `*.yml` / `*.yaml`, or `Dockerfile*` returns no results. `backend/package.json:6–14` defines `dev`, `start`, and three DB-transfer scripts — no test script exists at all, not even a stub. Deployment is implicitly manual: `README.md:48–66` instructs a human to `npm start` the backend and `python3 -m http.server` the frontend on a laptop-style setup, with no process supervisor, no health-checked rollout, and no rollback mechanism described anywhere.
+Pencarian di seluruh repositori untuk `*.test.js`, `*spec.js`, `*.yml` / `*.yaml` apa pun, atau `Dockerfile*` tidak menghasilkan apa pun. `backend/package.json:6–14` mendefinisikan `dev`, `start`, dan tiga skrip transfer DB, tidak ada skrip pengujian sama sekali, bahkan sekadar rintisan. Penyebaran secara implisit manual: `README.md:48–66` menginstruksikan manusia untuk menjalankan `npm start` pada backend dan `python3 -m http.server` pada frontend dengan konfigurasi ala laptop, tanpa pengawas proses, tanpa peluncuran yang diperiksa kesehatannya, dan tanpa mekanisme rollback yang dijelaskan di mana pun.
 
-This single finding subsumes three of `my comments.md`'s complaints (#22–23: "poor engineering… low quality SDLC," "no CI/CD," "not using containerized applications") — confirmed exactly as alleged, with no mitigating evidence found anywhere in the tree.
+Temuan tunggal ini mencakup tiga keluhan dalam `my comments.md` (#22–23: "rekayasa yang buruk… SDLC berkualitas rendah," "tidak ada CI/CD," "tidak memakai aplikasi terkontainerisasi"), terkonfirmasi persis sebagaimana dituduhkan, tanpa bukti yang meringankan ditemukan di mana pun dalam pohon berkas.
 
-**Google SRE Workbook comparator:** Ch. 16 ("Canarying Releases") and Ch. 32 (Production Readiness Reviews, referenced at PDF line 14984) both presuppose a release pipeline that can gate, canary, and roll back a change automatically. There is no artifact in this repository that a canary or PRR process could attach to — there is no build, no image, no pipeline stage to gate.
+**Pembanding Google SRE Workbook:** Bab 16 ("Canarying Releases") dan Bab 32 (Production Readiness Reviews, dirujuk pada baris PDF 14984) keduanya mengandaikan alur rilis yang dapat menggerbangi, men-canary, dan me-rollback perubahan secara otomatis. Tidak ada artefak dalam repositori ini yang dapat dilekati proses canary atau PRR; tidak ada build, tidak ada image, tidak ada tahap alur untuk digerbangi.
 
-### 4.4 Finding CTO-04 (HIGH): No observability — none of the four golden signals are instrumented
+### 4.4 Temuan CTO-04 (TINGGI): Tidak ada observabilitas — tidak satu pun dari empat sinyal emas diinstrumentasi
 
-`backend/src/app.js:1–86` is the entire HTTP surface: four route handlers and one catch-all error middleware that does `console.error(err)` (line 76) and returns a generic 500. There is no metrics library (no Prometheus client, no OpenTelemetry, no StatsD), no request logging middleware (no morgan/pino/winston), no latency histogram, no error-rate counter, and no saturation signal (DB connection state, event-loop lag, memory). `/api/health` (`app.js:26–28`) unconditionally returns `{status:"ok"}` — it checks nothing, including whether the SQLite handle it's serving from is even open.
+`backend/src/app.js:1–86` adalah seluruh permukaan HTTP: empat penangan rute dan satu middleware galat penampung semua yang melakukan `console.error(err)` (baris 76) dan mengembalikan 500 generik. Tidak ada pustaka metrik (tanpa klien Prometheus, tanpa OpenTelemetry, tanpa StatsD), tidak ada middleware pencatatan permintaan (tanpa morgan/pino/winston), tidak ada histogram latensi, tidak ada penghitung tingkat galat, dan tidak ada sinyal saturasi (status koneksi DB, lag event-loop, memori). `/api/health` (`app.js:26–28`) tanpa syarat mengembalikan `{status:"ok"}`; ia tidak memeriksa apa pun, termasuk apakah handle SQLite yang dilayaninya bahkan terbuka.
 
-**Google SRE Workbook comparator:** Chapter 5 ("Alerting on SLOs," PDF line 3825) is built entirely on the premise that SLI metrics — latency, traffic, errors, saturation, the four golden signals from the original SRE book — are already being emitted and are "the first metrics you check when SLO-based alerts trigger." Nemesis has no SLO, therefore no error budget (Ch. 3 concept, PDF line 7068), therefore no alerting is possible even in principle, because there is nothing to alert on. For a tool whose core promise is public accountability and continuous availability to journalists, this is the same blind spot the CTO persona flags as an automatic HIGH in Module [H]'s NLP checklist ("no observability stack documented… cannot operate financial APIs blind") — here, substitute "cannot operate a public-integrity dashboard blind."
+**Pembanding Google SRE Workbook:** Bab 5 ("Alerting on SLOs," baris PDF 3825) dibangun seluruhnya di atas premis bahwa metrik SLI, yaitu latensi, lalu lintas, galat, saturasi, empat sinyal emas dari buku SRE asli, sudah dipancarkan dan merupakan "metrik pertama yang Anda periksa ketika peringatan berbasis SLO terpicu." Nemesis tidak memiliki SLO, maka tidak ada anggaran galat (konsep Bab 3, baris PDF 7068), maka tidak ada peringatan yang mungkin bahkan secara prinsip, karena tidak ada yang dapat diberi peringatan. Untuk alat yang janji intinya adalah akuntabilitas publik dan ketersediaan berkelanjutan bagi para jurnalis, ini adalah titik buta yang sama yang oleh persona CTO ditandai sebagai TINGGI otomatis dalam daftar periksa NLP Modul [H] ("tidak ada tumpukan observabilitas yang terdokumentasi… tidak dapat mengoperasikan API keuangan dalam keadaan buta"), di sini, gantilah dengan "tidak dapat mengoperasikan dasbor integritas publik dalam keadaan buta."
 
-### 4.5 Finding CTO-05 (HIGH): No rate limiting, wildcard CORS, no security headers
+### 4.5 Temuan CTO-05 (TINGGI): Tidak ada pembatasan laju, CORS wildcard, tidak ada header keamanan
 
-`app.js:6–14` resolves `CORS_ORIGIN` to `"*"` whenever the env var is `"*"` (the shipped default in both `.env` and `.env.example`) — any origin may call the API. There is no rate-limiting middleware (no `express-rate-limit`, no gateway-level throttle), no helmet or equivalent security-header middleware, and Express's own `trust proxy` / body-size limits are left at default. Given the stated ambition ("ingest millions of rows… surface anomalies… to citizens, journalists, and policymakers"), this API has no defense against being scraped-of-the-scrape, no defense against a resource-exhaustion request pattern against `LIKE '%…%'` full-text search clauses (`dashboard-repository.js:377–383`, `412–418`), and no contractual signal (via headers or ToS) about acceptable use.
+`app.js:6–14` menetapkan `CORS_ORIGIN` menjadi `"*"` setiap kali env var bernilai `"*"` (bawaan yang dikirim di `.env` maupun `.env.example`), sehingga asal mana pun dapat memanggil API. Tidak ada middleware pembatasan laju (tanpa `express-rate-limit`, tanpa pembatasan di tingkat gateway), tidak ada helmet atau middleware header keamanan yang setara, dan pengaturan `trust proxy` / batas ukuran badan Express dibiarkan pada bawaan. Mengingat ambisi yang dinyatakan ("menelan jutaan baris… memunculkan anomali… bagi warga, jurnalis, dan pembuat kebijakan"), API ini tidak memiliki pertahanan terhadap di-scrape-ulang, tidak memiliki pertahanan terhadap pola permintaan penghabisan sumber daya terhadap klausa pencarian teks penuh `LIKE '%…%'` (`dashboard-repository.js:377–383`, `412–418`), dan tidak memiliki sinyal kontraktual (melalui header atau ToS) tentang penggunaan yang dapat diterima.
 
-**Google SRE Workbook comparator:** Ch. 5 and Part II's operational-load discussion (PDF ~6432) both treat unmitigated traffic as a first-class reliability risk, not merely a security one — an unthrottled public API is a self-inflicted DoS surface, which is directly relevant to `my comments.md`'s own point #15 about scraping load risk, just pointed inward at Nemesis's own API instead of outward at SIRUP.
+**Pembanding Google SRE Workbook:** Bab 5 dan pembahasan beban operasional Bagian II (PDF ~6432) sama-sama memperlakukan lalu lintas yang tidak termitigasi sebagai risiko keandalan kelas satu, bukan semata keamanan; API publik tanpa pembatasan adalah permukaan DoS yang dibuat sendiri, yang langsung relevan dengan poin #15 `my comments.md` tentang risiko beban scraping, hanya saja diarahkan ke dalam pada API Nemesis sendiri alih-alih ke luar pada SIRUP.
 
-### 4.6 Finding CTO-06 (HIGH): SQLite as the production datastore for a "millions of rows" public dataset, with no defined DR RTO/RPO
+### 4.6 Temuan CTO-06 (TINGGI): SQLite sebagai penyimpan data produksi untuk dataset publik "jutaan baris," tanpa RTO/RPO pemulihan bencana yang ditetapkan
 
-`backend/src/db.js:66–75` opens a single better-sqlite3 file in WAL mode — a reasonable choice for a read-heavy embedded workload, and credit is due: `db.js` and `dashboard-repository.js` show genuine engineering care (see §4.9). But the operational story around that file is absent: `scripts/export-db.js` / `import-db.js` (`package.json:9–13`) are manual, human-triggered commands, not a scheduled backup job; there is no replica, no off-host copy cadence, and no documented Recovery Time Objective or Recovery Point Objective anywhere in the repository. `server.js:33–66` will simply refuse to boot and print remediation hints to the console if the schema is missing or stale — which is a genuinely good failure mode for development, but there is no evidence this is backed by a tested, automated DR runbook for production.
+`backend/src/db.js:66–75` membuka satu berkas better-sqlite3 dalam mode WAL, pilihan yang masuk akal untuk beban kerja tertanam yang didominasi pembacaan, dan pujian layak diberikan: `db.js` dan `dashboard-repository.js` menunjukkan kepedulian rekayasa yang tulus (lihat §4.9). Namun cerita operasional di sekitar berkas itu tidak ada: `scripts/export-db.js` / `import-db.js` (`package.json:9–13`) adalah perintah manual yang dipicu manusia, bukan tugas pencadangan terjadwal; tidak ada replika, tidak ada kadens salinan di luar host, dan tidak ada Recovery Time Objective atau Recovery Point Objective yang terdokumentasi di mana pun dalam repositori. `server.js:33–66` akan sekadar menolak boot dan mencetak petunjuk perbaikan ke konsol jika skema hilang atau usang, yang merupakan mode kegagalan yang benar-benar baik untuk pengembangan, tetapi tidak ada bukti bahwa ini ditopang oleh runbook DR otomatis yang teruji untuk produksi.
 
-**Google SRE Workbook comparator:** The CTO persona's own mandatory check in Module [H] ("What is your disaster recovery RTO and RPO and have you ever tested them?") maps directly onto the Workbook's operational-resilience material; "never tested" and "not defined" are functionally the same failure.
+**Pembanding Google SRE Workbook:** Pemeriksaan wajib persona CTO sendiri dalam Modul [H] ("Berapa RTO dan RPO pemulihan bencana Anda dan apakah pernah diuji?") dipetakan langsung ke materi ketahanan operasional Workbook; "tidak pernah diuji" dan "tidak ditetapkan" secara fungsional merupakan kegagalan yang sama.
 
-### 4.7 Finding CTO-07 (MEDIUM): No structured logging or request correlation
+### 4.7 Temuan CTO-07 (SEDANG): Tidak ada pencatatan terstruktur atau korelasi permintaan
 
-The only logging in the entire backend is `console.log` / `console.error` (`server.js:46,53,63,69,73,80–81,85`; `app.js:76`). There are no request IDs, no structured (JSON) log format, and no correlation between a client-visible error and a server-side log line. If a citizen reporting a bug says "the map broke for province X," there is no way to search logs for that request — there is no request identity to search for.
+Satu-satunya pencatatan di seluruh backend adalah `console.log` / `console.error` (`server.js:46,53,63,69,73,80–81,85`; `app.js:76`). Tidak ada ID permintaan, tidak ada format log terstruktur (JSON), dan tidak ada korelasi antara galat yang terlihat klien dan baris log di sisi server. Jika seorang warga yang melaporkan bug berkata "peta rusak untuk provinsi X," tidak ada cara mencari log untuk permintaan itu; tidak ada identitas permintaan untuk dicari.
 
-### 4.8 Finding CTO-08 (MEDIUM): Frontend has no build system, no type safety, no test harness
+### 4.8 Temuan CTO-08 (SEDANG): Frontend tanpa sistem build, tanpa keamanan tipe, tanpa harness pengujian
 
-`frontend/index.html` loads `assets/js/app.js` (1,410 LOC) and `assets/js/map.js` (237 LOC) directly as `<script>` tags with no bundler, no TypeScript, no linter config found in the tree, and no component framework — confirming `my comments.md` point #5 exactly as stated. This is a legitimate, defensible choice for a small static site ("no build step" is even advertised as a feature in `README.md:72`), but at 1,410 lines in a single global-closure file (`app.js:1`) mutating one shared state object (`app.js:9–26`) with no test coverage, it is already past the size where plain JS without types starts hiding bugs a compiler or type-checker would catch for free. This is a defensible-tradeoff finding, not a critical one — flagged for completeness, not alarm.
+`frontend/index.html` memuat `assets/js/app.js` (1.410 LOC) dan `assets/js/map.js` (237 LOC) langsung sebagai tag `<script>` tanpa bundler, tanpa TypeScript, tanpa konfigurasi linter yang ditemukan di pohon berkas, dan tanpa kerangka komponen, mengonfirmasi poin #5 `my comments.md` persis sebagaimana dinyatakan. Ini pilihan yang sah dan dapat dipertahankan untuk situs statis kecil ("tanpa langkah build" bahkan diiklankan sebagai fitur di `README.md:72`), tetapi pada 1.410 baris dalam satu berkas closure global (`app.js:1`) yang memutasi satu objek keadaan bersama (`app.js:9–26`) tanpa cakupan pengujian, ukurannya sudah melewati titik ketika JS biasa tanpa tipe mulai menyembunyikan bug yang akan ditangkap kompiler atau pemeriksa tipe secara gratis. Ini temuan pertukaran yang dapat dipertahankan, bukan yang kritis, ditandai demi kelengkapan, bukan untuk alarm.
 
-### 4.9 What is actually done well (for calibration — AEGIS never scores on vibes alone)
+### 4.9 Apa yang sebenarnya dikerjakan dengan baik (untuk kalibrasi — AEGIS tidak pernah menilai hanya berdasarkan kesan)
 
-To keep this audit honest and evidence-based rather than reflexively negative:
+Agar audit ini jujur dan berbasis bukti, bukan negatif secara refleks:
 
-- **SQL injection surface is clean.** Every dynamic query in `dashboard-repository.js` (e.g., `buildPackagesWhereClause`, `buildOwnerPackagesWhereClause`) parameterizes user input correctly; the only string-interpolated identifiers (`scopeTable`, `scopeColumn`) are hardcoded call-site constants, never request-derived. `LIKE` search values are escaped (`escapeLikePattern`, line 65–67).
-- **Aggregates are precomputed, not queried live.** `region_metrics` / `province_metrics` / `owner_metrics` are materialized once at seed time (`seed.js:1461–1619`) rather than recomputed per request — the right call for a read-heavy dashboard, and it shows real engineering judgment about where to spend index/compute budget.
-- **Graceful shutdown exists.** `server.js:84–97` handles `SIGINT` / `SIGTERM` with a bounded force-exit timer — a small but genuine piece of operational maturity most projects at this stage skip entirely.
-- **Schema-compatibility self-healing** (`ensureRegionMetricsCompatibility`, `ensureOwnerMetricsCompatibility`, `seed.js:1630–1670`) shows an author thinking about forward migration pain, even without a real migration framework.
+- **Permukaan injeksi SQL bersih.** Setiap kueri dinamis di `dashboard-repository.js` (mis. `buildPackagesWhereClause`, `buildOwnerPackagesWhereClause`) memparameterkan masukan pengguna dengan benar; satu-satunya pengenal yang diinterpolasi sebagai string (`scopeTable`, `scopeColumn`) adalah konstanta tetap di lokasi pemanggilan, tidak pernah berasal dari permintaan. Nilai pencarian `LIKE` di-escape (`escapeLikePattern`, baris 65–67).
+- **Agregat dihitung di muka, bukan dikueri langsung.** `region_metrics` / `province_metrics` / `owner_metrics` dimaterialisasi sekali pada waktu seed (`seed.js:1461–1619`) alih-alih dihitung ulang per permintaan, keputusan yang tepat untuk dasbor yang didominasi pembacaan, dan menunjukkan penilaian rekayasa yang nyata tentang di mana menghabiskan anggaran indeks/komputasi.
+- **Graceful shutdown ada.** `server.js:84–97` menangani `SIGINT` / `SIGTERM` dengan pewaktu paksa-keluar yang terbatas, sepotong kematangan operasional kecil tetapi tulus yang dilewati sepenuhnya oleh sebagian besar proyek pada tahap ini.
+- **Penyembuhan diri kompatibilitas skema** (`ensureRegionMetricsCompatibility`, `ensureOwnerMetricsCompatibility`, `seed.js:1630–1670`) menunjukkan penulis yang memikirkan nyeri migrasi ke depan, meski tanpa kerangka migrasi yang sesungguhnya.
 
-None of this offsets CTO-01/02/03 — an evidence-integrity failure, a secrets-hygiene failure, and a total absence of CI/tests/IaC are gating findings regardless of code quality elsewhere — but a CTO who ignored the above would not be doing the AEGIS methodology honestly.
+Tidak satu pun dari ini mengimbangi CTO-01/02/03: kegagalan integritas bukti, kegagalan kebersihan rahasia, dan ketiadaan total CI/pengujian/IaC adalah temuan penghambat terlepas dari kualitas kode di tempat lain, tetapi seorang CTO yang mengabaikan hal di atas tidak akan menjalankan metodologi AEGIS dengan jujur.
 
-## 5. Comparative Framework: Nemesis vs. Google SRE Workbook Pillars
+## 5. Kerangka Pembanding: Nemesis vs. Pilar Google SRE Workbook
 
-| SRE Workbook Pillar | Workbook's Requirement (chapter) | Nemesis Current State | Gap |
+| Pilar SRE Workbook | Persyaratan Workbook (bab) | Keadaan Nemesis Saat Ini | Kesenjangan |
 |---|---|---|---|
-| SLIs / SLOs | Define what "working" means quantitatively (Ch. 2) | None defined anywhere in repo or docs | Total |
-| Error budgets | Spend budget deliberately to balance velocity vs. risk (Ch. 3, PDF 7068) | No SLO ⇒ no error budget is even computable | Total |
-| Monitoring & alerting on SLIs | Four golden signals wired to SLO-based alerts (Ch. 5, PDF 3825) | Zero metrics instrumentation; console.error only | Total |
-| Eliminating toil | Automate repetitive ops work (Part II, Ch. 6–10 discussion, PDF 6432) | DB import/export/reset are manual CLI scripts run by a human | Severe |
-| Configuration as code | Versioned, reviewable, rollback-capable config (Ch. 14, PDF 12917–13531) | `.env` committed directly to Git instead of externalized/rotated secrets; no config review process | Severe |
-| Canarying releases | Stage risk before full rollout (Ch. 16, PDF 13957) | No CI/CD exists to canary into | Total (no pipeline to canary) |
-| Production Readiness Review | Structured pre-launch reliability gate (Ch. 32, PDF 14984) | No PRR process; this AEGIS report is the first such review on record | Total |
-| Load balancing / traffic shaping | DNS/LB-level protection before requests reach app (Ch. 19, PDF 9601) | `CORS_ORIGIN=*`, no rate limiter, no gateway | Severe |
-| Disaster recovery | Tested RTO/RPO | Manual export scripts; no tested recovery drill documented | Severe |
+| SLI / SLO | Mendefinisikan arti "berfungsi" secara kuantitatif (Bab 2) | Tidak ada yang didefinisikan di repositori maupun dokumen | Total |
+| Anggaran galat | Menghabiskan anggaran secara sengaja untuk menyeimbangkan kecepatan vs. risiko (Bab 3, PDF 7068) | Tanpa SLO ⇒ anggaran galat bahkan tidak dapat dihitung | Total |
+| Pemantauan & peringatan pada SLI | Empat sinyal emas terhubung ke peringatan berbasis SLO (Bab 5, PDF 3825) | Nol instrumentasi metrik; hanya console.error | Total |
+| Menghapus toil | Mengotomatiskan pekerjaan operasi yang berulang (Bagian II, pembahasan Bab 6–10, PDF 6432) | Impor/ekspor/reset DB adalah skrip CLI manual yang dijalankan manusia | Parah |
+| Konfigurasi sebagai kode | Konfigurasi berversi, dapat ditinjau, dan dapat di-rollback (Bab 14, PDF 12917–13531) | `.env` ter-commit langsung ke Git alih-alih rahasia yang dieksternalisasi/diputar; tidak ada proses tinjauan konfigurasi | Parah |
+| Rilis canary | Menahapkan risiko sebelum peluncuran penuh (Bab 16, PDF 13957) | Tidak ada CI/CD untuk di-canary | Total (tidak ada alur untuk di-canary) |
+| Production Readiness Review | Gerbang keandalan pra-peluncuran yang terstruktur (Bab 32, PDF 14984) | Tidak ada proses PRR; laporan AEGIS ini adalah tinjauan pertama yang tercatat | Total |
+| Penyeimbangan beban / pembentukan lalu lintas | Perlindungan tingkat DNS/LB sebelum permintaan mencapai aplikasi (Bab 19, PDF 9601) | `CORS_ORIGIN=*`, tanpa pembatas laju, tanpa gateway | Parah |
+| Pemulihan bencana | RTO/RPO yang teruji | Skrip ekspor manual; tidak ada latihan pemulihan teruji yang terdokumentasi | Parah |
 
-Nine of nine comparator pillars show a severe-to-total gap. This is not "a startup that hasn't gotten to SRE maturity yet" — it is a project that has not yet reached the pre-SRE baseline of tests + CI + secrets hygiene that most reliability practice is built on top of.
+Sembilan dari sembilan pilar pembanding menunjukkan kesenjangan parah hingga total. Ini bukan "startup yang belum sampai pada kematangan SRE"; ini proyek yang belum mencapai garis dasar pra-SRE berupa pengujian + CI + kebersihan rahasia yang menjadi fondasi sebagian besar praktik keandalan.
 
-## 6. Risk Matrix
+## 6. Matriks Risiko
 
-| Finding | Likelihood | Impact | Priority |
+| Temuan | Kemungkinan | Dampak | Prioritas |
 |---|---|---|---|
-| CTO-01 Unauditable allegation pipeline (LLM-modified evidence) | High (already shipped) | Critical — legal/reputational, undermines core mission | P0 |
-| CTO-02 .env committed to Git | High (already true) | Critical if any future secret lands there | P0 |
-| CTO-03 No tests / CI-CD / IaC / containers | High | Critical — every deploy is a manual, unverified act | P0 |
-| CTO-04 No observability / golden signals | High | High — outages are invisible until a user reports them | P1 |
-| CTO-05 No rate limiting / wildcard CORS | Medium–High | High — self-inflicted DoS surface, scraping abuse | P1 |
-| CTO-06 SQLite prod store, no DR RTO/RPO | Medium | High — single-file data loss is unrecoverable without a tested drill | P1 |
-| CTO-07 No structured/correlated logging | High | Medium — slows every future incident investigation | P2 |
-| CTO-08 Frontend build/type-safety gaps | Medium | Medium — technical debt, not an outage risk today | P2 |
+| CTO-01 Alur tuduhan yang tidak dapat diaudit (bukti yang dimodifikasi LLM) | Tinggi (sudah terkirim) | Kritis, hukum/reputasi, melemahkan misi inti | P0 |
+| CTO-02 .env ter-commit ke Git | Tinggi (sudah benar) | Kritis jika ada rahasia masa depan yang masuk ke sana | P0 |
+| CTO-03 Tanpa pengujian / CI-CD / IaC / kontainer | Tinggi | Kritis, setiap penyebaran adalah tindakan manual yang tidak terverifikasi | P0 |
+| CTO-04 Tanpa observabilitas / sinyal emas | Tinggi | Tinggi, gangguan tak terlihat sampai pengguna melapor | P1 |
+| CTO-05 Tanpa pembatasan laju / CORS wildcard | Sedang–Tinggi | Tinggi, permukaan DoS buatan sendiri, penyalahgunaan scraping | P1 |
+| CTO-06 SQLite sebagai penyimpan produksi, tanpa RTO/RPO DR | Sedang | Tinggi, kehilangan data satu berkas tidak dapat dipulihkan tanpa latihan teruji | P1 |
+| CTO-07 Tanpa pencatatan terstruktur/berkorelasi | Tinggi | Sedang, memperlambat setiap investigasi insiden di masa depan | P2 |
+| CTO-08 Kesenjangan build/keamanan tipe frontend | Sedang | Sedang, utang teknis, bukan risiko gangguan hari ini | P2 |
 
-## 7. Panel Score (CTO Axis Only)
+## 7. Skor Panel (Hanya Sumbu CTO)
 
-Per Module [H] v2.0's CTO scoring rubric (1–10): *1–3: Critical architectural failures; no lineage; no dependency auditing; PII/secrets exposure.*
+Menurut rubrik penilaian CTO Modul [H] v2.0 (1–10): *1–3: Kegagalan arsitektur kritis; tanpa silsilah; tanpa audit dependensi; paparan PII/rahasia.*
 
-| Sub-criterion | Score | Rationale |
+| Sub-kriteria | Skor | Alasan |
 |---|---|---|
-| Data lineage & evidence integrity | 1/10 | No pipeline in-repo at all; LLM-modified ground truth, unversioned |
-| Secrets & config hygiene | 2/10 | `.env` tracked in Git; no secrets manager |
-| Testing / CI-CD / IaC | 1/10 | Zero tests, zero pipelines, zero containers found |
-| Observability (golden signals) | 2/10 | `/api/health` is a stub; no metrics/logs/tracing |
-| Security posture (rate limiting, CORS, headers) | 3/10 | Clean SQL layer, but wildcard CORS and no throttling |
-| Data-store operational resilience (DR) | 4/10 | Sound schema/index design; no tested backup/restore drill |
-| Code-level engineering craft | 6/10 | Parameterized queries, precomputed aggregates, graceful shutdown |
+| Silsilah data & integritas bukti | 1/10 | Tidak ada alur dalam repositori sama sekali; kebenaran dasar yang dimodifikasi LLM, tanpa versi |
+| Kebersihan rahasia & konfigurasi | 2/10 | `.env` dilacak di Git; tanpa pengelola rahasia |
+| Pengujian / CI-CD / IaC | 1/10 | Nol pengujian, nol alur, nol kontainer ditemukan |
+| Observabilitas (sinyal emas) | 2/10 | `/api/health` adalah rintisan; tanpa metrik/log/penelusuran |
+| Postur keamanan (pembatasan laju, CORS, header) | 3/10 | Lapisan SQL bersih, tetapi CORS wildcard dan tanpa pembatasan |
+| Ketahanan operasional penyimpan data (DR) | 4/10 | Rancangan skema/indeks yang sehat; tanpa latihan pencadangan/pemulihan teruji |
+| Keahlian rekayasa tingkat kode | 6/10 | Kueri berparameter, agregat dihitung di muka, graceful shutdown |
 
-**Composite CTO Score: 2.7 / 10**
+**Skor Komposit CTO: 2,7 / 10**
 
-Per Module [H]'s threshold rule ("Any Critical finding … caps composite at 5.5"), and here there are three independent CRITICAL findings (CTO-01, CTO-02, CTO-03) — the composite is not merely capped, it sits well below the cap on its own arithmetic.
+Menurut aturan ambang Modul [H] ("Setiap temuan Kritis… membatasi komposit pada 5,5"), dan di sini ada tiga temuan KRITIS yang independen (CTO-01, CTO-02, CTO-03), komposit tidak sekadar dibatasi; ia berada jauh di bawah batas itu pada aritmetikanya sendiri.
 
-**Verdict: FAIL** — not ready for production, government partnership, or press citation in its current form.
+**Putusan: GAGAL**, belum siap untuk produksi, kemitraan pemerintah, atau pengutipan pers dalam bentuknya saat ini.
 
-## 8. Remediation Roadmap
+## 8. Peta Jalan Perbaikan
 
-**P0 — before the next public data refresh:**
+**P0 — sebelum penyegaran data publik berikutnya:**
 
-1. Remove `backend/.env` from Git history (`git rm --cached`, add to `.gitignore`, rotate anything that touched it).
-2. Publish (even minimally) the actual ETL/scrape → LLM-analysis → dataset pipeline as code in this repo, with: source snapshot date, model version pinned, and a sampled human-reviewed accuracy check before any "severity: absurd" label reaches a citizen's screen.
-3. Stand up one CI workflow (lint + a first smoke test hitting `/api/health` and `/api/bootstrap` against a seeded test DB) before the next merge to `main`.
+1. Hapus `backend/.env` dari riwayat Git (`git rm --cached`, tambahkan ke `.gitignore`, putar ulang apa pun yang pernah menyentuhnya).
+2. Terbitkan (bahkan secara minimal) alur ETL/scrape → analisis LLM → dataset yang sebenarnya sebagai kode di repositori ini, dengan: tanggal snapshot sumber, versi model yang dipatok, dan pemeriksaan akurasi bersampel yang ditinjau manusia sebelum label "severity: absurd" apa pun sampai ke layar warga.
+3. Pasang satu alur kerja CI (lint + satu uji asap pertama yang mengenai `/api/health` dan `/api/bootstrap` terhadap DB uji yang sudah di-seed) sebelum merge berikutnya ke `main`.
 
-**P1 — before any government or press partnership is announced:**
+**P1 — sebelum kemitraan pemerintah atau pers diumumkan:**
 
-4. Add `express-rate-limit` (or gateway-level throttling) and set `CORS_ORIGIN` to an explicit allowlist.
-5. Instrument the four golden signals (even a minimal Prometheus `/metrics` endpoint) and make `/api/health` actually check the DB handle.
-6. Write and run a restore drill from `scripts/export-db.js` output; document the measured RTO/RPO.
+4. Tambahkan `express-rate-limit` (atau pembatasan di tingkat gateway) dan tetapkan `CORS_ORIGIN` ke daftar izin eksplisit.
+5. Instrumentasikan empat sinyal emas (bahkan endpoint `/metrics` Prometheus minimal) dan buat `/api/health` benar-benar memeriksa handle DB.
+6. Tulis dan jalankan latihan pemulihan dari keluaran `scripts/export-db.js`; dokumentasikan RTO/RPO yang terukur.
 
-**P2 — technical debt, address opportunistically:**
+**P2 — utang teknis, tangani sewaktu ada kesempatan:**
 
-7. Introduce structured logging with request IDs.
-8. Consider incremental TypeScript adoption or at minimum a linter/formatter config for `frontend/assets/js/`.
+7. Perkenalkan pencatatan terstruktur dengan ID permintaan.
+8. Pertimbangkan adopsi TypeScript bertahap atau setidaknya konfigurasi linter/formatter untuk `frontend/assets/js/`.
 
-Re-score estimate after P0+P1: approximately 6.0–6.5/10 (CONDITIONAL PASS — MINOR CORRECTIONS), contingent on the data-lineage fix being real and not cosmetic — that finding alone is the one this reviewer would insist on seeing resolved first.
+Perkiraan skor ulang setelah P0+P1: sekitar 6,0–6,5/10 (LOLOS BERSYARAT — KOREKSI MINOR), bergantung pada perbaikan silsilah data yang nyata dan bukan kosmetik; temuan itu saja yang akan didesak peninjau ini untuk dilihat terselesaikan terlebih dahulu.
 
-## 9. Appendix: Citation Integrity Audit
+## 9. Lampiran: Audit Integritas Sitasi
 
-Every code citation in this report (`file.js:line`) was read directly from the repository during this session; no line numbers were estimated. The Google SRE Workbook citations reference chapter numbers and approximate extracted-text line positions from `the-site-reliability-workbook-next18.pdf`, confirmed via direct text extraction rather than recalled from training data. `my comments.md` is quoted by paraphrase with point numbers matching the source file's own numbering.
+Setiap sitasi kode dalam laporan ini (`file.js:line`) dibaca langsung dari repositori selama sesi ini; tidak ada nomor baris yang diperkirakan. Sitasi Google SRE Workbook merujuk pada nomor bab dan posisi baris teks hasil ekstraksi perkiraan dari `the-site-reliability-workbook-next18.pdf`, dikonfirmasi melalui ekstraksi teks langsung, bukan diingat dari data pelatihan. `my comments.md` dikutip dengan parafrasa, dengan nomor poin yang sesuai dengan penomoran berkas sumbernya sendiri.
 
-This report follows AEGIS Module [H] v2.0 methodology, CTO persona only, single-run. No CEO, CRO, or Elite Hacker scoring is included or implied.
+Laporan ini mengikuti metodologi AEGIS Modul [H] v2.0, hanya persona CTO, satu putaran. Tidak ada penilaian CEO, CRO, atau Elite Hacker yang disertakan atau tersirat.
 
 ---
 
-**#AEGISAudit #SiteReliabilityEngineering #DevilsAdvocate #Infraloka #RahmatWibowo**
+**#AuditAEGIS #SiteReliabilityEngineering #DevilsAdvocate #Infraloka #RahmatWibowo**

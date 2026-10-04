@@ -1,15 +1,15 @@
 ---
-title: "SOMASI KEDUA DAN TERAKHIR — Study Case of Korika"
+title: "SOMASI KEDUA DAN TERAKHIR — Studi Kasus KORIKA"
 originalTitle: "SOMASI KEDUA DAN TERAKHIR — Study Case of Korika"
 author: "Rahmat Wibowo"
 translationDate: 2026-10-04
 classification: laporan-aduan
-subjects: []
+subjects: ["Hammam Riza", "Abil Sudarman", "Luca Cada Lora"]
 translationStatus: draft
 ---
 ![](/img/b1480811ac4530f11cc49452.png)
 
-*A comprehensive AEGIS legal research investigation and case audit regarding Korika.*
+*Investigasi riset hukum AEGIS yang komprehensif dan audit kasus mengenai Korika.*
 
 **RAHMAT WIBOWO | INFRALOKA LEGAL RESEARCH | PT INFRASTRUKTUR DIGITAL NUSANTARA**
 

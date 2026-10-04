@@ -1,42 +1,42 @@
 ---
-title: "Why Abil Sudarman Is Named in Complaint No. 068/ADUAN/RW/09/2026 (English Edition)"
+title: "Mengapa Abil Sudarman Disebut dalam Aduan No. 068/ADUAN/RW/09/2026 (Edisi Bahasa Inggris)"
 originalTitle: "Why Abil Sudarman Is Named in Complaint No. 068/ADUAN/RW/09/2026 (English Edition)"
 author: "Rahmat Wibowo"
 translationDate: 2026-10-04
 classification: laporan-aduan
-subjects: []
+subjects: ["Abil Sudarman"]
 translationStatus: draft
 ---
-![Case record: Abil Sudarman, named in Complaint No. 068/ADUAN/RW/09/2026](/img/aduan-068-abil-sudarman-001.png)
+![Catatan perkara: Abil Sudarman, disebut dalam Aduan No. 068/ADUAN/RW/09/2026](/img/aduan-068-abil-sudarman-001.png)
 
-*This post explains why I named Mr. Abil Sudarman as reported party T-3 in my public complaint to the Jakarta Regional Police (Polda Metro Jaya) dated 21 September 2026. It is my account, not a police finding or court judgment. I do not assert that he is guilty of any offence. The wider context is in the main post on Complaint No. 068.*
+*Tulisan ini menjelaskan mengapa saya menyebut Bapak Abil Sudarman sebagai terlapor T-3 dalam aduan publik saya kepada Kepolisian Daerah Metropolitan Jakarta Raya (Polda Metro Jaya) tertanggal 21 September 2026. Ini adalah penjelasan saya, bukan temuan kepolisian maupun putusan pengadilan. Saya tidak menyatakan bahwa ia bersalah atas tindak pidana apa pun. Konteks yang lebih luas ada pada tulisan utama tentang Aduan No. 068.*
 
-## Why I reported him
+## Mengapa saya melaporkannya
 
-He is not named for anything I say he wrote about me, and I do not accuse him of the incident himself. He is named because of a link that I ask the police to examine.
+Ia tidak disebut karena sesuatu yang saya katakan pernah ia tulis tentang saya, dan saya tidak menuduhnya melakukan kejadian itu sendiri. Ia disebut karena adanya keterkaitan yang saya minta untuk diperiksa oleh kepolisian.
 
-1. **He was a listed speaker at the event.** IdeaFest 2026's website lists him, as founder of ASSAI, in a session titled "Beyond Coding: Building a Career AI Can't Replace" from 14:20 to 15:20 WIB (Evidence E-1).
-2. **A caption links the person who choked me to his team.** I say that, at the event at the Jakarta Convention Center, an unknown person choked me. A screenshot I hold carries a caption describing that person as "Abil Sudarman's team". I do not know who wrote the caption, and I have not attached the screenshot here.
+1. **Ia tercatat sebagai pembicara pada acara tersebut.** Situs web IdeaFest 2026 mencantumkannya, sebagai pendiri ASSAI, dalam sesi berjudul "Beyond Coding: Building a Career AI Can't Replace" pukul 14.20 sampai 15.20 WIB (Bukti E-1).
+2. **Sebuah keterangan mengaitkan orang yang mencekik saya dengan timnya.** Saya menyatakan bahwa, pada acara di Jakarta Convention Center, seseorang yang tidak dikenal mencekik saya. Sebuah tangkapan layar yang saya miliki memuat keterangan yang menyebut orang tersebut sebagai "tim Abil Sudarman". Saya tidak tahu siapa yang menulis keterangan itu, dan saya tidak melampirkan tangkapan layar tersebut di sini.
 
-![Evidence E-1: IdeaFest website listing his session](/img/aduan-068-abil-sudarman-002.jpg)
+![Bukti E-1: Situs web IdeaFest yang mencantumkan sesinya](/img/aduan-068-abil-sudarman-002.jpg)
 
-## What I said the law may cover
+## Apa yang menurut saya mungkin tercakup oleh hukum
 
-The assault itself (Art. 466 of the new Criminal Code) is reported against the unknown person, whose identity I asked the police to investigate. As to Mr. Sudarman, I asked the police to examine whether that person acted on his instruction or with his knowledge, or whether he gave an opportunity or assistance (Arts. 20(c) and (d), and 21). The complaint does not claim that any of this is shown.
+Penganiayaannya sendiri (Pasal 466 KUHP baru) dilaporkan terhadap orang yang tidak dikenal, yang identitasnya saya minta untuk diselidiki oleh kepolisian. Terhadap Bapak Sudarman, saya meminta kepolisian memeriksa apakah orang tersebut bertindak atas perintahnya atau sepengetahuannya, atau apakah ia memberikan kesempatan atau bantuan (Pasal 20 huruf c dan d, serta Pasal 21). Aduan tersebut tidak menyatakan bahwa satu pun dari hal ini telah terbukti.
 
-## How strong I think this is
+## Seberapa kuat menurut saya hal ini
 
-The complaint's own review rated this link as unproven. The caption comes from an unknown author, there is no date and no complete video, and a speaker's "team" at a conference is a loose concept. What the complaint actually does is ask for his statement.
+Penelaahan dalam aduan itu sendiri menilai keterkaitan ini belum terbukti. Keterangan tersebut berasal dari penulis yang tidak diketahui, tidak ada tanggal dan tidak ada video lengkap, dan "tim" seorang pembicara pada sebuah konferensi merupakan konsep yang longgar. Yang sebenarnya dilakukan aduan tersebut adalah meminta keterangan darinya.
 
-## Limits of this record
+## Batasan catatan ini
 
-- This is my account and my legal reading; no authority has made a finding.
-- The link between the unknown person and Mr. Sudarman rests on an unattributed caption, and I do not assert it is true.
-- Nothing here says he knew of, ordered or approved anything.
-- I am not a lawyer, and this post is not legal advice.
+- Ini adalah penjelasan dan pembacaan hukum saya; belum ada otoritas yang membuat temuan.
+- Keterkaitan antara orang yang tidak dikenal itu dan Bapak Sudarman bertumpu pada sebuah keterangan tanpa penulis yang jelas, dan saya tidak menyatakan bahwa hal itu benar.
+- Tidak ada yang menyatakan di sini bahwa ia mengetahui, memerintahkan, atau menyetujui apa pun.
+- Saya bukan seorang ahli hukum, dan tulisan ini bukan nasihat hukum.
 
-## Right of reply and correction
+## Hak jawab dan koreksi
 
-Mr. Abil Sudarman is invited to respond, correct, or add context, including to say that no such person was part of his team. A substantive reply may be published alongside this article, edited only for privacy, safety and relevance. If reliable evidence shows any statement here is wrong, I will correct it and note the change.
+Bapak Abil Sudarman dipersilakan untuk menanggapi, mengoreksi, atau menambahkan konteks, termasuk untuk menyatakan bahwa tidak ada orang seperti itu dalam timnya. Tanggapan yang substantif dapat dimuat bersama artikel ini, dengan penyuntingan hanya demi privasi, keselamatan, dan relevansi. Jika bukti yang andal menunjukkan bahwa suatu pernyataan di sini keliru, saya akan mengoreksinya dan mencatat perubahan tersebut.
 
-#PublicComplaint #ReportedParty #DigitalConduct #Events #CaseRecord
+#AduanPublik #TerlaporT3 #PerilakuDigital #Acara #CatatanPerkara
