@@ -11,11 +11,23 @@ describe('bukti wiring', () => {
   it('has a YYYY-MM-DD lastmod for the sitemap', () => {
     expect((PAGE_LASTMOD as Record<string, string>)['/bukti']).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
-  it('shows whole screenshots in thumbnails (contain, capped height) instead of cropping them', () => {
+  describe('uniform card dimensions', () => {
     const css = readFileSync('src/styles/global.css', 'utf8');
-    const rule = css.match(/\.bukti-thumb img\s*\{([^}]*)\}/)?.[1] ?? '';
-    expect(rule).toContain('object-fit: contain');
-    expect(rule).toMatch(/max-height:\s*\d+px/);
+    const rule = (selector: string) => css.match(new RegExp(`${selector.replace(/[.]/g, '\\.')}\\s*\\{([^}]*)\\}`))?.[1] ?? '';
+    it('gives every thumbnail the same 4:3 frame', () => {
+      expect(rule('.bukti-thumb')).toMatch(/aspect-ratio:\s*4\s*\/\s*3/);
+    });
+    it('shows each whole screenshot inside the frame (contain, filling the frame) instead of cropping it', () => {
+      const img = rule('.bukti-thumb img');
+      expect(img).toContain('object-fit: contain');
+      expect(img).toMatch(/width:\s*100%/);
+      expect(img).toMatch(/height:\s*100%/);
+      expect(img).not.toMatch(/max-height/);
+    });
+    it('stretches cards to equal height per row and pins the limits and source block to the bottom', () => {
+      expect(rule('.bukti-grid')).not.toMatch(/align-items:\s*start/);
+      expect(rule('.bukti-limits')).toMatch(/margin-top:\s*auto/);
+    });
   });
   it('the page is a real route and lists /bukti in the sitemap source', () => {
     expect(readFileSync('src/pages/bukti.astro', 'utf8')).toContain('groupBukti');
