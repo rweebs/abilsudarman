@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getVideos } from '../lib/content';
 import { sortVideos, thumbSrc, watchUrl } from '../lib/videos';
-import { thumbFor } from '../lib/bukti';
+import { thumbFor, thumbSrcset, CARD_THUMB_SIZES } from '../lib/bukti';
 import { DISCLAIMER, SITE } from '../lib/site';
 const videos = sortVideos(await getVideos());
 const DESCRIPTION = 'Daftar video YouTube Rahmat Wibowo tentang klaim Abil Sudarman. Putar langsung di halaman; pemutar YouTube baru dimuat setelah Anda menekan video.';
@@ -20,7 +20,7 @@ const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 
             <a class="video-card" href={watchUrl(v.data.youtubeId, v.data.start)} target="_blank" rel="noopener"
                data-video-id={v.data.youtubeId} data-start={v.data.start} data-title={v.data.title}>
               <span class="video-thumb">
-                <img src={thumbFor(thumbSrc(v.data.youtubeId))} alt="" width="640" height="360" loading="lazy" decoding="async" />
+                <img src={thumbFor(thumbSrc(v.data.youtubeId))} srcset={thumbSrcset(thumbSrc(v.data.youtubeId))} sizes={CARD_THUMB_SIZES} alt="" width="640" height="360" loading="lazy" decoding="async" />
                 <span class="video-play" aria-hidden="true"></span>
               </span>
               <span class="video-title">{v.data.title}</span>

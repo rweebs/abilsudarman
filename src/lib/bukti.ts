@@ -24,6 +24,8 @@ export function groupBukti(entries: BuktiEntry[]) {
 }
 
 export const thumbFor = (src: string) => src.replace(/^\/img\/(.+)\.[a-z]+$/i, '/thumb/$1.webp');
+export const thumbSrcset = (src: string) => `${thumbFor(src).replace(/\.webp$/, '-320.webp')} 320w, ${thumbFor(src)} 640w`;
+export const CARD_THUMB_SIZES = '(min-width: 768px) 300px, 100vw';
 
 const dateFmt = new Intl.DateTimeFormat('id-ID', { dateStyle: 'long', timeZone: 'UTC' });
 
