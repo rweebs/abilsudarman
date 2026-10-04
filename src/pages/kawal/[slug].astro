@@ -32,12 +32,12 @@ const fmt = (d?: Date) => d?.toLocaleDateString('id-ID', { dateStyle: 'long' });
       <ul>{evidence.map((p) => <li><a href={`/artikel/${p.id}`}>{p.data.title}</a></li>)}</ul></>}
     <h2>Pengiriman</h2>
     {q.sentDate
-      ? <p>Dikirim {fmt(q.sentDate)} melalui {q.deliveryChannel === 'email' ? 'email' : 'surat'}.</p>
+      ? <p>Dikirim {fmt(q.sentDate)} melalui {(q.deliveryChannel ?? []).map((c: string) => (c === 'email' ? 'email' : 'surat')).join(' dan ')}.</p>
       : <p class="muted">Belum dikirim.</p>}
     <DeliveryAddress />
     <h2>Jawaban</h2>
     {q.status === 'dijawab'
       ? <><blockquote class="pre-wrap">{q.reply}</blockquote><p class="muted">Dimuat apa adanya pada {fmt(q.replyDate)}.</p></>
-      : <p class="muted">Belum ada jawaban{q.sentDate ? ` per ${fmt(q.sentDate)}` : ''}. Jawaban yang diterima akan dimuat apa adanya. Lihat <a href="/hak-jawab">hak jawab</a>.</p>}
+      : <p class="muted">Belum ada jawaban{(q.lastCheckedDate ?? q.sentDate) ? ` per ${fmt(q.lastCheckedDate ?? q.sentDate)}` : ''}. Jawaban yang diterima akan dimuat apa adanya. Lihat <a href="/hak-jawab">hak jawab</a>.</p>}
   </article>
 </BaseLayout>

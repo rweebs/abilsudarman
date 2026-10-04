@@ -34,12 +34,35 @@ describe('questionSchema', () => {
     expect(questionSchema.safeParse({ ...baseQ, draft: false }).success).toBe(false);
   });
   it('accepts a published question with sentDate and channel', () => {
-    const r = questionSchema.safeParse({ ...baseQ, draft: false, sentDate: '2026-10-05', deliveryChannel: 'email' });
+    const r = questionSchema.safeParse({ ...baseQ, draft: false, sentDate: '2026-10-05', deliveryChannel: ['email'] });
     expect(r.success).toBe(true);
   });
   it('rejects dijawab without reply and replyDate', () => {
     const r = questionSchema.safeParse({ ...baseQ, draft: false, sentDate: '2026-10-05',
-      deliveryChannel: 'email', status: 'dijawab' });
+      deliveryChannel: ['email'], status: 'dijawab' });
     expect(r.success).toBe(false);
+  });
+  it('rejects an empty deliveryChannel array when published', () => {
+    const r = questionSchema.safeParse({ ...baseQ, draft: false, sentDate: '2026-10-05', deliveryChannel: [] });
+    expect(r.success).toBe(false);
+  });
+  it('accepts both channels', () => {
+    const r = questionSchema.safeParse({ ...baseQ, draft: false, sentDate: '2026-10-05', deliveryChannel: ['email', 'surat'] });
+    expect(r.success).toBe(true);
+  });
+  it('rejects a whitespace-only reply', () => {
+    const r = questionSchema.safeParse({ ...baseQ, draft: false, sentDate: '2026-10-05',
+      deliveryChannel: ['email'], status: 'dijawab', reply: '   ', replyDate: '2026-10-06' });
+    expect(r.success).toBe(false);
+  });
+  it('rejects replyDate before sentDate', () => {
+    const r = questionSchema.safeParse({ ...baseQ, draft: false, sentDate: '2026-10-05',
+      deliveryChannel: ['email'], status: 'dijawab', reply: 'Jawaban', replyDate: '2026-10-01' });
+    expect(r.success).toBe(false);
+  });
+  it('accepts a valid answered question with lastCheckedDate', () => {
+    const r = questionSchema.safeParse({ ...baseQ, draft: false, sentDate: '2026-10-05',
+      deliveryChannel: ['email'], status: 'dijawab', reply: 'Jawaban', replyDate: '2026-10-06', lastCheckedDate: '2026-10-07' });
+    expect(r.success).toBe(true);
   });
 });
