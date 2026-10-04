@@ -1,0 +1,10 @@
+---
+const { originalTitle, originalUrl, author } = Astro.props;
+---
+<aside class="card" data-translation-notice>
+  <p class="muted" style="margin:0">
+    Ini adalah terjemahan Bahasa Indonesia dari tulisan asli berbahasa Inggris
+    “{originalTitle}” oleh {author}.
+    {originalUrl ? <> Baca <a href={originalUrl} rel="noopener noreferrer" target="_blank">teks aslinya</a>.</> : <> Tautan teks asli akan ditambahkan.</>}
+  </p>
+</aside>

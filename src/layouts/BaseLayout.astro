@@ -1,0 +1,45 @@
+---
+import '../styles/global.css';
+import DisclaimerBanner from '../components/DisclaimerBanner.astro';
+import { NAV, SITE } from '../lib/site';
+const { title, description, path, jsonLd } = Astro.props as { title: string; description: string; path: string; jsonLd?: object };
+const canonical = new URL(path, SITE.url).toString();
+const fullTitle = path === '/' ? SITE.name : `${title} · ${SITE.name}`;
+---
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  </head>
+  <body>
+    <DisclaimerBanner />
+    <header class="nav">
+      <div class="container">
+        <a href="/" style="font-weight:700">{SITE.name}</a>
+        <details class="nav__menu">
+          <summary>Menu</summary>
+          <ul class="nav__links">
+            {NAV.map((n) => <li><a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a></li>)}
+          </ul>
+        </details>
+      </div>
+    </header>
+    <main><slot /></main>
+    <footer class="footer"><div class="container">
+      <p>Konten oleh {SITE.author}. Bukan nasihat hukum. Permintaan koreksi: <a href={`mailto:${SITE.correctionsEmail}`}>{SITE.correctionsEmail}</a>.</p>
+    </div></footer>
+    <script src="/menu.js" defer></script>
+  </body>
+</html>

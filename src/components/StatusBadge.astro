@@ -1,0 +1,5 @@
+---
+import { STATUS_LABEL } from '../lib/site';
+const { status } = Astro.props;
+---
+<span class={`badge ${status === 'dijawab' ? 'badge--green' : 'badge--amber'}`}>{STATUS_LABEL[status as keyof typeof STATUS_LABEL]}</span>

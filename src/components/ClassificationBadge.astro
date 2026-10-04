@@ -1,0 +1,5 @@
+---
+import { CLASSIFICATION_LABEL } from '../lib/site';
+const { value } = Astro.props;
+---
+<span class="badge badge--blue">{CLASSIFICATION_LABEL[value as keyof typeof CLASSIFICATION_LABEL]}</span>
