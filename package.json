@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "INCLUDE_DRAFTS=1 astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/prune-images.mjs && node scripts/check-dist.mjs",
     "build:preview": "INCLUDE_DRAFTS=1 astro build",
     "check": "node scripts/check-dist.mjs",
     "test": "vitest run"

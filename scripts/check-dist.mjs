@@ -1,6 +1,8 @@
 import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { join, relative, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
+
+const DEFAULT_SITE = 'https://abilsudarman.my.id';
 
 function htmlFiles(dir) {
   const out = [];
@@ -12,23 +14,39 @@ function htmlFiles(dir) {
   return out;
 }
 
-function resolves(dist, url) {
-  const clean = decodeURIComponent(url.split('#')[0].split('?')[0]);
-  if (clean === '' || clean === '/') return existsSync(join(dist, 'index.html'));
-  const base = join(dist, clean);
-  return existsSync(base) && statSync(base).isFile() ? true
-    : existsSync(join(base, 'index.html')) || existsSync(`${base}.html`);
+function pageUrl(dist, file) {
+  const rel = relative(dist, file).split(sep).join('/');
+  if (rel === 'index.html') return '/';
+  return '/' + rel.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
 }
 
-export function findProblems(dist) {
+function pathExists(dist, pathname) {
+  const clean = decodeURIComponent(pathname);
+  if (clean === '/' || clean === '') return existsSync(join(dist, 'index.html'));
+  const base = join(dist, clean);
+  if (existsSync(base) && statSync(base).isFile()) return true;
+  return existsSync(join(base, 'index.html')) || existsSync(`${base}.html`);
+}
+
+export function findProblems(dist, site = DEFAULT_SITE) {
+  const files = htmlFiles(dist);
+  if (files.length === 0) return [`${dist}: no HTML pages found`];
+  const origin = new URL(site).origin;
   const problems = [];
-  for (const file of htmlFiles(dist)) {
+  for (const file of files) {
     const html = readFileSync(file, 'utf8');
+    const base = new URL(pageUrl(dist, file), origin);
     if (!html.includes('data-disclaimer')) problems.push(`${file}: missing disclaimer banner`);
-    for (const m of html.matchAll(/(?:src|href)="(\/[^"]*)"/g)) {
-      const url = m[1];
-      if (url.startsWith('//')) continue;
-      if (!resolves(dist, url)) problems.push(`${file}: unresolved reference ${url}`);
+    if (/<details[^>]*class="nav__menu"/.test(html) && !/<details[^>]*class="nav__menu"[^>]*\sopen/.test(html)) {
+      problems.push(`${file}: nav menu is not open by default (breaks without JavaScript)`);
+    }
+    for (const m of html.matchAll(/(?:src|href)=(?:"([^"]*)"|'([^']*)')/g)) {
+      const raw = (m[1] ?? m[2] ?? '').trim();
+      if (raw === '' || raw.startsWith('#') || /^(mailto:|tel:|data:|javascript:)/i.test(raw)) continue;
+      let url;
+      try { url = new URL(raw, base); } catch { continue; }
+      if (url.origin !== origin) continue;
+      if (!pathExists(dist, url.pathname)) problems.push(`${file}: unresolved reference ${raw}`);
     }
   }
   return problems;

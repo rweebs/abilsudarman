@@ -1,0 +1,30 @@
+import { describe, it, expect, beforeEach } from 'vitest';
+import { mkdtempSync, mkdirSync, writeFileSync, existsSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+// @ts-expect-error plain JS module
+import { referencedImages, pruneImages } from '../scripts/prune-images.mjs';
+
+let dir: string;
+beforeEach(() => {
+  dir = mkdtempSync(join(tmpdir(), 'prune-'));
+  mkdirSync(join(dir, 'img'));
+  for (const f of ['used.png', 'unused.png', 'css.png']) writeFileSync(join(dir, 'img', f), 'x');
+  writeFileSync(join(dir, 'index.html'), '<img src="/img/used.png"><style>.a{background:url(/img/css.png)}</style>');
+});
+
+describe('prune-images', () => {
+  it('collects referenced images from html', () => {
+    expect([...referencedImages(dir)].sort()).toEqual(['css.png', 'used.png']);
+  });
+  it('removes unreferenced images and keeps referenced ones', () => {
+    const r = pruneImages(dir);
+    expect(r).toEqual({ kept: 2, removed: 1 });
+    expect(existsSync(join(dir, 'img', 'unused.png'))).toBe(false);
+    expect(existsSync(join(dir, 'img', 'used.png'))).toBe(true);
+  });
+  it('does nothing when there is no img directory', () => {
+    const empty = mkdtempSync(join(tmpdir(), 'prune-empty-'));
+    expect(pruneImages(empty)).toEqual({ kept: 0, removed: 0 });
+  });
+});

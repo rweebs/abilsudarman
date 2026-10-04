@@ -6,14 +6,17 @@ import { join } from 'node:path';
 import { findProblems } from '../scripts/check-dist.mjs';
 
 let dir: string;
-const page = (body: string, banner = true) =>
-  `<html><body>${banner ? '<div data-disclaimer></div>' : ''}${body}</body></html>`;
+const NAV = '<details class="nav__menu" open></details>';
+const page = (body: string, opts: { banner?: boolean; nav?: string } = {}) =>
+  `<html><body>${opts.banner === false ? '' : '<div data-disclaimer></div>'}${opts.nav ?? NAV}${body}</body></html>`;
 
 beforeEach(() => {
   dir = mkdtempSync(join(tmpdir(), 'dist-'));
   mkdirSync(join(dir, 'img'), { recursive: true });
+  mkdirSync(join(dir, 'artikel'), { recursive: true });
   writeFileSync(join(dir, 'img', 'a.png'), 'x');
   writeFileSync(join(dir, 'artikel.html'), page('ok'));
+  writeFileSync(join(dir, 'artikel', 'x.html'), page('ok'));
 });
 
 describe('findProblems', () => {
@@ -22,15 +25,40 @@ describe('findProblems', () => {
     expect(findProblems(dir)).toEqual([]);
   });
   it('flags a page without the disclaimer banner', () => {
-    writeFileSync(join(dir, 'index.html'), page('hi', false));
+    writeFileSync(join(dir, 'index.html'), page('hi', { banner: false }));
     expect(findProblems(dir).join('\n')).toContain('disclaimer');
   });
   it('flags a missing image', () => {
     writeFileSync(join(dir, 'index.html'), page('<img src="/img/missing.png">'));
     expect(findProblems(dir).join('\n')).toContain('/img/missing.png');
   });
-  it('flags a broken internal link', () => {
+  it('flags a broken root-relative link', () => {
     writeFileSync(join(dir, 'index.html'), page('<a href="/nope">x</a>'));
     expect(findProblems(dir).join('\n')).toContain('/nope');
+  });
+  it('flags a broken single-quoted link', () => {
+    writeFileSync(join(dir, 'index.html'), page("<a href='/in/sq'>x</a>"));
+    expect(findProblems(dir).join('\n')).toContain('/in/sq');
+  });
+  it('flags a broken own-domain absolute link', () => {
+    writeFileSync(join(dir, 'index.html'), page('<a href="https://abilsudarman.my.id/in/missing">x</a>'));
+    expect(findProblems(dir).join('\n')).toContain('/in/missing');
+  });
+  it('flags a broken relative link resolved against the page', () => {
+    writeFileSync(join(dir, 'artikel', 'y.html'), page('<a href="rel-missing">x</a>'));
+    writeFileSync(join(dir, 'index.html'), page('ok'));
+    expect(findProblems(dir).join('\n')).toContain('rel-missing');
+  });
+  it('ignores external, mailto and fragment links', () => {
+    writeFileSync(join(dir, 'index.html'), page('<a href="https://example.com/x">a</a><a href="mailto:a@b.c">b</a><a href="#top">c</a>'));
+    expect(findProblems(dir)).toEqual([]);
+  });
+  it('flags a page whose nav menu is not open by default', () => {
+    writeFileSync(join(dir, 'index.html'), page('ok', { nav: '<details class="nav__menu"></details>' }));
+    expect(findProblems(dir).join('\n')).toContain('nav menu');
+  });
+  it('fails when there are zero pages', () => {
+    const empty = mkdtempSync(join(tmpdir(), 'dist-empty-'));
+    expect(findProblems(empty).join('\n')).toContain('no HTML pages');
   });
 });
