@@ -6,6 +6,7 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
+import { FX_LAYER } from './effects';
 import type { Effects } from './quality';
 
 // The look of the poster: teal in the shadows, gold in the highlights, a soft vignette and a little film grain.
@@ -41,7 +42,8 @@ export interface Post {
 /** The post-processing chain. Each effect can be switched off on its own, which is how the frame-rate fallback sheds cost. */
 export function createPost(renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.PerspectiveCamera, fx: Effects): Post {
   const composer = new EffectComposer(renderer);
-  composer.addPass(new RenderPass(scene, camera));
+  const colour = new RenderPass(scene, camera);
+  composer.addPass(colour);
   const ao = new GTAOPass(scene, camera, 1, 1);
   ao.blendIntensity = 0.85;
   composer.addPass(ao);
@@ -52,6 +54,20 @@ export function createPost(renderer: THREE.WebGLRenderer, scene: THREE.Scene, ca
   const grade = new ShaderPass(GRADE);
   composer.addPass(grade);
   composer.addPass(new OutputPass());
+
+  // Only the colour pass draws glows, blobs, shafts and dust. The occlusion and depth-of-field passes re-render the scene with a
+  // flat material, which turns each sprite into a solid, slanted quad, so they render with that layer off.
+  const showEffectsIn = (pass: { render: (...args: never[]) => void }, show: boolean) => {
+    const render = pass.render.bind(pass) as (...args: unknown[]) => void;
+    (pass as unknown as { render: (...args: unknown[]) => void }).render = (...args) => {
+      if (show) camera.layers.enable(FX_LAYER);
+      else camera.layers.disable(FX_LAYER);
+      render(...args);
+    };
+  };
+  showEffectsIn(colour, true);
+  showEffectsIn(ao, false);
+  showEffectsIn(bokeh, false);
 
   let wantDof = fx.dof;
   const apply = (e: Effects) => { ao.enabled = e.ao; bloom.enabled = e.bloom; wantDof = e.dof; };

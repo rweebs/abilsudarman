@@ -1,12 +1,13 @@
 import * as THREE from 'three';
-import { dharmaMix, formation, groundHeight, poseAt } from './stage-math';
+import { cardShift, dharmaMix, formation, groundHeight, poseAt, viewOffsetX } from './stage-math';
 import { createArmies } from './scene/army';
 import { createBattle } from './scene/battle';
 import { createChariot } from './scene/chariot';
-import { createBattleEffects, createContext, createLightShafts, type Part } from './scene/effects';
+import { FX_LAYER, createBattleEffects, createContext, createLightShafts, type Part } from './scene/effects';
 import { createEnvironment } from './scene/environment';
 import { createDetail } from './scene/materials';
-import { dofFocus, handheld, shadowFrame } from './scene/motion';
+import { loadModels } from './scene/models';
+import { dofFocus, easeToward, handheld, shadowFrame } from './scene/motion';
 import { createPavilion } from './scene/pavilion';
 import { createPost, type Post } from './scene/post';
 import { degrade, qualityFor, shouldDropBloom, type Effects } from './scene/quality';
@@ -34,6 +35,7 @@ export function createScene({ canvas, reducedMotion, mobile, onLost }: SceneInit
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 400);
+  camera.layers.enable(FX_LAYER); // the colour pass draws glows, shafts and dust; the post passes switch it off (see post.ts)
   const detail = createDetail(mobile ? 128 : 256);
   const ctx = createContext(quality, camera, detail);
   const dharma = formation(quality.warriorsPerSide, 'dharma', 5);
@@ -76,6 +78,14 @@ export function createScene({ canvas, reducedMotion, mobile, onLost }: SceneInit
     setShadows(true);
   }
 
+  // The scene is complete and running with its procedural shapes; the real skinned models replace them if and when they arrive.
+  let disposed = false;
+  void loadModels().then((models) => {
+    if (!models || disposed) return;
+    for (const p of parts) p.upgrade?.(models);
+    if (renderer.shadowMap.enabled) setShadows(true);
+  });
+
   let post: Post | undefined;
   if (quality.bloom || quality.ao || quality.dof) post = createPost(renderer, scene, camera, fx);
   const frameMs: number[] = [];
@@ -87,9 +97,14 @@ export function createScene({ canvas, reducedMotion, mobile, onLost }: SceneInit
   let raf = 0;
   let last = 0;
   const look = new THREE.Vector3();
+  const size = { w: 1, h: 1 };
 
   const draw = () => {
     const pose = poseAt(progress);
+    // Keep the subject out from under the text card, which alternates sides from parva to parva.
+    const offset = viewOffsetX(size.w, cardShift(progress), mobile);
+    if (offset === 0) camera.clearViewOffset();
+    else camera.setViewOffset(size.w, size.h, offset, 0, size.w, size.h);
     const hand = handheld(time, reducedMotion ? 0 : 1);
     camera.position.set(pose.pos.x + hand.x, pose.pos.y + hand.y, pose.pos.z);
     look.set(pose.look.x, pose.look.y, pose.look.z);
@@ -127,7 +142,8 @@ export function createScene({ canvas, reducedMotion, mobile, onLost }: SceneInit
     const dt = Math.min(ms / 1000 || 0, 0.05);
     last = now;
     time += dt;
-    progress += (target - progress) * Math.min(1, dt * 3);
+    // Real elapsed time, not the capped step: the camera reaches each shot as fast on a slow machine as on a fast one.
+    progress = easeToward(progress, target, Math.min(ms / 1000 || 0, 0.5), 3);
     // Slow frames: shed the most expensive remaining effect, then judge the next stretch afresh.
     if (!mobile && ms > 0) {
       frameMs.push(ms);
@@ -157,6 +173,8 @@ export function createScene({ canvas, reducedMotion, mobile, onLost }: SceneInit
       if (reducedMotion) { progress = target; draw(); }
     },
     resize(w, h) {
+      size.w = w;
+      size.h = h;
       renderer.setSize(w, h, false);
       post?.setSize(w, h);
       camera.aspect = w / Math.max(h, 1);
@@ -169,6 +187,7 @@ export function createScene({ canvas, reducedMotion, mobile, onLost }: SceneInit
       else if (!reducedMotion) start();
     },
     dispose() {
+      disposed = true;
       stop();
       canvas.removeEventListener('webglcontextlost', onContextLost);
       scene.traverse((o) => {
@@ -183,6 +202,7 @@ export function createScene({ canvas, reducedMotion, mobile, onLost }: SceneInit
         }
       });
       for (const t of [ctx.glow, ctx.soft, ctx.shadow, ctx.shaft, detail.terrain, detail.cloth, detail.wood, detail.metal]) t.dispose();
+      for (const p of parts) p.dispose?.();
       probe.dispose();
       post?.dispose();
       renderer.dispose();

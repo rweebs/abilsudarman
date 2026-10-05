@@ -1,4 +1,4 @@
-import { scrollProgress } from '../lib/bowobharata/stage-math';
+import { parvaProgress } from '../lib/bowobharata/stage-math';
 import { atPageBottom } from '../lib/sky/states';
 import type { KurukshetraScene } from '../lib/bowobharata/KurukshetraScene';
 
@@ -64,10 +64,12 @@ if (root && canvas && parvas) {
       const live = scene;
 
       const onResize = () => live.resize(window.innerWidth, window.innerHeight);
+      const sections = Array.from(parvas.querySelectorAll<HTMLElement>('.bb-parva'));
       const onScroll = () => {
-        const rect = parvas.getBoundingClientRect();
+        // Each parva gets its own camera shot when its centre is at the viewport centre, however tall its section is.
+        const centers = sections.map((el) => { const r = el.getBoundingClientRect(); return r.top + window.scrollY + r.height / 2; });
         // The viewport centre never passes the last parva when the page bottoms out, so the bottom counts as the end.
-        live.setProgress(atPageBottom(window.scrollY, window.innerHeight, document.documentElement.scrollHeight) ? 1 : scrollProgress(window.scrollY, rect.top + window.scrollY, rect.height, window.innerHeight));
+        live.setProgress(atPageBottom(window.scrollY, window.innerHeight, document.documentElement.scrollHeight) ? 1 : parvaProgress(centers, window.scrollY + window.innerHeight / 2));
       };
       onResize();
       onScroll();

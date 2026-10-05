@@ -7,6 +7,10 @@ export interface Quality {
   embers: number;
   terrainSegments: number;
   skirmishPairs: number;
+  /** Ranks at the front of each army drawn as the real, baked-animation soldier; the rest stay procedural. */
+  realRanks: number;
+  /** Skirmish fighters (both sides together) drawn as the real soldier. */
+  realFighters: number;
   cavalry: number;
   elephants: number;
   shadowMap: number;
@@ -20,11 +24,11 @@ export interface Quality {
 export function qualityFor(mobile: boolean, dpr: number): Quality {
   return mobile
     ? {
-      warriorsPerSide: 700, arrows: 48, dust: 140, embers: 90, terrainSegments: 96, skirmishPairs: 28, cavalry: 8, elephants: 2,
+      warriorsPerSide: 700, arrows: 48, dust: 140, embers: 90, terrainSegments: 96, skirmishPairs: 28, realRanks: 2, realFighters: 24, cavalry: 8, elephants: 2,
       shadowMap: 0, bloom: false, shadows: false, ao: false, dof: false, pixelRatio: Math.min(dpr, 1.25),
     }
     : {
-      warriorsPerSide: 1800, arrows: 140, dust: 360, embers: 240, terrainSegments: 200, skirmishPairs: 90, cavalry: 28, elephants: 6,
+      warriorsPerSide: 1800, arrows: 140, dust: 360, embers: 240, terrainSegments: 200, skirmishPairs: 90, realRanks: 6, realFighters: 120, cavalry: 28, elephants: 6,
       shadowMap: 2048, bloom: true, shadows: true, ao: true, dof: true, pixelRatio: Math.min(dpr, 1.5),
     };
 }

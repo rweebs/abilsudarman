@@ -6,6 +6,7 @@ import { cavalryGeometry, elephantGeometry } from './creatures';
 import type { Part, SceneContext } from './effects';
 import { cavalryLanes, clashLayout, elephantSlots } from './motion';
 import { limbMaterial } from './rig';
+import { CLIP, getSoldierKit, soldierMesh, type SoldierSpot } from './soldiers';
 
 interface Placement { x: number; z: number; rotY: number; phase: number; scale?: number; color?: THREE.Color }
 
@@ -52,7 +53,8 @@ export function createBattle(ctx: SceneContext): Part {
     { x: p.x + p.gap / 2, z: p.z, rotY: Math.PI, phase: (p.phase / (Math.PI * 2) + 0.5) % 1, color: SIDE.adharma.tint },
   ]);
   const fight = limbMaterial(uTime, { swing: 0.55, speed: 4.4, phases: [0, 0, Math.PI], bob: 0.03, lunge: 0.28, roughness: 0.7, metalness: 0.25 });
-  group.add(instanced(soldierGeometry(), fight, fighters, rnd));
+  const fighterMesh = instanced(soldierGeometry(), fight, fighters, rnd);
+  group.add(fighterMesh);
 
   for (const side of ['dharma', 'adharma'] as const) {
     const s = SIDE[side];
@@ -72,5 +74,27 @@ export function createBattle(ctx: SceneContext): Part {
     group.add(instanced(elephantGeometry(s.cloth, s.trim), walk, elephantSlots(quality.elephants, side).map((l) => ({ ...l, rotY: facing, scale: 1.05 })), rnd));
   }
 
-  return { object: group, update() { /* animated in the shader through ctx.uTime */ } };
+  return {
+    object: group,
+    update() { /* animated in the shader through ctx.uTime */ },
+    // The real soldier takes over the first pairs, throwing real punches; their procedural stand-ins are scaled to nothing.
+    upgrade(models) {
+      const kit = getSoldierKit(models, ctx.uTime);
+      const realPairs = Math.min(pairs.length, Math.floor(quality.realFighters / 2));
+      if (!kit || realPairs === 0) return;
+      const hidden = new THREE.Matrix4().makeScale(0, 0, 0);
+      const spots: SoldierSpot[] = [];
+      pairs.slice(0, realPairs).forEach((p, i) => {
+        fighterMesh.setMatrixAt(2 * i, hidden);
+        fighterMesh.setMatrixAt(2 * i + 1, hidden);
+        const turn = p.phase / (Math.PI * 2);
+        spots.push(
+          { x: p.x - p.gap / 2, z: p.z, rotY: 0, phase: turn, clip: CLIP.punch, color: new THREE.Color('#6f8be0') },
+          { x: p.x + p.gap / 2, z: p.z, rotY: Math.PI, phase: (turn + 0.5) % 1, clip: CLIP.punch, color: new THREE.Color('#c4505c') },
+        );
+      });
+      fighterMesh.instanceMatrix.needsUpdate = true;
+      group.add(soldierMesh(kit, spots, groundHeight));
+    },
+  };
 }

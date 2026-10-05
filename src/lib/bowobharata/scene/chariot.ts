@@ -4,6 +4,11 @@ import { garment, hangingChain, horse, humanFigure, strand, type HorseRig } from
 import { canvasTexture, contactShadow, glowSprite, wavingCloth, type Part, type SceneContext } from './effects';
 import type { Detail } from './materials';
 import { springStep } from './motion';
+import { dressHero } from './hero';
+import { instantiate, type Rig } from './models';
+
+// A white team: the one model is repainted per material, keeping its own shading and its dark hooves and eyes.
+const HORSE_TINT = { Main: '#ebe6da', Main_Light: '#f8f5ee', Main_Dark: '#cdc5b4', Hair: '#d8d1c0', Muzzle: '#bba99c', Hooves: '#2b221b' };
 
 /** Drives a chain of joints with damped springs: each joint chases its parent's angle plus a wind push that grows along the chain. */
 function chainDriver(joints: THREE.Group[]) {
@@ -216,7 +221,9 @@ export function createChariot(ctx: SceneContext): Part {
   // Reins from Krishna's hand to each horse's bit.
   const hand = k.reinHand.clone().add(k.group.position);
   const reins = horses.flatMap((h) => [hand, new THREE.Vector3(3.1 + 0.6 + 0.74, 1.5 + 0.2, h.group.position.z)]);
-  root.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(reins), new THREE.LineBasicMaterial({ color: '#e8c67c' })));
+  const reinsLine = new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(reins), new THREE.LineBasicMaterial({ color: '#e8c67c' }));
+  reinsLine.frustumCulled = false;
+  root.add(reinsLine);
 
   // The chariot's banner, streaming back from a tall pole.
   root.add(mesh(new THREE.CylinderGeometry(0.04, 0.04, 4.4, 6), M.gold, -1.05, deck + 2.2, 0));
@@ -231,11 +238,41 @@ export function createChariot(ctx: SceneContext): Part {
   const scarfDriver = chainDriver(k.scarfJoints);
   let last = 0;
 
+  // Once the real, skinned models have loaded they replace the procedural horses and bodies; the reins follow each animated head.
+  const realHorses: Rig[] = [];
+  const heroes: Rig[] = [];
+  const reinLine = reinsLine;
+  const headPos = new THREE.Vector3();
+
   return {
     object: root,
+    upgrade(models) {
+      horses.forEach((h, i) => {
+        const rig = instantiate(models.horse, { height: 2.1, faceBones: ['Tail1', 'Head'] });
+        rig.tint(HORSE_TINT);
+        rig.root.position.set(3.1 + 0.25, 0, h.group.position.z);
+        rig.play(i % 2 === 0 ? 'Idle' : 'Idle_2', i * 0.8);
+        root.add(rig.root);
+        h.group.visible = false;
+        realHorses.push(rig);
+      });
+      heroes.push(dressHero(k.group, models, 'Spell_Simple_Idle_Loop', '#2f4c8c'), dressHero(a, models, 'Pistol_Aim_Neutral', '#b07e5a'));
+    },
     update(time, mix) {
       const dt = Math.min(0.05, Math.max(0.001, time - last));
       last = time;
+      heroes.forEach((rig) => rig.mixer.update(dt));
+      realHorses.forEach((rig, i) => {
+        rig.mixer.update(dt);
+        const head = rig.bone('Head');
+        if (head) {
+          head.getWorldPosition(headPos);
+          root.worldToLocal(headPos);
+          const attr = reinLine.geometry.getAttribute('position') as THREE.BufferAttribute;
+          attr.setXYZ(i * 2 + 1, headPos.x + 0.25, headPos.y - 0.1, headPos.z);
+          attr.needsUpdate = true;
+        }
+      });
       scarfDriver(Math.sin(time * 1.9) * 0.3 + Math.sin(time * 0.7 + 1) * 0.15, dt);
       k.wheelOfLight.rotation.z = time * 2.2;
       k.wheelOfLight.position.y = 2.25 + Math.sin(time * 1.4) * 0.05;

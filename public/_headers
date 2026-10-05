@@ -12,6 +12,9 @@
 /img/*
   Cache-Control: public, max-age=86400, must-revalidate
 
+/models/*
+  Cache-Control: public, max-age=604800
+
 /thumb/*
   Cache-Control: public, max-age=2592000
 

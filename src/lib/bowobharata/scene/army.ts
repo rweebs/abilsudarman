@@ -1,9 +1,10 @@
 import * as THREE from 'three';
 import { mulberry32 } from '../../sky/rng';
-import { FORMATION_FILES, groundHeight, type Slot } from '../stage-math';
+import { FORMATION_FILES, frontRankCount, groundHeight, type Slot } from '../stage-math';
 import { soldierGeometry } from './anatomy';
 import { canvasTexture, wavingCloth, type Part, type SceneContext } from './effects';
 import { limbMaterial } from './rig';
+import { CLIP, getSoldierKit, soldierMesh, type SoldierKit, type SoldierSpot } from './soldiers';
 
 function emblem(side: 'dharma' | 'adharma'): THREE.CanvasTexture {
   return canvasTexture(128, 96, (g, w, h) => {
@@ -34,7 +35,7 @@ function emblem(side: 'dharma' | 'adharma'): THREE.CanvasTexture {
   });
 }
 
-function army(side: 'dharma' | 'adharma', slots: Slot[], ctx: SceneContext, geometry: THREE.BufferGeometry, material: THREE.Material): THREE.Group {
+function army(side: 'dharma' | 'adharma', slots: Slot[], ctx: SceneContext, geometry: THREE.BufferGeometry, material: THREE.Material): { group: THREE.Group; mesh: THREE.InstancedMesh } {
   const g = new THREE.Group();
   const rnd = mulberry32(side === 'dharma' ? 11 : 23);
   const mesh = new THREE.InstancedMesh(geometry, material, slots.length);
@@ -79,7 +80,7 @@ function army(side: 'dharma' | 'adharma', slots: Slot[], ctx: SceneContext, geom
       g.add(p, cloth);
     }
   }
-  return g;
+  return { group: g, mesh };
 }
 
 /** Both armies drawn up along the field: Pandawa in blue and gold on the left, Kurawa in crimson and black on the right. */
@@ -88,6 +89,37 @@ export function createArmies(ctx: SceneContext, dharma: Slot[], adharma: Slot[])
   // Scissoring legs, a bob at each step, and the front ranks leaning forward; every soldier out of step with the next.
   const material = limbMaterial(ctx.uTime, { swing: 0.5, speed: 3.4, phases: [0, 0, Math.PI], bob: 0.04, lean: 0.28, roughness: 0.65, metalness: 0.3 });
   // Each side gets its own geometry copy, because the per-instance phase attribute lives on the geometry.
-  group.add(army('dharma', dharma, ctx, soldierGeometry(), material), army('adharma', adharma, ctx, soldierGeometry(), material));
-  return { object: group, update() { /* animated in the shader through ctx.uTime */ } };
+  const sides = [
+    { side: 'dharma' as const, slots: dharma, built: army('dharma', dharma, ctx, soldierGeometry(), material) },
+    { side: 'adharma' as const, slots: adharma, built: army('adharma', adharma, ctx, soldierGeometry(), material) },
+  ];
+  for (const s of sides) group.add(s.built.group);
+
+  // Once the real soldier has loaded, the front ranks, the ones the camera sees closely, are drawn as it: its own skeleton animation,
+  // baked into textures and played by the GPU. Their procedural stand-ins are scaled to nothing; the ranks behind stay as they are.
+  let kit: SoldierKit | null = null;
+  return {
+    object: group,
+    update() { /* animated in the shader through ctx.uTime */ },
+    upgrade(models) {
+      kit = getSoldierKit(models, ctx.uTime);
+      if (!kit) return;
+      const hidden = new THREE.Matrix4().makeScale(0, 0, 0);
+      const rnd = mulberry32(77);
+      for (const { side, slots, built } of sides) {
+        const n = frontRankCount(ctx.quality.realRanks, slots.length);
+        if (n === 0) continue;
+        const tint = new THREE.Color(side === 'dharma' ? '#6f8be0' : '#c4505c');
+        const facing = side === 'dharma' ? 0 : Math.PI;
+        const spots: SoldierSpot[] = slots.slice(0, n).map((s) => ({
+          x: s.x, z: s.z, rotY: facing + (rnd() - 0.5) * 0.3, phase: s.phase / (Math.PI * 2),
+          clip: rnd() < 0.12 ? CLIP.idle : CLIP.walk, color: tint,
+        }));
+        for (let i = 0; i < n; i++) built.mesh.setMatrixAt(i, hidden);
+        built.mesh.instanceMatrix.needsUpdate = true;
+        group.add(soldierMesh(kit, spots, groundHeight));
+      }
+    },
+    dispose() { kit?.dispose(); },
+  };
 }

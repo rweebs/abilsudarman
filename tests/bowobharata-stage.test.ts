@@ -26,6 +26,11 @@ describe('stage script: nothing heavy before an interaction', () => {
     expect(js).toContain("import { atPageBottom } from '../lib/sky/states'");
     expect(js).toMatch(/atPageBottom\(window\.scrollY, window\.innerHeight, document\.documentElement\.scrollHeight\) \? 1 :/);
   });
+  it('drives the camera from the real section centres, so each parva gets its own shot whatever its height', () => {
+    expect(js).toContain("querySelectorAll<HTMLElement>('.bb-parva')");
+    expect(js).toContain('parvaProgress(centers, window.scrollY + window.innerHeight / 2)');
+    expect(js).not.toContain('scrollProgress');
+  });
   it('wakes on the first real interaction or a long idle, like the home sky', () => {
     expect(js).toMatch(/WAKE_EVENTS = \['pointerdown'/);
     expect(js).toMatch(/IDLE_FALLBACK_MS = 8000/);

@@ -17,6 +17,14 @@ export function arrowPhase(elapsed: number, duration: number, stick: number): Ar
 
 // ------------------------------------------------------------ camera
 
+/**
+ * Moves `current` towards `target` by an exponential ease that depends only on elapsed time, never on how many frames it took:
+ * the camera reaches each shot in the same real time on a slow machine as on a fast one.
+ */
+export function easeToward(current: number, target: number, dt: number, rate: number): number {
+  return target + (current - target) * Math.exp(-rate * Math.max(0, dt));
+}
+
 /** A few slow, out-of-step sine waves: the slight drift of a camera held by a person. Zero when `amount` is zero. */
 export function handheld(time: number, amount = 1): { x: number; y: number; roll: number } {
   if (amount === 0) return { x: 0, y: 0, roll: 0 };

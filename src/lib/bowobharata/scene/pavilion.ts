@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { PAVILION, groundHeight } from '../stage-math';
 import { garment, humanFigure, strand } from './anatomy';
+import { dressHero } from './hero';
+import type { Rig } from './models';
 import { canvasTexture, contactShadow, glowSprite, wavingCloth, type Part, type SceneContext } from './effects';
 
 const std = (color: string, roughness = 0.6, metalness = 0, extra: THREE.MeshStandardMaterialParameters = {}) =>
@@ -123,9 +125,13 @@ export function createPavilion(ctx: SceneContext): Part {
     },
   });
   const s = fig.group;
-  s.add(garment([[0.25, 0.0], [0.44, 0.12], [0.36, 0.32], [0.2, 0.42]], robe, 1));
-  s.add(garment([[0.2, 0.3], [0.215, 0.5], [0.235, 0.7], [0.185, 0.86], [0.07, 0.92]], robe, 0.72));
-  s.add(strand([[0.05, 0.88, 0.22], [0.16, 0.75, 0.1], [0.18, 0.6, -0.05], [0.06, 0.45, -0.22]], 0.03, gold));
+  // These pieces are shaped for the cross-legged pose, so they give way to the real seated mannequin when it arrives.
+  const crossLegged = [
+    garment([[0.25, 0.0], [0.44, 0.12], [0.36, 0.32], [0.2, 0.42]], robe, 1),
+    garment([[0.2, 0.3], [0.215, 0.5], [0.235, 0.7], [0.185, 0.86], [0.07, 0.92]], robe, 0.72),
+    strand([[0.05, 0.88, 0.22], [0.16, 0.75, 0.1], [0.18, 0.6, -0.05], [0.06, 0.45, -0.22]], 0.03, gold),
+  ];
+  s.add(...crossLegged);
   const beard = mesh(new THREE.ConeGeometry(0.06, 0.16, 10), hair, 0.07, 1.56 + fig.lift, 0);
   beard.rotation.z = Math.PI;
   const scalp = mesh(new THREE.SphereGeometry(0.105, 16, 12), hair, -0.025, 1.72 + fig.lift, 0);
@@ -160,9 +166,25 @@ export function createPavilion(ctx: SceneContext): Part {
   light.position.set(1.2, floor + 2, 0);
   root.add(light);
 
+  // Once the real mannequin has loaded, Sengkuni sits on a throne and talks with his hands, as the animation library has it.
+  let sengkuni: Rig | undefined;
+  let last = 0;
+
   return {
     object: root,
+    upgrade(models) {
+      for (const piece of crossLegged) piece.visible = false;
+      sengkuni = dressHero(s, models, 'Sitting_Talking_Loop', '#4a3270');
+      const seat = mesh(new THREE.BoxGeometry(0.62, 0.46, 0.66), dark, -0.1, 0.23, 0);
+      const cushion = mesh(new THREE.BoxGeometry(0.64, 0.06, 0.68), robe, -0.1, 0.49, 0);
+      const back = mesh(new THREE.BoxGeometry(0.1, 0.95, 0.7), lacquer, -0.46, 0.7, 0);
+      const crest = mesh(new THREE.BoxGeometry(0.14, 0.12, 0.78), gold, -0.46, 1.2, 0);
+      s.add(seat, cushion, back, crest);
+    },
     update(time, mix) {
+      const dt = Math.min(0.05, Math.max(0.001, time - last));
+      last = time;
+      sengkuni?.mixer.update(dt);
       dice.forEach((d, i) => {
         d.rotation.x = time * (1.1 + i * 0.35);
         d.rotation.y = time * 0.6 + i;

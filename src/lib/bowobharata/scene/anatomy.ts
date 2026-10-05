@@ -208,6 +208,8 @@ export function humanFigure(o: FigureOptions): FigureRig {
   };
   const leftHand = arm(o.arms?.left ?? DEFAULT_LEFT);
   const rightHand = arm(o.arms?.right ?? DEFAULT_RIGHT);
+  // Everything built so far is the body; garments and gear added by the caller are not, so a skinned body can replace just this.
+  group.traverse((n) => { if (n !== group) n.userData.body = true; });
   return { group, head, leftHand, rightHand, lift };
 }
 

@@ -6,6 +6,7 @@ import wide from '../assets/bowobharata/poster-wide.jpg';
 import krishna from '../assets/bowobharata/krishna.jpg';
 import sengkuni from '../assets/bowobharata/sengkuni.jpg';
 import { FRAMING, PAGE, PARVAS, POSTERS, parvaEvents } from '../lib/bowobharata';
+import { CREDITS } from '../lib/bowobharata/model-credits';
 import { eventUrl, formatDate } from '../lib/linimasa';
 import { DISCLAIMER, SITE } from '../lib/site';
 const ld = { '@context': 'https://schema.org', '@type': 'WebPage', name: PAGE.title, url: `${SITE.url}/bowobharata`, inLanguage: 'id', description: PAGE.description };
@@ -59,6 +60,13 @@ const ld = { '@context': 'https://schema.org', '@type': 'WebPage', name: PAGE.ti
         </section>
       ))}
     </div>
+
+    <section class="bb-credits muted" aria-label="Kredit model 3D">
+      <h2 class="bb-credits__title">Kredit model 3D</h2>
+      <ul>
+        {CREDITS.map((c) => <li>{c.text} <a href={c.source} rel="noopener">Sumber</a></li>)}
+      </ul>
+    </section>
 
     <p class="muted">Seluruh halaman ini adalah kiasan dan pendapat saya. Koreksi atau jawaban: <a href="/hak-jawab">Hak jawab</a> atau <a href={`mailto:${SITE.correctionsEmail}`}>{SITE.correctionsEmail}</a>.</p>
   </div>

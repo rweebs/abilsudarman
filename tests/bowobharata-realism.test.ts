@@ -1,7 +1,11 @@
 import { describe, it, expect } from 'vitest';
+import * as THREE from 'three';
+import { readFileSync } from 'node:fs';
 import { degrade, qualityFor } from '../src/lib/bowobharata/scene/quality';
+import { FX_LAYER, contactShadow, glowSprite } from '../src/lib/bowobharata/scene/effects';
+import { FORMATION_FILES, formation, frontRankCount } from '../src/lib/bowobharata/stage-math';
 import {
-  arrowPhase, cavalryLanes, clashLayout, dofFocus, elephantSlots, handheld, shadowFrame, springStep,
+  arrowPhase, cavalryLanes, clashLayout, dofFocus, easeToward, elephantSlots, handheld, shadowFrame, springStep,
 } from '../src/lib/bowobharata/scene/motion';
 import { heightField, normalFromHeight, weaveField } from '../src/lib/bowobharata/scene/texturegen';
 
@@ -15,6 +19,57 @@ describe('quality tiers carry the new effects', () => {
     expect(p.cavalry).toBeLessThan(d.cavalry);
     expect(p.elephants).toBeLessThan(d.elephants);
     expect(p.elephants).toBeGreaterThan(0);
+  });
+});
+
+describe('effect layer', () => {
+  const tex = new THREE.Texture();
+  const camera = () => new THREE.PerspectiveCamera();
+  it('keeps glow sprites and ground blobs out of the passes that re-render the scene with a flat material', () => {
+    for (const o of [glowSprite(tex, '#fff', 2), contactShadow(tex, 3, 3)]) {
+      const plain = camera(); // layer 0 only: what the ambient-occlusion and depth-of-field passes see
+      expect(o.layers.test(plain.layers)).toBe(false);
+      const colour = camera();
+      colour.layers.enable(FX_LAYER); // what the main colour pass sees
+      expect(o.layers.test(colour.layers)).toBe(true);
+    }
+  });
+  it('uses a layer that real geometry is not on', () => {
+    expect(FX_LAYER).not.toBe(0);
+    expect(new THREE.Mesh().layers.isEnabled(FX_LAYER)).toBe(false);
+  });
+  it('is applied wherever the effects are made, and the post chain shows it only to the colour pass', () => {
+    const effects = readFileSync('src/lib/bowobharata/scene/effects.ts', 'utf8');
+    expect(effects).toContain('fxLayer(new THREE.Points(dustGeo');
+    expect(effects).toContain('fxLayer(new THREE.Points(emberGeo');
+    expect(effects).toMatch(/fxLayer\(new THREE\.Mesh\(new THREE\.PlaneGeometry\(7 \+ rnd\(\) \* 6, 60\)/);
+    const post = readFileSync('src/lib/bowobharata/scene/post.ts', 'utf8');
+    expect(post).toContain('camera.layers.enable(FX_LAYER)');
+    expect(post).toContain('camera.layers.disable(FX_LAYER)');
+    expect(readFileSync('src/lib/bowobharata/KurukshetraScene.ts', 'utf8')).toContain('camera.layers.enable(FX_LAYER)');
+  });
+});
+
+describe('real soldiers in the front ranks', () => {
+  it('gives desktops more real ranks than phones, and every device at least one', () => {
+    const d = qualityFor(false, 2);
+    const p = qualityFor(true, 3);
+    expect(p.realRanks).toBeGreaterThanOrEqual(1);
+    expect(d.realRanks).toBeGreaterThan(p.realRanks);
+    expect(p.realFighters).toBeLessThan(d.realFighters);
+  });
+  it('counts the soldiers in the front ranks, never more than the army has', () => {
+    expect(frontRankCount(6, 1800)).toBe(6 * FORMATION_FILES);
+    expect(frontRankCount(2, 700)).toBe(2 * FORMATION_FILES);
+    expect(frontRankCount(6, 100)).toBe(100);
+    expect(frontRankCount(0, 1800)).toBe(0);
+  });
+  it('is the same ranks that formation() places at the front: rank 0 is the line nearest the centre', () => {
+    const slots = formation(2 * FORMATION_FILES, 'adharma', 5);
+    const front = slots.slice(0, FORMATION_FILES).map((s) => s.x);
+    const second = slots.slice(FORMATION_FILES, 2 * FORMATION_FILES).map((s) => s.x);
+    expect(Math.max(...front.map(Math.abs))).toBeLessThan(Math.min(...second.map(Math.abs)) + 0.8);
+    expect(Math.min(...front)).toBeGreaterThan(3.5);
   });
 });
 
@@ -48,6 +103,30 @@ describe('arrow lifecycle', () => {
   });
   it('reports how far through the stuck period it is, for the impact dust', () => {
     expect(arrowPhase(2.75, 2, 1.5)).toEqual({ phase: 'stuck', t: 0.5 });
+  });
+});
+
+describe('easing towards a target', () => {
+  it('moves part of the way, never overshooting, and not at all when no time has passed', () => {
+    const x = easeToward(0, 1, 1 / 60, 3);
+    expect(x).toBeGreaterThan(0);
+    expect(x).toBeLessThan(0.1);
+    expect(easeToward(0.4, 1, 0, 3)).toBe(0.4);
+    for (const dt of [0.001, 0.016, 0.1, 0.5, 5]) expect(easeToward(0, 1, dt, 3)).toBeLessThanOrEqual(1);
+  });
+  it('is independent of the frame rate: two half-steps land where one whole step does', () => {
+    const whole = easeToward(0.2, 0.9, 0.2, 3);
+    const halves = easeToward(easeToward(0.2, 0.9, 0.1, 3), 0.9, 0.1, 3);
+    expect(halves).toBeCloseTo(whole, 10);
+  });
+  it('arrives in about the same real time on a slow machine as on a fast one', () => {
+    const run = (fps: number) => { let p = 0; for (let i = 0; i < fps * 2; i++) p = easeToward(p, 1, 1 / fps, 3); return p; };
+    expect(run(2)).toBeCloseTo(run(60), 6);
+    expect(run(60)).toBeGreaterThan(0.99);
+  });
+  it('also works downwards and is a no-op on the target', () => {
+    expect(easeToward(1, 0, 0.1, 3)).toBeLessThan(1);
+    expect(easeToward(0.5, 0.5, 0.1, 3)).toBe(0.5);
   });
 });
 

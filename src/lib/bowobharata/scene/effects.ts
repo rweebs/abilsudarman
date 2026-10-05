@@ -3,10 +3,18 @@ import { mulberry32 } from '../../sky/rng';
 import { arrowArc, type Slot } from '../stage-math';
 import type { Detail } from './materials';
 import { arrowPhase } from './motion';
+import type { LoadedModels } from './models';
 import type { Quality } from './quality';
 
 /** One piece of the scene: an object to add, and a per-frame update (time in seconds, dharma palette mix 0..1). */
-export interface Part { object: THREE.Object3D; update(time: number, mix: number): void }
+export interface Part {
+  object: THREE.Object3D;
+  update(time: number, mix: number): void;
+  /** Called once the skinned models have loaded: swap the procedural shapes for the real ones. Never called if loading fails. */
+  upgrade?(models: LoadedModels): void;
+  /** Frees what the scene's own traversal cannot reach, such as baked animation textures. */
+  dispose?(): void;
+}
 
 /** Shared by every part: the quality tier, the camera, one clock uniform for all shaders, and procedural textures. */
 export interface SceneContext {
@@ -63,6 +71,17 @@ export function createContext(quality: Quality, camera: THREE.Camera, detail: De
   };
 }
 
+/**
+ * The layer for everything that only the main colour pass should draw: glows, blobs, shafts and dust. The ambient-occlusion and
+ * depth-of-field passes re-render the scene with one flat material, which draws a sprite as a solid, un-turned quad (a big
+ * dark slanted panel), so they must not see these. The camera has this layer on only while the colour pass renders.
+ */
+export const FX_LAYER = 1;
+export function fxLayer<T extends THREE.Object3D>(o: T): T {
+  o.layers.set(FX_LAYER);
+  return o;
+}
+
 /** A soft light halo that always faces the camera; additive halos are what the bloom pass (or the eye, on phones) reads as glow. */
 export function glowSprite(tex: THREE.Texture, color: string, size: number, opacity = 1, additive = true): THREE.Sprite {
   const s = new THREE.Sprite(new THREE.SpriteMaterial({
@@ -70,7 +89,7 @@ export function glowSprite(tex: THREE.Texture, color: string, size: number, opac
     blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending,
   }));
   s.scale.setScalar(size);
-  return s;
+  return fxLayer(s);
 }
 
 /** A dark blot on the ground under an object, so it sits on the terrain instead of floating above it. */
@@ -78,7 +97,7 @@ export function contactShadow(tex: THREE.Texture, w: number, d: number): THREE.M
   const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d), new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false }));
   m.rotation.x = -Math.PI / 2;
   m.position.y = 0.04;
-  return m;
+  return fxLayer(m);
 }
 
 /** A banner hung from its left edge (x = 0) that ripples in the wind; the wave grows towards the free edge. */
@@ -161,7 +180,7 @@ export function createBattleEffects(ctx: SceneContext, dharma: Slot[], adharma: 
   const dustGeo = new THREE.BufferGeometry();
   dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
   const dustMat = nearFade(new THREE.PointsMaterial({ map: ctx.soft, size: 2.4, color: '#b39472', transparent: true, opacity: 0.3, depthWrite: false }), 3, 11);
-  group.add(new THREE.Points(dustGeo, dustMat));
+  group.add(fxLayer(new THREE.Points(dustGeo, dustMat)));
 
   // Embers rising from the clash line and from Sengkuni's braziers.
   const emberPos = new Float32Array(quality.embers * 3);
@@ -175,7 +194,7 @@ export function createBattleEffects(ctx: SceneContext, dharma: Slot[], adharma: 
   const emberGeo = new THREE.BufferGeometry();
   emberGeo.setAttribute('position', new THREE.BufferAttribute(emberPos, 3));
   const emberMat = nearFade(new THREE.PointsMaterial({ map: ctx.glow, size: 0.35, color: '#ffae4a', transparent: true, opacity: 0.9, depthWrite: false, blending: THREE.AdditiveBlending }), 2, 7);
-  group.add(new THREE.Points(emberGeo, emberMat));
+  group.add(fxLayer(new THREE.Points(emberGeo, emberMat)));
 
   // Flashes where the lines meet: brief bright pulses, like steel catching the light.
   const flashes = Array.from({ length: 8 }, () => {
@@ -249,7 +268,7 @@ export function createLightShafts(ctx: SceneContext, sunAzimuth: THREE.Vector2):
   const count = ctx.quality.shadows ? 11 : 7;
   const shafts = Array.from({ length: count }, (_, i) => {
     const mat = new THREE.MeshBasicMaterial({ map: ctx.shaft, color: '#ffd9a0', transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending, fog: false });
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(7 + rnd() * 6, 60), mat);
+    const m = fxLayer(new THREE.Mesh(new THREE.PlaneGeometry(7 + rnd() * 6, 60), mat));
     const spread = (i / (count - 1) - 0.5) * 1.1;
     const az = Math.atan2(sunAzimuth.x, sunAzimuth.y) + spread;
     const r = 120 + rnd() * 40;

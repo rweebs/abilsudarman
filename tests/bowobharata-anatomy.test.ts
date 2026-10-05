@@ -71,6 +71,23 @@ describe('human figure', () => {
   });
 });
 
+describe('body tagging', () => {
+  it('marks the body parts so a skinned body can replace them, but never the figure group that carries the garments', () => {
+    const f = humanFigure({ skin: mat(), cloth: mat() });
+    expect(f.group.userData.body).toBeUndefined();
+    const parts: THREE.Object3D[] = [];
+    f.group.traverse((n) => { if (n !== f.group) parts.push(n); });
+    expect(parts.length).toBeGreaterThan(5);
+    for (const n of parts) expect(n.userData.body, n.type).toBe(true);
+  });
+  it('does not mark things added to the group afterwards', () => {
+    const f = humanFigure({ skin: mat(), cloth: mat() });
+    const hat = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), mat());
+    f.group.add(hat);
+    expect(hat.userData.body).toBeUndefined();
+  });
+});
+
 describe('soldier', () => {
   it('is one merged, low-cost mesh', () => {
     const g = soldierGeometry();

@@ -280,4 +280,7 @@ h1, h2, h3 { line-height: 1.2; }
 .bb-episode { font-style: italic; color: var(--accent-amber); }
 .bb-events { list-style: none; margin: 0.75rem 0 0; padding: 0; display: grid; gap: 0.35rem; }
 .bb-events time { color: var(--text-secondary); font-size: 0.85rem; margin-right: 0.5rem; }
+.bb-credits { margin: 2rem 0 1rem; font-size: 0.85rem; }
+.bb-credits__title { font-size: 1rem; margin: 0 0 0.4rem; }
+.bb-credits ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.3rem; }
 @media (min-width: 700px) { .bb-duo { grid-template-columns: 1fr 1fr; } .bb-parva:nth-child(even) { justify-content: flex-end; } }
