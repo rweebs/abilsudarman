@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import { AUTOPLAY_PATHS, TENTANG_SONG, THEME_SONG, embedUrl, musicUrl, shouldAutoplay, songFor } from '../src/lib/theme-song';
+import { AUTOPLAY_PATHS, BOWOBHARATA_SONG, TENTANG_SONG, THEME_SONG, embedUrl, musicUrl, shouldAutoplay, songFor } from '../src/lib/theme-song';
 
 const read = (p: string) => readFileSync(p, 'utf8');
 
@@ -21,16 +21,18 @@ describe('theme song urls', () => {
 });
 
 describe('song per page and autoplay', () => {
-  it('plays its own song on /tentang and the theme song everywhere else', () => {
+  it('plays its own song on /tentang and /bowobharata and the theme song everywhere else', () => {
     expect(TENTANG_SONG.videoId).toBe('WbkooeqB7wQ');
     expect(musicUrl(TENTANG_SONG.videoId)).toBe('https://music.youtube.com/watch?v=WbkooeqB7wQ');
     expect(songFor('/tentang')).toBe(TENTANG_SONG);
+    expect(BOWOBHARATA_SONG.videoId).toBe('OgKCAkjlHDI');
+    expect(musicUrl(BOWOBHARATA_SONG.videoId)).toBe('https://music.youtube.com/watch?v=OgKCAkjlHDI');
+    expect(songFor('/bowobharata')).toBe(BOWOBHARATA_SONG);
     for (const p of ['/', '/artikel', '/linimasa', '/tentang/x']) expect(songFor(p), p).toBe(THEME_SONG);
   });
-  it('autoplays only on the home page and /tentang', () => {
-    expect([...AUTOPLAY_PATHS]).toEqual(['/', '/tentang']);
-    expect(shouldAutoplay('/')).toBe(true);
-    expect(shouldAutoplay('/tentang')).toBe(true);
+  it('autoplays only on the home page, /tentang and /bowobharata', () => {
+    expect([...AUTOPLAY_PATHS]).toEqual(['/', '/tentang', '/bowobharata']);
+    for (const p of ['/', '/tentang', '/bowobharata']) expect(shouldAutoplay(p), p).toBe(true);
     for (const p of ['/artikel', '/bukti', '/linimasa', '/videos']) expect(shouldAutoplay(p), p).toBe(false);
   });
 });

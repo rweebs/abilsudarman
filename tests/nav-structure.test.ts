@@ -13,7 +13,7 @@ describe('menu structure', () => {
   it('groups media and about links, none empty', () => {
     const group = (label: string) => NAV_GROUPS.find((e) => e.label === label) as { items: { href: string }[] };
     expect(group('Media').items.map((i) => i.href)).toEqual(['/videos', '/tiktok', '/buku']);
-    expect(group('Tentang').items.map((i) => i.href)).toEqual(['/tentang', '/#kontribusi', '/pagespeed', '/disclaimer']);
+    expect(group('Tentang').items.map((i) => i.href)).toEqual(['/tentang', '/bowobharata', '/#kontribusi', '/pagespeed', '/disclaimer']);
     for (const e of NAV_GROUPS) if ('items' in e) expect(e.items.length, e.label).toBeGreaterThan(0);
   });
   it('lists each page exactly once and every link points at a real page or anchor', () => {

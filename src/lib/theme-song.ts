@@ -15,13 +15,22 @@ export const TENTANG_SONG: Song = {
   artist: 'Maher Zain',
 };
 
-/** The song for a page: /tentang plays its own, every other page the theme song. */
+// The Bowobharata page has its own song too.
+export const BOWOBHARATA_SONG: Song = {
+  videoId: 'OgKCAkjlHDI',
+  title: 'Mahabharat Titel Flute',
+  artist: 'Vinay Keshari',
+};
+
+/** The song for a page: /tentang and /bowobharata play their own, every other page the theme song. */
 export function songFor(path: string): Song {
-  return path === '/tentang' ? TENTANG_SONG : THEME_SONG;
+  if (path === '/tentang') return TENTANG_SONG;
+  if (path === '/bowobharata') return BOWOBHARATA_SONG;
+  return THEME_SONG;
 }
 
 /** Pages whose song starts by itself on the visitor's first tap, click or key press (browsers block sound at page load). */
-export const AUTOPLAY_PATHS: readonly string[] = ['/', '/tentang'];
+export const AUTOPLAY_PATHS: readonly string[] = ['/', '/tentang', '/bowobharata'];
 export const shouldAutoplay = (path: string) => AUTOPLAY_PATHS.includes(path);
 
 /** Privacy-enhanced embed that autoplays (after a click) and loops the single video. */
