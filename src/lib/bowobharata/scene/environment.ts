@@ -9,7 +9,7 @@ const DAWN = { top: '#3d6fa9', horizon: '#f5cf90', ground: '#5c4834', sun: '#fff
 const c = (hex: string) => new THREE.Color(hex);
 const mixColor = (out: THREE.Color, a: string, b: string, t: number) => out.copy(c(a)).lerp(c(b), t);
 
-const SKY_VERTEX = `
+export const SKY_VERTEX = `
 varying vec3 vDir;
 void main() {
   vDir = position;
@@ -17,7 +17,7 @@ void main() {
   gl_Position = p.xyww;
 }`;
 
-const SKY_FRAGMENT = `
+export const SKY_FRAGMENT = `
 uniform vec3 uTop; uniform vec3 uHorizon; uniform vec3 uGround; uniform vec3 uSunColor; uniform vec3 uSun; uniform float uTime;
 varying vec3 vDir;
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
@@ -56,7 +56,7 @@ function createSky(uTime: { value: number }) {
   return { mesh, uniforms };
 }
 
-function createTerrain(segments: number): THREE.Mesh {
+function createTerrain(segments: number, normalMap: THREE.Texture): THREE.Mesh {
   const geo = new THREE.PlaneGeometry(260, 260, segments, segments).rotateX(-Math.PI / 2);
   const pos = geo.getAttribute('position') as THREE.BufferAttribute;
   const colors = new Float32Array(pos.count * 3);
@@ -76,7 +76,9 @@ function createTerrain(segments: number): THREE.Mesh {
   }
   geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
   geo.computeVertexNormals();
-  return new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1, metalness: 0 }));
+  const terrain = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1, metalness: 0, normalMap, normalScale: new THREE.Vector2(0.9, 0.9) }));
+  terrain.name = 'terrain';
+  return terrain;
 }
 
 /** Broken spears and dropped shields scattered over the ground between the two front lines. */
@@ -107,15 +109,22 @@ function createDebris(): THREE.Group {
 }
 
 /** Sky, ground, fog and the light that falls on everything; follows the camera so the sky never shows an edge. */
-export function createEnvironment(scene: THREE.Scene, camera: THREE.Camera, ctx: SceneContext): Part {
+export interface EnvironmentPart extends Part {
+  /** The sky's shader uniforms, shared with the reflection probe. */
+  skyUniforms: ReturnType<typeof createSky>['uniforms'];
+  sun: THREE.DirectionalLight;
+}
+
+export function createEnvironment(scene: THREE.Scene, camera: THREE.Camera, ctx: SceneContext): EnvironmentPart {
   const group = new THREE.Group();
   const sky = createSky(ctx.uTime);
-  group.add(sky.mesh, createTerrain(ctx.quality.terrainSegments), createDebris());
+  sky.mesh.name = 'sky';
+  group.add(sky.mesh, createTerrain(ctx.quality.terrainSegments, ctx.detail.terrain), createDebris());
 
-  const fog = new THREE.FogExp2(c(DUSK.fog), 0.014);
+  const fog = new THREE.FogExp2(c(DUSK.fog), 0.009);
   scene.fog = fog;
 
-  const hemi = new THREE.HemisphereLight('#a9b4e0', '#3a2618', 0.55);
+  const hemi = new THREE.HemisphereLight('#a9b4e0', '#4a3020', 0.85);
   const sun = new THREE.DirectionalLight(DUSK.light, 1.6);
   const fill = new THREE.DirectionalLight('#6d7fd6', 0.35);
   fill.position.set(-30, 18, 40);
@@ -123,6 +132,8 @@ export function createEnvironment(scene: THREE.Scene, camera: THREE.Camera, ctx:
 
   return {
     object: group,
+    skyUniforms: sky.uniforms,
+    sun,
     update(_time, mix) {
       sky.mesh.position.copy(camera.position);
       mixColor(sky.uniforms.uTop.value, DUSK.top, DAWN.top, mix);
@@ -131,11 +142,11 @@ export function createEnvironment(scene: THREE.Scene, camera: THREE.Camera, ctx:
       mixColor(sky.uniforms.uSunColor.value, DUSK.sun, DAWN.sun, mix);
       sky.uniforms.uSun.value.set(0.55, 0.06 + 0.16 * mix, -0.83).normalize();
       mixColor(fog.color, DUSK.fog, DAWN.fog, mix);
-      fog.density = 0.014 - 0.006 * mix;
+      fog.density = 0.009 - 0.003 * mix;
       mixColor(sun.color, DUSK.light, DAWN.light, mix);
       sun.intensity = 1.6 + 1.2 * mix;
       sun.position.copy(sky.uniforms.uSun.value).multiplyScalar(100);
-      hemi.intensity = 0.55 + 0.35 * mix;
+      hemi.intensity = 0.85 + 0.3 * mix;
     },
   };
 }

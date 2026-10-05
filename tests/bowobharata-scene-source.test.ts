@@ -3,7 +3,10 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 
 const dir = 'src/lib/bowobharata/scene';
 const main = readFileSync('src/lib/bowobharata/KurukshetraScene.ts', 'utf8');
-const modules = ['environment', 'army', 'chariot', 'pavilion', 'effects', 'quality'];
+const modules = [
+  'environment', 'army', 'chariot', 'pavilion', 'effects', 'quality', 'anatomy', 'rig', 'creatures', 'battle',
+  'materials', 'texturegen', 'motion', 'reflections', 'post',
+];
 const all = () => [main, ...readdirSync(dir).filter((f) => f.endsWith('.ts')).map((f) => readFileSync(`${dir}/${f}`, 'utf8'))];
 
 describe('KurukshetraScene source guards', () => {
@@ -17,9 +20,22 @@ describe('KurukshetraScene source guards', () => {
     expect(main).toContain('qualityFor(mobile, window.devicePixelRatio || 1)');
     expect(main).toContain('renderer.setPixelRatio(quality.pixelRatio)');
   });
-  it('uses bloom only when the tier allows it, and drops it when frames are slow', () => {
-    expect(main).toMatch(/if \(quality\.bloom\)/);
+  it('builds the post chain only when the tier has post effects, and sheds effects in order when frames are slow', () => {
+    expect(main).toMatch(/if \(quality\.bloom \|\| quality\.ao \|\| quality\.dof\) post = createPost\(/);
     expect(main).toContain('shouldDropBloom(');
+    expect(main).toContain('degrade(fx)');
+  });
+  it('turns on shadows only for tiers that allow them, and can turn them back off', () => {
+    expect(main).toMatch(/if \(fx\.shadows\) \{/);
+    expect(main).toContain('setShadows(false)');
+    expect(main).toContain("m.name !== 'terrain'");
+  });
+  it('lights metals from the sky through a reflection probe that is disposed with the scene', () => {
+    expect(main).toContain('createProbe(');
+    expect(main).toContain('probe.dispose()');
+  });
+  it('keeps motion off under reduced motion, including the handheld camera', () => {
+    expect(main).toContain('handheld(time, reducedMotion ? 0 : 1)');
   });
   it('survives a lost WebGL context by telling the caller', () => {
     expect(main).toContain("'webglcontextlost'");
@@ -28,7 +44,8 @@ describe('KurukshetraScene source guards', () => {
   it('does not loop under reduced motion and disposes GPU resources and textures', () => {
     expect(main).toMatch(/if \(!reducedMotion\) start\(\)/);
     expect(main).toContain('renderer.dispose()');
-    expect(main).toContain('composer?.dispose()');
+    expect(main).toContain('post?.dispose()');
+    expect(main).toMatch(/\.normalMap\?\.dispose\(\)/);
     expect(main).toContain('geometry.dispose()');
     expect(main).toMatch(/\.map\?\.dispose\(\)/);
   });

@@ -66,7 +66,7 @@ export function createPavilion(ctx: SceneContext): Part {
 
   const stone = std('#2b2326', 0.9);
   const lacquer = std('#5a1018', 0.45, 0.1);
-  const gold = std('#c9973c', 0.3, 0.9, { emissive: '#2a1606', emissiveIntensity: 0.4 });
+  const gold = std('#c9973c', 0.3, 0.9, { emissive: '#2a1606', emissiveIntensity: 0.4, normalMap: ctx.detail.metal });
   // Sengkuni's robe: purple-black silk, so he stands out against the crimson pavilion.
   const robe = new THREE.MeshPhysicalMaterial({ color: '#2b1d3d', roughness: 0.5, sheen: 0.8, sheenColor: new THREE.Color('#c9a0ff') });
   const dark = std('#1d1013', 0.8);
@@ -83,7 +83,7 @@ export function createPavilion(ctx: SceneContext): Part {
   const roof = mesh(new THREE.ConeGeometry(3.6, 1.3, 4), dark, 0, floor + 3.8, 0);
   roof.rotation.y = Math.PI / 4;
   root.add(roof, mesh(new THREE.BoxGeometry(5.1, 0.12, 5.1), gold, 0, floor + 3.18, 0), mesh(new THREE.SphereGeometry(0.16, 12, 10), gold, 0, floor + 4.55, 0));
-  const { geometry: curtainGeo, material: curtainMat } = wavingCloth(curtainTexture(), 1.7, 2.6, ctx.uTime);
+  const { geometry: curtainGeo, material: curtainMat } = wavingCloth(curtainTexture(), 1.7, 2.6, ctx.uTime, ctx.detail.cloth);
   for (const z of [-1.85, 0.05]) {
     const c = new THREE.Mesh(curtainGeo, curtainMat);
     c.position.set(-1.9, floor + 1.6, z);

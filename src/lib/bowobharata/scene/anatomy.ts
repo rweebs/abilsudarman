@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { tagLimb } from './rig';
 
 /** Cross-section radii: [sideways (the z axis for paths in the x-y plane), in the plane of the path]. */
 export type Radii = [number, number];
@@ -69,7 +70,29 @@ const path = (pts: P[]) => pts.map((p) => v(p));
 // ---------------------------------------------------------------- horse
 
 export interface HorseMaterials { coat: THREE.Material; mane: THREE.Material; hoof: THREE.Material; eye: THREE.Material }
-export interface HorseRig { group: THREE.Group; legs: THREE.Group[]; head: THREE.Group; tail: THREE.Group }
+export interface HorseRig { group: THREE.Group; legs: THREE.Group[]; head: THREE.Group; tail: THREE.Group; tailJoints: THREE.Group[]; maneJoints: THREE.Group[] }
+
+/**
+ * A short chain of tapering segments, each hung from the end of the one before, so a tail, mane or scarf can bend along its
+ * length. Segments run down (-y) or forward (+x) from the root; every joint rotates about z.
+ */
+export function hangingChain(count: number, segLen: number, r0: Radii, r1: Radii, mat: THREE.Material, axis: 'down' | 'x'): { root: THREE.Group; joints: THREE.Group[] } {
+  const joints: THREE.Group[] = [];
+  let parent: THREE.Group | undefined;
+  for (let i = 0; i < count; i++) {
+    const j = new THREE.Group();
+    if (parent) { j.position.set(axis === 'x' ? segLen : 0, axis === 'down' ? -segLen : 0, 0); parent.add(j); }
+    const k0 = i / count;
+    const k1 = (i + 1) / count;
+    const end = axis === 'x' ? new THREE.Vector3(segLen, 0, 0) : new THREE.Vector3(0, -segLen, 0);
+    j.add(new THREE.Mesh(loft([new THREE.Vector3(), end], [
+      [lerp(r0[0], r1[0], k0), lerp(r0[1], r1[1], k0)], [lerp(r0[0], r1[0], k1), lerp(r0[1], r1[1], k1)],
+    ], 3, 8), mat));
+    joints.push(j);
+    parent = j;
+  }
+  return { root: joints[0], joints };
+}
 
 function leg(pts: P[], radii: Radii[], hoofAt: P, M: HorseMaterials, pivot: P): THREE.Group {
   const g = new THREE.Group();
@@ -97,8 +120,10 @@ export function horse(M: HorseMaterials): HorseRig {
     [[0.2, 0.28], [0.15, 0.2], [0.12, 0.14], [0.11, 0.13], [0.09, 0.1], [0.07, 0.075]], 22, 14,
   ), M.coat));
   head.add(part(new THREE.SphereGeometry(0.075, 12, 10), M.coat, 0.78, 0.14, 0));
-  const mane = new THREE.Mesh(loft(path([[0.02, 0.3, 0], [0.2, 0.45, 0], [0.38, 0.63, 0]]), [[0.035, 0.09], [0.03, 0.07], [0.02, 0.035]], 10, 8), M.mane);
-  head.add(mane);
+  const maneChain = hangingChain(3, 0.2, [0.04, 0.09], [0.02, 0.04], M.mane, 'x');
+  maneChain.root.position.set(0.02, 0.3, 0);
+  maneChain.root.rotation.z = 0.78;
+  head.add(maneChain.root);
   for (const zz of [-0.07, 0.07]) {
     const ear = part(new THREE.ConeGeometry(0.03, 0.12, 6), M.coat, 0.46, 0.68, zz);
     ear.rotation.z = -0.25;
@@ -118,11 +143,11 @@ export function horse(M: HorseMaterials): HorseRig {
   const legs = [fore(-0.14), fore(0.14), hind(-0.15), hind(0.15)];
   group.add(...legs);
 
-  const tail = new THREE.Group();
-  tail.position.set(-0.95, 1.38, 0);
-  tail.add(new THREE.Mesh(loft(path([[0, 0, 0], [-0.15, -0.15, 0], [-0.2, -0.45, 0], [-0.16, -0.8, 0]]), [[0.05, 0.06], [0.08, 0.09], [0.07, 0.08], [0.02, 0.03]], 14, 10), M.mane));
-  group.add(tail);
-  return { group, legs, head, tail };
+  const tailChain = hangingChain(4, 0.22, [0.06, 0.07], [0.015, 0.02], M.mane, 'down');
+  tailChain.root.position.set(-0.95, 1.38, 0);
+  tailChain.root.rotation.z = -0.5;
+  group.add(tailChain.root);
+  return { group, legs, head, tail: tailChain.root, tailJoints: tailChain.joints, maneJoints: maneChain.joints };
 }
 
 // ---------------------------------------------------------------- people
@@ -201,8 +226,8 @@ export function strand(pts: P[], radius: number, mat: THREE.Material, segments =
 /** The army's foot soldier as one merged, low-poly mesh facing +x: the same shaped body, with helmet, shield and spear. */
 export function soldierGeometry(): THREE.BufferGeometry {
   const parts = [
-    loft(path([[0, 0.9, 0.09], [0.03, 0.5, 0.1], [0, 0.06, 0.1]]), [[0.08, 0.085], [0.055, 0.06], [0.045, 0.05]], 3, 5),
-    loft(path([[0, 0.9, -0.09], [0.03, 0.5, -0.1], [0, 0.06, -0.1]]), [[0.08, 0.085], [0.055, 0.06], [0.045, 0.05]], 3, 5),
+    loft(path([[0, 0.9, 0.09], [0.03, 0.5, 0.1], [0, 0.06, 0.1]]), [[0.105, 0.11], [0.075, 0.08], [0.06, 0.065]], 3, 5),
+    loft(path([[0, 0.9, -0.09], [0.03, 0.5, -0.1], [0, 0.06, -0.1]]), [[0.105, 0.11], [0.075, 0.08], [0.06, 0.065]], 3, 5),
     loft(path([[0, 0.86, 0], [0, 1.08, 0], [0, 1.3, 0], [0, 1.47, 0]]), [[0.17, 0.12], [0.15, 0.11], [0.2, 0.13], [0.08, 0.07]], 4, 6),
     loft(path([[0, 1.4, 0.2], [0.12, 1.15, 0.24], [0.25, 1.05, 0.16]]), [[0.045, 0.045], [0.035, 0.035], [0.03, 0.03]], 2, 4),
     loft(path([[0, 1.4, -0.2], [0.08, 1.2, -0.24], [0.1, 1.3, -0.22]]), [[0.045, 0.045], [0.035, 0.035], [0.03, 0.03]], 2, 4),
@@ -212,6 +237,8 @@ export function soldierGeometry(): THREE.BufferGeometry {
     new THREE.CylinderGeometry(0.016, 0.016, 2.4, 4).translate(0.1, 1.25, -0.22),
     new THREE.ConeGeometry(0.045, 0.2, 4).translate(0.1, 2.55, -0.22),
   ];
+  // The two legs (the first two parts) swing about the hip; everything else is the body.
+  parts.forEach((p, i) => tagLimb(p, i === 0 ? 1 : i === 1 ? 2 : 0, 0, 0.9));
   const merged = mergeGeometries(parts)!;
   for (const p of parts) p.dispose();
   return merged;

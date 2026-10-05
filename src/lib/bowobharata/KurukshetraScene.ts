@@ -1,15 +1,16 @@
 import * as THREE from 'three';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 import { dharmaMix, formation, groundHeight, poseAt } from './stage-math';
-import { qualityFor, shouldDropBloom } from './scene/quality';
-import { createBattleEffects, createContext, type Part } from './scene/effects';
-import { createEnvironment } from './scene/environment';
 import { createArmies } from './scene/army';
+import { createBattle } from './scene/battle';
 import { createChariot } from './scene/chariot';
+import { createBattleEffects, createContext, createLightShafts, type Part } from './scene/effects';
+import { createEnvironment } from './scene/environment';
+import { createDetail } from './scene/materials';
+import { dofFocus, handheld, shadowFrame } from './scene/motion';
 import { createPavilion } from './scene/pavilion';
+import { createPost, type Post } from './scene/post';
+import { degrade, qualityFor, shouldDropBloom, type Effects } from './scene/quality';
+import { createProbe } from './scene/reflections';
 
 export interface SceneInit { canvas: HTMLCanvasElement; reducedMotion: boolean; mobile: boolean; onLost?: () => void }
 export interface KurukshetraScene {
@@ -27,30 +28,56 @@ export function createScene({ canvas, reducedMotion, mobile, onLost }: SceneInit
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: !mobile, powerPreference: mobile ? 'low-power' : 'high-performance' });
   renderer.setPixelRatio(quality.pixelRatio);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
+  renderer.toneMappingExposure = 1.4;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 400);
-  const ctx = createContext(quality);
+  const detail = createDetail(mobile ? 128 : 256);
+  const ctx = createContext(quality, camera, detail);
   const dharma = formation(quality.warriorsPerSide, 'dharma', 5);
   const adharma = formation(quality.warriorsPerSide, 'adharma', 5);
+  const environment = createEnvironment(scene, camera, ctx);
   const parts: Part[] = [
-    createEnvironment(scene, camera, ctx),
+    environment,
     createArmies(ctx, dharma, adharma),
+    createBattle(ctx),
     createChariot(ctx),
     createPavilion(ctx),
     createBattleEffects(ctx, dharma, adharma, groundHeight),
+    createLightShafts(ctx, new THREE.Vector2(0.55, -0.83)),
   ];
   for (const p of parts) scene.add(p.object);
 
-  let composer: EffectComposer | undefined;
-  if (quality.bloom) {
-    composer = new EffectComposer(renderer);
-    composer.addPass(new RenderPass(scene, camera));
-    composer.addPass(new UnrealBloomPass(new THREE.Vector2(1, 1), 0.6, 0.55, 0.82));
-    composer.addPass(new OutputPass());
+  // The sky lights everything: reflections for the metals, and (desktop) a shadow-casting sun.
+  const probe = createProbe(renderer, scene, environment.skyUniforms, mobile ? 64 : 128);
+  let fx: Effects = { ao: quality.ao, dof: quality.dof, bloom: quality.bloom, shadows: quality.shadows };
+  const setShadows = (on: boolean) => {
+    renderer.shadowMap.enabled = on;
+    environment.sun.castShadow = on;
+    scene.traverse((o) => {
+      const m = o as THREE.Mesh;
+      if (!m.isMesh) return;
+      const mats = Array.isArray(m.material) ? m.material : [m.material];
+      const solid = !mats.some((x) => x.transparent) && m.name !== 'sky';
+      m.castShadow = on && solid && m.name !== 'terrain';
+      m.receiveShadow = on && solid;
+      for (const x of mats) x.needsUpdate = true;
+    });
+  };
+  if (fx.shadows) {
+    const s = environment.sun.shadow;
+    s.mapSize.set(quality.shadowMap, quality.shadowMap);
+    s.bias = -0.0005;
+    s.normalBias = 0.05;
+    s.camera.near = 1;
+    s.camera.far = 200;
+    setShadows(true);
   }
+
+  let post: Post | undefined;
+  if (quality.bloom || quality.ao || quality.dof) post = createPost(renderer, scene, camera, fx);
   const frameMs: number[] = [];
 
   let progress = 0;
@@ -59,17 +86,38 @@ export function createScene({ canvas, reducedMotion, mobile, onLost }: SceneInit
   let paused = false;
   let raf = 0;
   let last = 0;
+  const look = new THREE.Vector3();
 
   const draw = () => {
-    const { pos, look } = poseAt(progress);
-    const drift = reducedMotion ? 0 : 1;
-    camera.position.set(pos.x + Math.sin(time * 0.13) * 0.35 * drift, pos.y + Math.sin(time * 0.21) * 0.15 * drift, pos.z);
-    camera.lookAt(look.x, look.y, look.z);
+    const pose = poseAt(progress);
+    const hand = handheld(time, reducedMotion ? 0 : 1);
+    camera.position.set(pose.pos.x + hand.x, pose.pos.y + hand.y, pose.pos.z);
+    look.set(pose.look.x, pose.look.y, pose.look.z);
+    camera.lookAt(look);
+    camera.rotateZ(hand.roll);
     const mix = dharmaMix(progress);
     ctx.uTime.value = time;
     for (const p of parts) p.update(time, mix);
-    if (composer) composer.render();
-    else renderer.render(scene, camera);
+    probe.update(mix);
+
+    if (fx.shadows) {
+      const sun = environment.skyUniforms.uSun.value as THREE.Vector3;
+      const f = shadowFrame(pose.look, pose.pos, sun);
+      environment.sun.position.set(f.position.x, f.position.y, f.position.z);
+      environment.sun.target.position.set(f.center.x, f.center.y, f.center.z);
+      environment.sun.target.updateMatrixWorld();
+      const c = environment.sun.shadow.camera;
+      c.left = -f.halfSize; c.right = f.halfSize; c.top = f.halfSize; c.bottom = -f.halfSize;
+      c.updateProjectionMatrix();
+    }
+
+    if (post) {
+      const d = dofFocus(pose.pos, pose.look);
+      post.setShot(d.focus, d.amount, time, mix);
+      post.render();
+    } else {
+      renderer.render(scene, camera);
+    }
   };
 
   const frame = (now: number) => {
@@ -80,10 +128,16 @@ export function createScene({ canvas, reducedMotion, mobile, onLost }: SceneInit
     last = now;
     time += dt;
     progress += (target - progress) * Math.min(1, dt * 3);
-    if (composer && ms > 0) {
+    // Slow frames: shed the most expensive remaining effect, then judge the next stretch afresh.
+    if (!mobile && ms > 0) {
       frameMs.push(ms);
       if (frameMs.length > 120) frameMs.shift();
-      if (shouldDropBloom(frameMs)) { composer.dispose(); composer = undefined; }
+      if (shouldDropBloom(frameMs)) {
+        fx = degrade(fx);
+        post?.setEffects(fx);
+        if (!fx.shadows && renderer.shadowMap.enabled) setShadows(false);
+        frameMs.length = 0;
+      }
     }
     draw();
     raf = requestAnimationFrame(frame);
@@ -104,7 +158,7 @@ export function createScene({ canvas, reducedMotion, mobile, onLost }: SceneInit
     },
     resize(w, h) {
       renderer.setSize(w, h, false);
-      composer?.setSize(w, h);
+      post?.setSize(w, h);
       camera.aspect = w / Math.max(h, 1);
       camera.updateProjectionMatrix();
       draw();
@@ -121,14 +175,16 @@ export function createScene({ canvas, reducedMotion, mobile, onLost }: SceneInit
         const mesh = o as THREE.Mesh;
         if (mesh.geometry) mesh.geometry.dispose();
         const mats = mesh.material ? (Array.isArray(mesh.material) ? mesh.material : [mesh.material]) : [];
-        for (const m of mats as (THREE.Material & { map?: THREE.Texture | null; emissiveMap?: THREE.Texture | null })[]) {
+        for (const m of mats as (THREE.Material & { map?: THREE.Texture | null; emissiveMap?: THREE.Texture | null; normalMap?: THREE.Texture | null })[]) {
           m.map?.dispose();
           m.emissiveMap?.dispose();
+          m.normalMap?.dispose();
           m.dispose();
         }
       });
-      for (const t of [ctx.glow, ctx.soft, ctx.shadow]) t.dispose();
-      composer?.dispose();
+      for (const t of [ctx.glow, ctx.soft, ctx.shadow, ctx.shaft, detail.terrain, detail.cloth, detail.wood, detail.metal]) t.dispose();
+      probe.dispose();
+      post?.dispose();
       renderer.dispose();
     },
   };

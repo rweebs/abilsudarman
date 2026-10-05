@@ -1,16 +1,28 @@
 import * as THREE from 'three';
 import { CHARIOT, groundHeight } from '../stage-math';
-import { garment, horse, humanFigure, strand, type HorseRig } from './anatomy';
+import { garment, hangingChain, horse, humanFigure, strand, type HorseRig } from './anatomy';
 import { canvasTexture, contactShadow, glowSprite, wavingCloth, type Part, type SceneContext } from './effects';
+import type { Detail } from './materials';
+import { springStep } from './motion';
+
+/** Drives a chain of joints with damped springs: each joint chases its parent's angle plus a wind push that grows along the chain. */
+function chainDriver(joints: THREE.Group[]) {
+  const base = joints.map((j) => j.rotation.z);
+  let state = joints.map(() => ({ angle: 0, vel: 0 }));
+  return (drive: number, dt: number) => {
+    state = state.map((s, j) => springStep(s, (j === 0 ? 0 : state[j - 1].angle * 0.7) + drive * (0.4 + j * 0.25), dt, 38, 5.5));
+    state.forEach((s, j) => { joints[j].rotation.z = base[j] + s.angle; });
+  };
+}
 
 const std = (color: string, roughness = 0.6, metalness = 0, extra: THREE.MeshStandardMaterialParameters = {}) =>
   new THREE.MeshStandardMaterial({ color, roughness, metalness, ...extra });
 
 /** Materials are made per scene, so disposing one scene never leaves another holding freed GPU resources. */
-function palette() {
+function palette(detail: Detail) {
   return {
-    gold: std('#d4a24a', 0.28, 0.9, { emissive: '#3a2408', emissiveIntensity: 0.4 }),
-    wood: std('#5b3a1e', 0.8),
+    gold: std('#d4a24a', 0.28, 0.9, { emissive: '#3a2408', emissiveIntensity: 0.4, normalMap: detail.metal }),
+    wood: std('#5b3a1e', 0.8, 0, { normalMap: detail.wood }),
     coat: new THREE.MeshPhysicalMaterial({ color: '#efeae0', roughness: 0.42, sheen: 0.6, sheenColor: new THREE.Color('#ffffff'), sheenRoughness: 0.5 }),
     mane: std('#d9d2c2', 0.75),
     hoof: std('#2a2018', 0.5),
@@ -93,7 +105,7 @@ const crown = (M: Palette, y: number, tall = 1) => {
 };
 
 /** Krishna as charioteer: dark blue skin, yellow dhoti, a blue scarf, garland and armlets, the crown with its peacock feather. */
-function krishna(M: Palette, ctx: SceneContext): { group: THREE.Group; wheelOfLight: THREE.Group; halo: THREE.Sprite; reinHand: THREE.Vector3 } {
+function krishna(M: Palette, ctx: SceneContext): { group: THREE.Group; wheelOfLight: THREE.Group; halo: THREE.Sprite; reinHand: THREE.Vector3; scarfJoints: THREE.Group[] } {
   const f = humanFigure({
     skin: M.krishnaSkin,
     cloth: M.pitambara,
@@ -123,7 +135,12 @@ function krishna(M: Palette, ctx: SceneContext): { group: THREE.Group; wheelOfLi
   const halo = glowSprite(ctx.glow, '#ffd27a', 6, 0.18);
   halo.position.set(0, 1.4, 0);
   g.add(wheelOfLight, halo);
-  return { group: g, wheelOfLight, halo, reinHand: f.leftHand };
+  // The loose end of the scarf, streaming back from his shoulder in the wind.
+  const scarfEnd = hangingChain(3, 0.24, [0.07, 0.014], [0.05, 0.01], M.scarf, 'down');
+  scarfEnd.root.position.set(-0.08, 1.4, 0.1);
+  scarfEnd.root.rotation.z = -0.35;
+  g.add(scarfEnd.root);
+  return { group: g, wheelOfLight, halo, reinHand: f.leftHand, scarfJoints: scarfEnd.joints };
 }
 
 /** Arjuna behind him in silver armour, the bow drawn: stave in the left hand, string to the right. */
@@ -158,7 +175,7 @@ function arjuna(M: Palette): THREE.Group {
 
 /** Krishna's chariot between the two armies: four white horses, Krishna as charioteer with the chakra raised, Arjuna with his bow. */
 export function createChariot(ctx: SceneContext): Part {
-  const M = palette();
+  const M = palette(ctx.detail);
   const root = new THREE.Group();
   root.position.set(CHARIOT.x, groundHeight(CHARIOT.x, CHARIOT.z), CHARIOT.z);
   const shadow = contactShadow(ctx.shadow, 9, 4.2);
@@ -203,23 +220,34 @@ export function createChariot(ctx: SceneContext): Part {
 
   // The chariot's banner, streaming back from a tall pole.
   root.add(mesh(new THREE.CylinderGeometry(0.04, 0.04, 4.4, 6), M.gold, -1.05, deck + 2.2, 0));
-  const { geometry: clothGeo, material: clothMat } = wavingCloth(flagTexture(), 1.5, 1.0, ctx.uTime);
+  const { geometry: clothGeo, material: clothMat } = wavingCloth(flagTexture(), 1.5, 1.0, ctx.uTime, ctx.detail.cloth);
   const flag = new THREE.Mesh(clothGeo, clothMat);
   flag.position.set(-1.05, deck + 3.85, 0);
   flag.rotation.y = Math.PI;
   root.add(flag);
 
+  const tailDrivers = horses.map((h) => chainDriver(h.tailJoints));
+  const maneDrivers = horses.map((h) => chainDriver(h.maneJoints));
+  const scarfDriver = chainDriver(k.scarfJoints);
+  let last = 0;
+
   return {
     object: root,
     update(time, mix) {
+      const dt = Math.min(0.05, Math.max(0.001, time - last));
+      last = time;
+      scarfDriver(Math.sin(time * 1.9) * 0.3 + Math.sin(time * 0.7 + 1) * 0.15, dt);
       k.wheelOfLight.rotation.z = time * 2.2;
       k.wheelOfLight.position.y = 2.25 + Math.sin(time * 1.4) * 0.05;
       (k.halo.material as THREE.SpriteMaterial).opacity = 0.18 + 0.3 * mix;
       horses.forEach((h, i) => {
         h.legs.forEach((leg, j) => { leg.rotation.z = Math.sin(time * 1.2 + i + j * 1.7) * 0.04; });
         h.legs[0].rotation.z = Math.max(0, Math.sin(time * 0.9 + i * 2.1)) * 0.5;
-        h.head.rotation.z = Math.sin(time * 1.1 + i * 1.3) * 0.05;
-        h.tail.rotation.y = Math.sin(time * 1.7 + i) * 0.25;
+        const toss = Math.sin(time * 1.1 + i * 1.3) * 0.05;
+        h.head.rotation.z = toss;
+        const gust = Math.sin(time * 1.7 + i) * 0.25 + Math.sin(time * 0.6 + i * 2) * 0.12;
+        tailDrivers[i](gust, dt);
+        maneDrivers[i](-toss * 3 + gust * 0.3, dt);
       });
     },
   };

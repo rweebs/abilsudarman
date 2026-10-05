@@ -9,6 +9,8 @@ export interface Pose { pos: Vec3; look: Vec3 }
 export const CHARIOT = { x: -1.5, z: 9 } as const;
 export const PAVILION = { x: 16, z: 16 } as const;
 const FRONT = 4;
+/** Soldiers per rank; the soldier at index i stands in rank Math.floor(i / FORMATION_FILES), rank 0 being the front line. */
+export const FORMATION_FILES = 64;
 
 // One framed shot per parva; the camera glides between them on scroll.
 export const PARVA_POSES: readonly Pose[] = [
@@ -61,7 +63,7 @@ export interface Slot { x: number; z: number; phase: number }
 /** Ranks and files of one army, in divisions of eight files with a gap between them, each soldier slightly out of line. */
 export function formation(count: number, side: 'dharma' | 'adharma', seed: number): Slot[] {
   const rnd = mulberry32(seed + (side === 'dharma' ? 0 : 1000));
-  const files = 64;
+  const files = FORMATION_FILES;
   const sign = side === 'dharma' ? -1 : 1;
   return Array.from({ length: count }, (_, i) => {
     const rank = Math.floor(i / files);
