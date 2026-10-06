@@ -16,7 +16,7 @@ describe('bowobharata page', () => {
     const p = page();
     expect(p.indexOf('bb-note')).toBeGreaterThan(-1);
     expect(p.indexOf('bb-note')).toBeLessThan(p.indexOf('bb-hero'));
-    for (const href of ['/bukti', '/linimasa', '/hak-jawab']) expect(p, href).toContain(`href="${href}"`);
+    for (const key of ['evidence', 'timeline', 'reply']) expect(p, key).toContain(`localizedPath('${key}', locale)`);
   });
   it('serves the wide poster as the prioritised LCP image and the others lazily, all from astro:assets', () => {
     const p = page();

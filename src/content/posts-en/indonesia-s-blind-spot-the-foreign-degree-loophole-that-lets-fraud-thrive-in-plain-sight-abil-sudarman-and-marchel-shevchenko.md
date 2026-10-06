@@ -31,7 +31,7 @@ There is a difference between those two institutions. They are not the same univ
 
 Now here is the question that exposes the real problem: Can you verify whether Abil Sudarman actually graduated from either of those institutions through any Indonesian government system?
 
-Also [Marchel Shevchenko](/in/marchelshevchenko/) claim he was a research student at [Massachusetts Institute of Technology](https://www.linkedin.com/school/mit/)
+Also [Marchel Shevchenko](https://www.linkedin.com/in/marchelshevchenko/) claim he was a research student at [Massachusetts Institute of Technology](https://www.linkedin.com/school/mit/)
 
 ![Article content](/img/fc2cf0407aac517a25b7031f.png)
 

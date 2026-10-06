@@ -75,7 +75,7 @@ describe('linimasa wiring', () => {
     expect(read('src/pages/linimasa.astro')).toContain('groupByMonth');
     const detail = read('src/pages/linimasa/[slug].astro');
     expect(detail).toContain('getStaticPaths');
-    expect(detail).toContain('hak-jawab');
+    expect(detail).toContain("localizedPath('reply'");
     expect(detail).not.toMatch(/tuduh/i);
   });
 });

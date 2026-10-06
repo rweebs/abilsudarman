@@ -1,6 +1,8 @@
 import { EVENTS, eventUrl } from '../lib/linimasa';
 import type { APIRoute } from 'astro';
-import { getBukti, getPosts } from '../lib/content';
+import { getBukti, getPosts, getPostsEn } from '../lib/content';
+import { ROUTES } from '../i18n';
+import { localizedEvents, eventPath } from '../lib/linimasa-locale';
 import { firstImage } from '../lib/header-image';
 import { buildSitemap, type SitemapEntry } from '../lib/sitemap';
 import { PAGE_LASTMOD, SITE } from '../lib/site';
@@ -10,6 +12,7 @@ const iso = (d: Date) => d.toISOString().slice(0, 10);
 export const GET: APIRoute = async () => {
   const posts = await getPosts();
   const bukti = await getBukti();
+  const postsEn = await getPostsEn();
   const latest = posts.length ? iso(new Date(Math.max(...posts.map((p) => p.data.translationDate.getTime())))) : undefined;
 
   const entries: SitemapEntry[] = [
@@ -31,6 +34,21 @@ export const GET: APIRoute = async () => {
       return { path: `/artikel/${p.id}`, lastmod: iso(p.data.translationDate), images: header ? [header.src] : [] };
     }),
   ];
+
+  // English counterparts: the paired pages, the translated timeline and the translated articles.
+  const paired = entries.flatMap((e) => {
+    const route = Object.values(ROUTES).find((r) => r.id === e.path);
+    return route ? [{ ...e, path: route.en }] : [];
+  });
+  const english: SitemapEntry[] = [
+    ...paired,
+    ...localizedEvents('en').map((e) => ({ path: eventPath(e, 'en'), lastmod: e.date })),
+    ...postsEn.map((p) => {
+      const header = firstImage(p.body ?? '');
+      return { path: `/en/articles/${p.id}`, lastmod: iso(p.data.publishedDate), images: header ? [header.src] : [] };
+    }),
+  ];
+  entries.push(...english);
 
   return new Response(buildSitemap(entries, SITE.url), { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
 };

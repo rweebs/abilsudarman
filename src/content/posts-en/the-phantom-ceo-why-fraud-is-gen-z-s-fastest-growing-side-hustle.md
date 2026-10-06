@@ -15,7 +15,7 @@ A research-backed breakdown of self-proclaimed founders, Dunning-Kruger deceptio
 
 On the credibility crisis in Gen Z entrepreneurship
 
-Example of the fraud : [Marchel Shevchenko](/in/marchelshevchenko/) from [Data Sorcerers](https://www.linkedin.com/company/data-sorcerers/)
+Example of the fraud : [Marchel Shevchenko](https://www.linkedin.com/in/marchelshevchenko/) from [Data Sorcerers](https://www.linkedin.com/company/data-sorcerers/)
 
 ![Article content](/img/1565051b78405b4deadf7d2e.png)
 
@@ -91,7 +91,7 @@ A legitimate young founder can tell you the legal name of their entity and when 
 
 **Earned titles feel different.** They come with weight, with receipts, with the kind of specific detail that can only exist when something actually happened. If someone's story has no specific details, that is because nothing specific has happened.
 
-[Rahmat Wibowo](/in/rahmatwi/) from [InfraLoka](https://www.linkedin.com/company/infraloka/)
+[Rahmat Wibowo](https://www.linkedin.com/in/rahmatwi/) from [InfraLoka](https://www.linkedin.com/company/infraloka/)
 
 ![Article content](/img/4efbfd32e0a2f7f3b21364dc.png)
 

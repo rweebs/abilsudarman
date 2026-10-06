@@ -39,7 +39,8 @@ export function findProblems(distDir, site = DEFAULT_SITE) {
     const html = readFileSync(file, 'utf8');
     const base = new URL(pageUrl(dist, file), origin);
     if (!html.includes('data-disclaimer')) problems.push(`${file}: missing disclaimer banner`);
-    if (!/<html[^>]*\slang="id"/.test(html)) problems.push(`${file}: html lang is not "id"`);
+    const lang = /^\/en(\/|$)/.test(base.pathname) ? 'en' : 'id';
+    if (!new RegExp(`<html[^>]*\\slang="${lang}"`).test(html)) problems.push(`${file}: html lang is not "${lang}"`);
     const noindex = /<meta[^>]*name="robots"[^>]*content="[^"]*noindex/.test(html);
     const title = (html.match(/<title>([^<]*)<\/title>/) || [])[1] ?? '';
     if (title.length < 10 || title.length > 65) problems.push(`${file}: title length ${title.length} (want 10-65)`);

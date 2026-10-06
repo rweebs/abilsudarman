@@ -45,7 +45,7 @@ describe('active link', () => {
 describe('menu markup and styles', () => {
   it('renders groups as native details so they work without JavaScript, and marks the active group', () => {
     const layout = read('src/layouts/BaseLayout.astro');
-    expect(layout).toContain('NAV_GROUPS');
+    expect(layout).toContain('navFor(locale)');
     expect(layout).toContain('<details class="nav__group"');
     expect(layout).not.toContain('name="nav-group"');
     expect(layout).toContain("'is-active'");
