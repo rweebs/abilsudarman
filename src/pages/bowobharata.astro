@@ -5,28 +5,42 @@ import BowobharataStage from '../components/BowobharataStage.astro';
 import wide from '../assets/bowobharata/poster-wide.jpg';
 import krishna from '../assets/bowobharata/krishna.jpg';
 import sengkuni from '../assets/bowobharata/sengkuni.jpg';
-import { FRAMING, PAGE, PARVAS, POSTERS, parvaEvents } from '../lib/bowobharata';
-import { CREDITS } from '../lib/bowobharata/model-credits';
-import { eventUrl, formatDate } from '../lib/linimasa';
-import { DISCLAIMER, SITE } from '../lib/site';
-const ld = { '@context': 'https://schema.org', '@type': 'WebPage', name: PAGE.title, url: `${SITE.url}/bowobharata`, inLanguage: 'id', description: PAGE.description };
+import { FRAMING as FRAMING_ID, PAGE as PAGE_ID, PARVAS as PARVAS_ID, POSTERS as POSTERS_ID, parvaEvents } from '../lib/bowobharata';
+import { PAGE_EN, FRAMING_EN, POSTERS_EN, PARVAS_EN, BOWO_UI } from '../lib/bowobharata-en';
+import { CREDITS as CREDITS_ID, CREDITS_EN } from '../lib/bowobharata/model-credits';
+import { eventUrl } from '../lib/linimasa';
+import { localizeEvent, eventPath, formatDateFor } from '../lib/linimasa-locale';
+import { SITE } from '../lib/site';
+import { UI } from '../i18n/ui';
+import { localizedPath, type Locale } from '../i18n';
+const { locale = 'id' } = Astro.props as { locale?: Locale };
+const DISCLAIMER = UI[locale].disclaimer;
+const en = locale === 'en';
+const PAGE = en ? { ...PAGE_EN } : { ...PAGE_ID, heading: `${PAGE_ID.title}: Kebenaran vs Pembenaran` };
+const FRAMING = en ? FRAMING_EN : FRAMING_ID;
+const POSTERS = en ? POSTERS_EN : POSTERS_ID;
+const CREDITS = en ? CREDITS_EN : CREDITS_ID;
+const PARVAS = PARVAS_ID.map((p) => (en ? { ...p, ...PARVAS_EN[p.id] } : p));
+const U = BOWO_UI[locale];
+const path = localizedPath('bowobharata', locale);
+const ld = { '@context': 'https://schema.org', '@type': 'WebPage', name: PAGE.title, url: `${SITE.url}${path}`, inLanguage: locale, description: PAGE.description };
 ---
-<BaseLayout title={PAGE.title} description={PAGE.description} path="/bowobharata" jsonLd={ld} breadcrumbs={[{ name: 'Bowobharata', path: '/bowobharata' }]}>
+<BaseLayout title={PAGE.title} description={PAGE.description} path={path} locale={locale} jsonLd={ld} breadcrumbs={[{ name: 'Bowobharata', path }]}>
   <BowobharataStage />
   <div class="bb-main">
     <header>
       <p class="eyebrow">{PAGE.kicker}</p>
-      <h1>{PAGE.title}: Kebenaran vs Pembenaran</h1>
+      <h1>{PAGE.heading}</h1>
       <p>{PAGE.lead}</p>
     </header>
     <p class="muted">{DISCLAIMER}</p>
 
-    <section class="bb-note callout" aria-label="Catatan tentang halaman ini">
+    <section class="bb-note callout" aria-label={U.notesLabel}>
       {FRAMING.map((t) => <p>{t}</p>)}
       <ul class="bb-links">
-        <li><a href="/bukti">Bukti</a></li>
-        <li><a href="/linimasa">Linimasa</a></li>
-        <li><a href="/hak-jawab">Hak jawab</a></li>
+        <li><a href={localizedPath('evidence', locale)}>{U.links.evidence}</a></li>
+        <li><a href={localizedPath('timeline', locale)}>{U.links.timeline}</a></li>
+        <li><a href={localizedPath('reply', locale)}>{U.links.reply}</a></li>
       </ul>
     </section>
 
@@ -47,13 +61,13 @@ const ld = { '@context': 'https://schema.org', '@type': 'WebPage', name: PAGE.ti
       {PARVAS.map((p) => (
         <section id={p.id} class="bb-parva" aria-labelledby={`${p.id}-h`}>
           <div class="glass bb-reveal">
-            <p class="eyebrow">Parva {p.number}</p>
+            <p class="eyebrow">{U.parva} {p.number}</p>
             <h2 id={`${p.id}-h`}>{p.title}</h2>
             <p class="bb-episode">{p.episode}</p>
             {p.paragraphs.map((t) => <p>{t}</p>)}
             <ul class="bb-events">
               {parvaEvents(p).map((e) => (
-                <li><time datetime={e.date}>{formatDate(e.date)}</time><a href={eventUrl(e)}>{e.title}</a></li>
+                <li><time datetime={e.date}>{formatDateFor(e.date, locale)}</time><a href={locale === 'id' ? eventUrl(e) : eventPath(localizeEvent(e, locale), locale)}>{en ? localizeEvent(e, locale).title : e.title}</a></li>
               ))}
             </ul>
           </div>
@@ -61,13 +75,13 @@ const ld = { '@context': 'https://schema.org', '@type': 'WebPage', name: PAGE.ti
       ))}
     </div>
 
-    <section class="bb-credits muted" aria-label="Kredit model 3D">
-      <h2 class="bb-credits__title">Kredit model 3D</h2>
+    <section class="bb-credits muted" aria-label={U.creditsLabel}>
+      <h2 class="bb-credits__title">{U.credits}</h2>
       <ul>
-        {CREDITS.map((c) => <li>{c.text} <a href={c.source} rel="noopener">Sumber</a></li>)}
+        {CREDITS.map((c) => <li>{c.text} <a href={c.source} rel="noopener">{U.source}</a></li>)}
       </ul>
     </section>
 
-    <p class="muted">Seluruh halaman ini adalah kiasan dan pendapat saya. Koreksi atau jawaban: <a href="/hak-jawab">Hak jawab</a> atau <a href={`mailto:${SITE.correctionsEmail}`}>{SITE.correctionsEmail}</a>.</p>
+    <p class="muted">{U.foot} <a href={localizedPath('reply', locale)}>{U.footReply}</a> {U.or} <a href={`mailto:${SITE.correctionsEmail}`}>{SITE.correctionsEmail}</a>.</p>
   </div>
 </BaseLayout>

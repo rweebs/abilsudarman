@@ -39,7 +39,7 @@ if (root) {
   };
   const setPlaying = (playing: boolean) => {
     root.classList.toggle('is-playing', playing);
-    label.textContent = playing ? 'Memutar' : 'Lagu tema';
+    label.textContent = (playing ? root.dataset.labelPlaying : root.dataset.labelIdle) ?? (playing ? 'Memutar' : 'Lagu tema');
   };
 
   const play = () => {

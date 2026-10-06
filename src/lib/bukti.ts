@@ -36,3 +36,33 @@ export function sourceLine(d: { source?: string; capturedAt?: Date }): string {
   if (date) return `Tangkapan layar: ${date}. Sumber tidak terlihat.`;
   return 'Sumber dan tanggal tidak terlihat pada gambar.';
 }
+
+import type { Locale } from '../i18n';
+
+export const BUKTI_GROUP_LABEL_EN: Record<string, string> = {
+  'catatan-resmi': 'Official records',
+  'klaim-yang-dipublikasikan': 'Published claims',
+  'liputan-pihak-ketiga': 'Third-party coverage',
+  'upaya-verifikasi': 'Verification efforts',
+};
+
+/** An evidence entry's text in the given language; English falls back to Indonesian if no translation exists. */
+export function buktiText(d: BuktiData, locale: Locale) {
+  const en = locale === 'en' ? d.en : undefined;
+  return {
+    title: en?.title ?? d.title,
+    shows: en?.shows ?? d.shows,
+    limits: en?.limits ?? d.limits,
+    source: en?.source ?? d.source,
+    alt: (i: number) => en?.alts[i] ?? d.images[i].alt,
+  };
+}
+
+export function sourceLineFor(d: { source?: string; capturedAt?: Date }, locale: Locale): string {
+  if (locale === 'id') return sourceLine(d);
+  const date = d.capturedAt ? new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' }).format(d.capturedAt) : undefined;
+  if (d.source && date) return `Source: ${d.source}. Screenshot: ${date}.`;
+  if (d.source) return `Source: ${d.source}. Screenshot date not visible.`;
+  if (date) return `Screenshot: ${date}. Source not visible.`;
+  return 'Source and date are not visible in the image.';
+}

@@ -15,6 +15,20 @@ export const postSchema = z.object({
   image: z.string().optional(),
 });
 
+// English edition of a post: the original English text (the Indonesian post is its translation). Same id as the Indonesian post.
+export const postEnSchema = z.object({
+  title: z.string().min(1),
+  originalUrl: z.string().url().optional(),
+  author: z.string().min(1),
+  originalDate: z.coerce.date().optional(),
+  publishedDate: z.coerce.date(),
+  classification,
+  subjects: z.array(z.string()).default([]),
+  status: z.enum(['draft', 'final']).default('draft'),
+  /** True when the English text is the author's own original; false when it was translated for this site. */
+  original: z.boolean().default(true),
+});
+
 export type PostData = z.infer<typeof postSchema>;
 
 export const buktiGroup = z.enum(['catatan-resmi', 'klaim-yang-dipublikasikan', 'liputan-pihak-ketiga', 'upaya-verifikasi']);
@@ -32,6 +46,13 @@ export const buktiSchema = z.object({
   sourceUrl: z.string().url().optional(),
   capturedAt: z.coerce.date().optional(),
   order: z.number().int(),
+  en: z.object({
+    title: z.string().min(1),
+    alts: z.array(z.string().min(1)).min(1).max(4),
+    shows: z.string().min(1),
+    limits: z.string().min(1),
+    source: z.string().min(1).optional(),
+  }).optional(),
 });
 
 export const bukuSchema = z.object({
@@ -45,6 +66,11 @@ export const bukuSchema = z.object({
   description: z.string().min(1),
   note: z.string().min(1),
   order: z.number().int(),
+  en: z.object({
+    title: z.string().min(1),
+    description: z.string().min(1),
+    note: z.string().min(1),
+  }).optional(),
 });
 
 export const tiktokSchema = z.object({

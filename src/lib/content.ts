@@ -23,3 +23,9 @@ export async function getVideos() {
 export async function getTiktok() {
   return getCollection('tiktok');
 }
+
+/** English edition of the published posts (same ids as the Indonesian ones), newest first. */
+export async function getPostsEn() {
+  const posts = await getCollection('postsEn', (e) => INCLUDE_DRAFTS || e.data.status === 'final');
+  return posts.sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime());
+}

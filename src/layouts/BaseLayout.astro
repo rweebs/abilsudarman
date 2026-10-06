@@ -2,28 +2,40 @@
 import '../styles/global.css';
 import DisclaimerBanner from '../components/DisclaimerBanner.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import { NAV_GROUPS, SITE, isActive } from '../lib/site';
+import { SITE, isActive } from '../lib/site';
+import { LOCALES, LANGUAGE_NAME, LANGUAGE_SHORT, OG_LOCALE, alternatesForPath, otherLocale, pathLocale, routePath, type Locale } from '../i18n';
+import { UI, navFor } from '../i18n/ui';
 import ThemeSong from '../components/ThemeSong.astro';
 import { serializeJsonLd } from '../lib/jsonld';
 import { buildTitle, truncateAtWord, breadcrumbLd } from '../lib/seo';
 
 interface Crumb { name: string; path: string }
-const { title, description, path, jsonLd, noindex, ogType = 'website', breadcrumbs, author } = Astro.props as {
+const { title, description, path, jsonLd, noindex, ogType = 'website', breadcrumbs, author, locale: localeProp, alternates: alternatesProp } = Astro.props as {
   title: string; description: string; path: string; jsonLd?: object | object[]; noindex?: boolean;
   ogType?: 'website' | 'article'; breadcrumbs?: Crumb[]; author?: string;
+  locale?: Locale; alternates?: Partial<Record<Locale, string>>;
 };
+const locale: Locale = localeProp ?? pathLocale(path);
+const ui = UI[locale];
+// Both language versions of this page, for hreflang and the language switch. Dynamic pages pass them in.
+const alternates = alternatesProp ?? alternatesForPath(path);
+const hreflangs = alternates && LOCALES.every((l) => alternates[l]) ? alternates : undefined;
+const switchTo = otherLocale(locale);
+const switchHref = alternates?.[switchTo] ?? routePath('home', switchTo);
+const nav = navFor(locale);
 const canonical = new URL(path, SITE.url).toString();
 const ogImage = new URL('/og/kawal-og.png', SITE.url).toString();
+const abs = (p: string) => new URL(p, SITE.url).toString();
 const fullTitle = buildTitle(title, SITE.name, 'Kawal');
 const desc = truncateAtWord(description, 160);
-const crumbs = breadcrumbs ? [{ name: 'Beranda', path: '/' }, ...breadcrumbs] : [];
+const crumbs = breadcrumbs ? [{ name: ui.home, path: routePath('home', locale) }, ...breadcrumbs] : [];
 const lds = [
   ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
   ...(crumbs.length > 1 ? [breadcrumbLd(crumbs.map((c) => ({ name: c.name, url: new URL(c.path, SITE.url).toString() })))] : []),
 ];
 ---
 <!doctype html>
-<html lang="id">
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,6 +44,12 @@ const lds = [
     {noindex
       ? <meta name="robots" content="noindex" />
       : <><meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" /><link rel="canonical" href={canonical} /></>}
+    {hreflangs && !noindex && (
+      <>
+        {LOCALES.map((l) => <link rel="alternate" hreflang={l} href={abs(hreflangs[l])} />)}
+        <link rel="alternate" hreflang="x-default" href={abs(hreflangs.id)} />
+      </>
+    )}
     <meta name="google-site-verification" content={SITE.googleVerification} />
     <meta name="author" content={author ?? SITE.author} />
     <meta name="theme-color" content="#0a0e1a" />
@@ -39,16 +57,18 @@ const lds = [
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+    <meta http-equiv="content-language" content={locale} />
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={SITE.name} />
-    <meta property="og:locale" content="id_ID" />
+    <meta property="og:locale" content={OG_LOCALE[locale]} />
+    {hreflangs && !noindex && <meta property="og:locale:alternate" content={OG_LOCALE[switchTo]} />}
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={desc} />
     {!noindex && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Operasi Ababil: kawanan burung ababil membawa batu di langit malam" />
+    <meta property="og:image:alt" content={ui.ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={desc} />
@@ -56,14 +76,14 @@ const lds = [
     {lds.map((ld) => <script type="application/ld+json" set:html={serializeJsonLd(ld)} />)}
   </head>
   <body>
-    <DisclaimerBanner />
+    <DisclaimerBanner locale={locale} />
     <header class="nav">
       <div class="container">
-        <a href="/" class="brand"><img src="/logo-kawal.svg" alt="" width="32" height="32" />{SITE.name}</a>
+        <a href={routePath('home', locale)} class="brand"><img src="/logo-kawal.svg" alt="" width="32" height="32" />{SITE.name}</a>
         <details class="nav__menu" open>
-          <summary aria-label="Menu"><span class="nav__burger" aria-hidden="true"></span></summary>
+          <summary aria-label={ui.menu}><span class="nav__burger" aria-hidden="true"></span></summary>
           <ul class="nav__links">
-            {NAV_GROUPS.map((e) => 'items' in e ? (
+            {nav.map((e) => 'items' in e ? (
               <li class="nav__group-item">
                 <details class="nav__group">
                   <summary class:list={{ 'is-active': e.items.some((i) => isActive(path, i.href)) }}>{e.label}</summary>
@@ -73,16 +93,23 @@ const lds = [
             ) : (
               <li><a href={e.href} aria-current={isActive(path, e.href) ? 'page' : undefined}>{e.label}</a></li>
             ))}
+            <li class="nav__lang">
+              <div class="lang-toggle" role="group" aria-label={ui.language}>
+                {LOCALES.map((l) => l === locale
+                  ? <span class="lang-toggle__opt is-current" aria-current="true" lang={l} title={LANGUAGE_NAME[l]}>{LANGUAGE_SHORT[l]}</span>
+                  : <a class="lang-toggle__opt" href={switchHref} hreflang={l} lang={l} title={LANGUAGE_NAME[l]} aria-label={`${ui.language}: ${LANGUAGE_NAME[l]}`}>{LANGUAGE_SHORT[l]}</a>)}
+              </div>
+            </li>
           </ul>
         </details>
       </div>
     </header>
-    {crumbs.length > 1 && <Breadcrumbs items={crumbs} />}
+    {crumbs.length > 1 && <Breadcrumbs items={crumbs} locale={locale} />}
     <main><slot /></main>
-    <ThemeSong path={path} />
+    <ThemeSong path={path} locale={locale} />
     <script>import '../scripts/nav-menu';</script>
     <footer class="footer"><div class="container">
-      <p>Konten oleh {SITE.author}. Bukan nasihat hukum. Permintaan koreksi: <a href={`mailto:${SITE.correctionsEmail}`}>{SITE.correctionsEmail}</a>.</p>
+      <p>{ui.footer(SITE.author)} {ui.corrections}: <a href={`mailto:${SITE.correctionsEmail}`}>{SITE.correctionsEmail}</a>.</p>
     </div></footer>
   </body>
 </html>

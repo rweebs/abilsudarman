@@ -1,3 +1,5 @@
+import { toIndonesianPath } from '../i18n';
+
 // The site's theme song, "Ababil" (Raihan, YouTube Music "Topic" release). Played from the YouTube embed so the full track
 // works without a login; nothing is requested from YouTube until a visitor presses the player button.
 export interface Song { videoId: string; title: string; artist: string }
@@ -23,7 +25,8 @@ export const BOWOBHARATA_SONG: Song = {
 };
 
 /** The song for a page: /tentang and /bowobharata play their own, every other page the theme song. */
-export function songFor(path: string): Song {
+export function songFor(rawPath: string): Song {
+  const path = toIndonesianPath(rawPath);
   if (path === '/tentang') return TENTANG_SONG;
   if (path === '/bowobharata') return BOWOBHARATA_SONG;
   return THEME_SONG;
@@ -31,7 +34,7 @@ export function songFor(path: string): Song {
 
 /** Pages whose song starts by itself on the visitor's first tap, click or key press (browsers block sound at page load). */
 export const AUTOPLAY_PATHS: readonly string[] = ['/', '/tentang', '/bowobharata'];
-export const shouldAutoplay = (path: string) => AUTOPLAY_PATHS.includes(path);
+export const shouldAutoplay = (path: string) => AUTOPLAY_PATHS.includes(toIndonesianPath(path));
 
 /** Privacy-enhanced embed that autoplays (after a click) and loops the single video. */
 export function embedUrl(id: string): string {

@@ -41,7 +41,7 @@ describe('theme song on every page', () => {
   it('is mounted by the shared layout', () => {
     const layout = read('src/layouts/BaseLayout.astro');
     expect(layout).toContain("import ThemeSong from '../components/ThemeSong.astro'");
-    expect(layout).toContain('<ThemeSong path={path} />');
+    expect(layout).toContain('<ThemeSong path={path} locale={locale} />');
   });
   it('renders no iframe in markup, so nothing is requested from YouTube before a click', () => {
     const component = read('src/components/ThemeSong.astro');

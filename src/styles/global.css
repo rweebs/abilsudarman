@@ -40,6 +40,10 @@ h1, h2, h3 { line-height: 1.2; }
 .nav a { color: var(--text-primary); text-decoration: none; }
 .nav__links { display: flex; gap: 1.25rem; list-style: none; margin: 0; padding: 0; }
 .nav__links a[aria-current='page'] { color: var(--accent-amber); }
+.lang-toggle { display: inline-flex; padding: 2px; border: 1px solid var(--bg-glass-border); border-radius: 999px; }
+.lang-toggle__opt { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em; }
+.lang-toggle__opt.is-current { background: var(--accent-amber); color: #000; }
+a.lang-toggle__opt:hover { background: var(--bg-glass-border); }
 .nav__menu > summary { display: none; list-style: none; cursor: pointer; padding: 0.5rem; border-radius: var(--radius-lg); }
 .nav__menu > summary::-webkit-details-marker { display: none; }
 .nav__burger { display: block; width: 1.5rem; height: 1.1rem; background: linear-gradient(var(--text-primary) 0 0) top / 100% 2px no-repeat, linear-gradient(var(--text-primary) 0 0) center / 100% 2px no-repeat, linear-gradient(var(--text-primary) 0 0) bottom / 100% 2px no-repeat; }

@@ -20,3 +20,9 @@ export const CREDITS = [
   { source: MODELS.horse.source, text: 'Kuda: "Horse" oleh Quaternius, domain publik (CC0), dari Poly Pizza.' },
   { source: MODELS.human.source, text: 'Prajurit: "Animated Human" oleh Quaternius, domain publik (CC0), dari Poly Pizza.' },
 ] as const;
+
+export const CREDITS_EN = [
+  { source: MODELS.base.source, text: 'Character body rig: "Animated Base Character" by Quaternius, CC BY 3.0 licence, from Poly Pizza. Modified: dressed and posed.' },
+  { source: MODELS.horse.source, text: 'Horse: "Horse" by Quaternius, public domain (CC0), from Poly Pizza.' },
+  { source: MODELS.human.source, text: 'Soldier: "Animated Human" by Quaternius, public domain (CC0), from Poly Pizza.' },
+] as const;
