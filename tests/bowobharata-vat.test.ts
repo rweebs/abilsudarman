@@ -157,6 +157,38 @@ describe('one baked soldier shared by the armies and the skirmish', () => {
   });
 });
 
+describe('cavalry: a real galloping horse with a rider, charging in step', () => {
+  it('shares one travel shader between the baked horse and the rider, so they never drift apart', () => {
+    const travel = readFileSync('src/lib/bowobharata/scene/travel.ts', 'utf8');
+    expect(travel).toContain('export const TRAVEL_GLSL');
+    expect(travel).toContain('uTravel');
+    for (const f of ['rig', 'vat']) {
+      const src = readFileSync(`src/lib/bowobharata/scene/${f}.ts`, 'utf8');
+      expect(src, f).toContain("from './travel'");
+      expect(src, f).toContain('${TRAVEL_GLSL}');
+    }
+  });
+  it('builds the rider alone, sitting above where a horse’s back would be, with a long lance', async () => {
+    const { riderGeometry } = await import('../src/lib/bowobharata/scene/creatures');
+    const box = new THREE.Box3().setFromBufferAttribute(riderGeometry('#aaaaaa', '#bb3333').getAttribute('position') as THREE.BufferAttribute);
+    expect(box.min.y).toBeGreaterThan(1.3);
+    expect(box.max.y).toBeGreaterThan(2.4);
+    expect(box.max.x - box.min.x).toBeGreaterThan(2.5); // the lance
+  });
+  it('leaves the all-procedural cavalry in place as the fallback', async () => {
+    const { cavalryGeometry } = await import('../src/lib/bowobharata/scene/creatures');
+    const box = new THREE.Box3().setFromBufferAttribute(cavalryGeometry('#aaaaaa', '#bb3333').getAttribute('position') as THREE.BufferAttribute);
+    expect(box.min.y).toBeLessThan(0.1); // hooves on the ground
+  });
+  it('swaps the cavalry for the real horse only for the instances it hides, and bakes the horse’s gallop', () => {
+    const battle = readFileSync('src/lib/bowobharata/scene/battle.ts', 'utf8');
+    expect(battle).toContain('getHorseKit(models, ctx.uTime');
+    expect(battle).toContain('riderGeometry(');
+    const soldiers = readFileSync('src/lib/bowobharata/scene/soldiers.ts', 'utf8');
+    expect(soldiers).toContain("clips: ['Gallop']");
+  });
+});
+
 describe('the baked texture is used on the GPU, never rebuilt per frame', () => {
   it('samples the position and normal textures in the vertex shader from a per-instance clip and phase', () => {
     const src = readFileSync('src/lib/bowobharata/scene/vat.ts', 'utf8');

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { TRAVEL_GLSL } from './travel';
 import { planClips, texelOf, vatLayout, type ClipRange, type VatLayout } from './vat-math';
 
 export interface Bake {
@@ -96,6 +97,10 @@ export function vatTextures(bake: Bake): { pos: THREE.DataTexture; nor: THREE.Da
 export interface VatOptions {
   roughness?: number;
   metalness?: number;
+  /** Tint the head skin-toned and the legs darker by height; right for a person, wrong for a horse. Default true. */
+  skin?: boolean;
+  /** Charge across the field and start over (speed in units per second, length of the run), in step with any rider on it. */
+  travel?: { speed: number; span: number };
 }
 
 /**
@@ -116,9 +121,11 @@ export function vatMaterial(uTime: { value: number }, bake: Bake, clipOrder: rea
     shader.uniforms.uVatNor = { value: textures.nor };
     shader.uniforms.uVatLayout = { value: new THREE.Vector3(bake.layout.width, bake.layout.rowsPerFrame, bake.layout.height) };
     shader.uniforms.uVatClip = { value: clipData };
+    shader.uniforms.uTravel = { value: new THREE.Vector2(o.travel?.speed ?? 0, o.travel?.span ?? 0) };
     shader.vertexShader = shader.vertexShader
       .replace('#include <common>', `#include <common>
         uniform sampler2D uVatPos; uniform sampler2D uVatNor; uniform vec3 uVatLayout; uniform vec4 uVatClip[4]; uniform float uTime;
+        uniform vec2 uTravel;
         attribute float aVid; attribute float aPhase; attribute float aClip;
         varying float vVatHeight;
         vec2 vatUv(float vid, float frame) {
@@ -139,16 +146,17 @@ export function vatMaterial(uTime: { value: number }, bake: Bake, clipOrder: rea
         #ifdef USE_TANGENT
           vec3 objectTangent = vec3(tangent.xyz);
         #endif`)
-      .replace('#include <begin_vertex>', 'vec3 transformed = vatPos;');
+      .replace('#include <begin_vertex>', `vec3 transformed = vatPos;
+        ${TRAVEL_GLSL}`);
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <common>', '#include <common>\nvarying float vVatHeight;')
       // Skin on the head, a darker leg: the model has no texture, so tint by height.
-      .replace('#include <color_fragment>', `#include <color_fragment>
+      .replace('#include <color_fragment>', o.skin === false ? '#include <color_fragment>' : `#include <color_fragment>
         float vatHead = smoothstep(1.46, 1.52, vVatHeight);
         float vatLeg = 1.0 - smoothstep(0.35, 0.8, vVatHeight);
         diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.62, 0.45, 0.34), vatHead * 0.85);
         diffuseColor.rgb *= 1.0 - vatLeg * 0.35;`);
   };
-  material.customProgramCacheKey = () => 'vat-soldier';
+  material.customProgramCacheKey = () => `vat-${o.skin === false ? 'plain' : 'skin'}-${o.travel ? 'travel' : 'still'}`;
   return { material, textures };
 }

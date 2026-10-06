@@ -21,7 +21,14 @@ export interface Quality {
   pixelRatio: number;
 }
 
-export function qualityFor(mobile: boolean, dpr: number): Quality {
+/** `cores` is navigator.hardwareConcurrency; a desktop reporting four or fewer gets a lighter army and shadow map. */
+export function qualityFor(mobile: boolean, dpr: number, cores = 8): Quality {
+  const full = fullQuality(mobile, dpr);
+  if (mobile || cores > 4) return full;
+  return { ...full, warriorsPerSide: 1200, realRanks: 3, realFighters: 60, shadowMap: 1024, cavalry: 16, elephants: 4 };
+}
+
+function fullQuality(mobile: boolean, dpr: number): Quality {
   return mobile
     ? {
       warriorsPerSide: 700, arrows: 48, dust: 140, embers: 90, terrainSegments: 96, skirmishPairs: 28, realRanks: 2, realFighters: 24, cavalry: 8, elephants: 2,

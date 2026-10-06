@@ -27,7 +27,7 @@ describe('KurukshetraScene source guards', () => {
     expect(main).toMatch(/if \(!models \|\| disposed\) return;/);
   });
   it('sizes itself from the quality tier', () => {
-    expect(main).toContain('qualityFor(mobile, window.devicePixelRatio || 1)');
+    expect(main).toContain('qualityFor(mobile, window.devicePixelRatio || 1, navigator.hardwareConcurrency || 8)');
     expect(main).toContain('renderer.setPixelRatio(quality.pixelRatio)');
   });
   it('builds the post chain only when the tier has post effects, and sheds effects in order when frames are slow', () => {

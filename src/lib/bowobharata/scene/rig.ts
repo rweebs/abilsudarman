@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { TRAVEL_GLSL } from './travel';
 
 /**
  * Tags every vertex of `geo` as part of a limb: aLimb = (id, pivot x, pivot y). Id 0 is the body, which stays put; ids 1..5 swing
@@ -78,11 +79,7 @@ export function limbMaterial(uTime: { value: number }, o: LimbOptions): THREE.Me
         transformed.y += abs(sin(gait)) * uBob;
         transformed.x += sin(gait * 0.5) * uLunge * smoothstep(0.3, 1.5, position.y);
         transformed.x += aLean * uLean * position.y;
-        if (uTravel.y > 0.0) {
-          float u = fract(uTime * uTravel.x / uTravel.y + aPhase);
-          transformed.x += (u - 0.5) * uTravel.y;
-          transformed *= smoothstep(0.0, 0.07, u) * (1.0 - smoothstep(0.93, 1.0, u));
-        }`);
+        ${TRAVEL_GLSL}`);
   };
   m.customProgramCacheKey = () => `limb-${o.swing}-${o.speed}-${o.bob ?? 0}-${o.lunge ?? 0}-${o.lean ?? 0}-${o.travel ? 1 : 0}-${o.vertexColors ? 1 : 0}`;
   return m;

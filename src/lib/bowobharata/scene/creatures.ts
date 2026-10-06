@@ -44,8 +44,15 @@ export function cavalryGeometry(armor: string, cloth: string): THREE.BufferGeome
     ...leg([-0.68, 1.25, -0.15], hind, hindR, coat, dark, 3, 0.06),
     ...leg([-0.68, 1.25, 0.15], hind, hindR, coat, dark, 4, 0.06),
   );
-  // Rider: torso, head with helmet, an arm holding the lance, the lance itself.
-  parts.push(
+  parts.push(...riderParts(armor, cloth));
+  const merged = mergeGeometries(parts)!;
+  for (const p of parts) p.dispose();
+  return merged;
+}
+
+/** Torso, helmeted head, an arm holding the lance, the lance itself, and a saddle cloth: the rider, sitting at horse-back height. */
+function riderParts(armor: string, cloth: string): THREE.BufferGeometry[] {
+  return [
     part(loft(pts([[0.04, 1.66, 0], [0.08, 1.95, 0], [0.12, 2.25, 0]]), [[0.17, 0.11], [0.16, 0.1], [0.14, 0.09]], 3, 7), armor),
     part(new THREE.SphereGeometry(0.1, 8, 6).translate(0.14, 2.42, 0), '#b08560'),
     part(new THREE.ConeGeometry(0.115, 0.22, 7).translate(0.14, 2.58, 0), armor),
@@ -53,7 +60,12 @@ export function cavalryGeometry(armor: string, cloth: string): THREE.BufferGeome
     part(new THREE.CylinderGeometry(0.018, 0.018, 3.0, 4).rotateZ(Math.PI / 2 + 0.06).translate(1.0, 2.0, -0.2), '#5a4126'),
     part(new THREE.ConeGeometry(0.05, 0.22, 4).rotateZ(-Math.PI / 2 + 0.06).translate(2.62, 1.84, -0.2), '#c9ced8'),
     part(new THREE.BoxGeometry(0.5, 0.05, 0.7).translate(0.0, 1.78, 0), cloth),
-  );
+  ];
+}
+
+/** The rider alone, to sit on a separately drawn horse. Vertex colours, limb id 0 (no limbs): it only travels and bobs. */
+export function riderGeometry(armor: string, cloth: string): THREE.BufferGeometry {
+  const parts = riderParts(armor, cloth);
   const merged = mergeGeometries(parts)!;
   for (const p of parts) p.dispose();
   return merged;

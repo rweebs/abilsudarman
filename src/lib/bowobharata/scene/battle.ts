@@ -2,11 +2,14 @@ import * as THREE from 'three';
 import { mulberry32 } from '../../sky/rng';
 import { groundHeight } from '../stage-math';
 import { soldierGeometry } from './anatomy';
-import { cavalryGeometry, elephantGeometry } from './creatures';
+import { cavalryGeometry, elephantGeometry, riderGeometry } from './creatures';
 import type { Part, SceneContext } from './effects';
-import { cavalryLanes, clashLayout, elephantSlots } from './motion';
+import { cavalryLanes, clashLayout, elephantSlots, type Lane } from './motion';
 import { limbMaterial } from './rig';
-import { CLIP, getSoldierKit, soldierMesh, type SoldierSpot } from './soldiers';
+import { CLIP, getHorseKit, getSoldierKit, soldierMesh, type SoldierKit, type SoldierSpot } from './soldiers';
+
+// Bay, chestnut, dark brown and grey: the cavalry horses, painted one by one over the single baked model.
+const COATS = ['#6a4d35', '#7b5236', '#3f3026', '#8a7a66'];
 
 interface Placement { x: number; z: number; rotY: number; phase: number; scale?: number; color?: THREE.Color }
 
@@ -56,6 +59,8 @@ export function createBattle(ctx: SceneContext): Part {
   const fighterMesh = instanced(soldierGeometry(), fight, fighters, rnd);
   group.add(fighterMesh);
 
+  let horseKit: SoldierKit | null = null;
+  const cavalry: { side: 'dharma' | 'adharma'; mesh: THREE.InstancedMesh; lanes: Lane[] }[] = [];
   for (const side of ['dharma', 'adharma'] as const) {
     const s = SIDE[side];
     const facing = side === 'dharma' ? 0 : Math.PI;
@@ -65,7 +70,10 @@ export function createBattle(ctx: SceneContext): Part {
       swing: 0.75, speed: 9, phases: [0, 0, 0.45, 2.3, 2.8, 0], bob: 0.06, travel: { speed: 7, span: 12 },
       vertexColors: true, roughness: 0.7, metalness: 0.15,
     });
-    group.add(instanced(cavalryGeometry(s.armor, s.cloth), gallop, cavalryLanes(quality.cavalry, side, 4).map((l) => ({ ...l, rotY: facing })), rnd));
+    const lanes = cavalryLanes(quality.cavalry, side, 4);
+    const cavalryMesh = instanced(cavalryGeometry(s.armor, s.cloth), gallop, lanes.map((l) => ({ ...l, rotY: facing })), rnd);
+    group.add(cavalryMesh);
+    cavalry.push({ side, mesh: cavalryMesh, lanes });
 
     // War elephants: a slow diagonal walk, a swaying trunk, a howdah in the army's colours.
     const walk = limbMaterial(uTime, {
@@ -79,22 +87,38 @@ export function createBattle(ctx: SceneContext): Part {
     update() { /* animated in the shader through ctx.uTime */ },
     // The real soldier takes over the first pairs, throwing real punches; their procedural stand-ins are scaled to nothing.
     upgrade(models) {
+      const hidden = new THREE.Matrix4().makeScale(0, 0, 0);
+
       const kit = getSoldierKit(models, ctx.uTime);
       const realPairs = Math.min(pairs.length, Math.floor(quality.realFighters / 2));
-      if (!kit || realPairs === 0) return;
-      const hidden = new THREE.Matrix4().makeScale(0, 0, 0);
-      const spots: SoldierSpot[] = [];
-      pairs.slice(0, realPairs).forEach((p, i) => {
-        fighterMesh.setMatrixAt(2 * i, hidden);
-        fighterMesh.setMatrixAt(2 * i + 1, hidden);
-        const turn = p.phase / (Math.PI * 2);
-        spots.push(
-          { x: p.x - p.gap / 2, z: p.z, rotY: 0, phase: turn, clip: CLIP.punch, color: new THREE.Color('#6f8be0') },
-          { x: p.x + p.gap / 2, z: p.z, rotY: Math.PI, phase: (turn + 0.5) % 1, clip: CLIP.punch, color: new THREE.Color('#c4505c') },
-        );
-      });
-      fighterMesh.instanceMatrix.needsUpdate = true;
-      group.add(soldierMesh(kit, spots, groundHeight));
+      if (kit && realPairs > 0) {
+        const spots: SoldierSpot[] = [];
+        pairs.slice(0, realPairs).forEach((p, i) => {
+          fighterMesh.setMatrixAt(2 * i, hidden);
+          fighterMesh.setMatrixAt(2 * i + 1, hidden);
+          const turn = p.phase / (Math.PI * 2);
+          spots.push(
+            { x: p.x - p.gap / 2, z: p.z, rotY: 0, phase: turn, clip: CLIP.punch, color: new THREE.Color('#6f8be0') },
+            { x: p.x + p.gap / 2, z: p.z, rotY: Math.PI, phase: (turn + 0.5) % 1, clip: CLIP.punch, color: new THREE.Color('#c4505c') },
+          );
+        });
+        fighterMesh.instanceMatrix.needsUpdate = true;
+        group.add(soldierMesh(kit, spots, groundHeight));
+      }
+
+      // Cavalry: the real horse gallops under a procedural rider; both travel across the field on the same clock and phase.
+      horseKit = getHorseKit(models, ctx.uTime);
+      if (!horseKit) return;
+      for (const c of cavalry) {
+        const s = SIDE[c.side];
+        const facing = c.side === 'dharma' ? 0 : Math.PI;
+        c.lanes.forEach((_, i) => c.mesh.setMatrixAt(i, hidden));
+        c.mesh.instanceMatrix.needsUpdate = true;
+        group.add(soldierMesh(horseKit, c.lanes.map((l, i) => ({ x: l.x, z: l.z, rotY: facing, phase: l.phase, clip: 0, color: new THREE.Color(COATS[i % COATS.length]) })), groundHeight));
+        const rider = limbMaterial(uTime, { swing: 0, speed: 9, phases: [], bob: 0.03, travel: { speed: 7, span: 12 }, vertexColors: true, roughness: 0.7, metalness: 0.2 });
+        group.add(instanced(riderGeometry(s.armor, s.cloth), rider, c.lanes.map((l) => ({ ...l, rotY: facing })), rnd));
+      }
     },
+    dispose() { horseKit?.dispose(); },
   };
 }

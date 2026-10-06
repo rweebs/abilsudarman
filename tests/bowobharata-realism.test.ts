@@ -73,6 +73,23 @@ describe('real soldiers in the front ranks', () => {
   });
 });
 
+describe('weaker desktops', () => {
+  it('get a lighter tier when the machine reports few cores, without turning the effects off outright', () => {
+    const strong = qualityFor(false, 2, 8);
+    const weak = qualityFor(false, 2, 4);
+    expect(weak.realRanks).toBeLessThan(strong.realRanks);
+    expect(weak.realFighters).toBeLessThan(strong.realFighters);
+    expect(weak.warriorsPerSide).toBeLessThan(strong.warriorsPerSide);
+    expect(weak.shadowMap).toBeLessThan(strong.shadowMap);
+    expect(weak.realRanks).toBeGreaterThan(qualityFor(true, 2, 4).realRanks);
+    expect(weak.shadows).toBe(true);
+  });
+  it('treats an unknown core count as a capable machine, and never changes the phone tier', () => {
+    expect(qualityFor(false, 2)).toEqual(qualityFor(false, 2, 8));
+    expect(qualityFor(true, 3, 2)).toEqual(qualityFor(true, 3, 12));
+  });
+});
+
 describe('degrade ladder', () => {
   const full = { ao: true, dof: true, bloom: true, shadows: true };
   it('drops one effect per step in order of cost: ao, dof, bloom, shadows', () => {

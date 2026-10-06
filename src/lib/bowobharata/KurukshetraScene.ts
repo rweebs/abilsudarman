@@ -25,7 +25,7 @@ export interface KurukshetraScene {
 const STILL_TIME = 3.2;
 
 export function createScene({ canvas, reducedMotion, mobile, onLost }: SceneInit): KurukshetraScene {
-  const quality = qualityFor(mobile, window.devicePixelRatio || 1);
+  const quality = qualityFor(mobile, window.devicePixelRatio || 1, navigator.hardwareConcurrency || 8);
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: !mobile, powerPreference: mobile ? 'low-power' : 'high-performance' });
   renderer.setPixelRatio(quality.pixelRatio);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;

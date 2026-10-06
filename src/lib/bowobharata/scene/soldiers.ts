@@ -22,15 +22,36 @@ export interface SoldierKit {
  * is not what was expected, in which case the procedural soldiers stay.
  */
 export function prepareSoldiers(models: LoadedModels, uTime: { value: number }): SoldierKit | null {
-  const rig = instantiate(models.human, { height: 1.8, faceBones: ['LeftFoot', 'LeftToeBase'] });
+  return prepareKit(models.human, uTime, SOLDIER_SPEC);
+}
+
+/** What to bake from one model and how to draw it. */
+interface KitSpec {
+  clips: readonly string[];
+  frames: Record<string, number>;
+  height: number;
+  /** Tail-to-head (or heel-to-toe) bones that say which way the model faces. */
+  faceBones: [string, string];
+  skin: boolean;
+  travel?: { speed: number; span: number };
+  roughness: number;
+  metalness: number;
+}
+
+const SOLDIER_SPEC: KitSpec = { clips: SOLDIER_CLIPS, frames: FRAMES, height: 1.8, faceBones: ['LeftFoot', 'LeftToeBase'], skin: true, roughness: 0.7, metalness: 0.25 };
+// The cavalry's horse gallops in place and charges across a run of twelve units, the same run and speed as its rider.
+const HORSE_SPEC: KitSpec = { clips: ['Gallop'], frames: { Gallop: 14 }, height: 2.1, faceBones: ['Tail1', 'Head'], skin: false, travel: { speed: 7, span: 12 }, roughness: 0.6, metalness: 0.05 };
+
+function prepareKit(gltf: LoadedModels['human'], uTime: { value: number }, spec: KitSpec): SoldierKit | null {
+  const rig = instantiate(gltf, { height: spec.height, faceBones: spec.faceBones });
   let skinned: THREE.SkinnedMesh | undefined;
   rig.root.traverse((o) => { if ((o as THREE.SkinnedMesh).isSkinnedMesh) skinned = o as THREE.SkinnedMesh; });
-  const clips = SOLDIER_CLIPS.map((n) => rig.clips.get(n));
+  const clips = spec.clips.map((n) => rig.clips.get(n));
   if (!skinned || clips.some((c) => !c)) { rig.dispose(); return null; }
   const mesh: THREE.SkinnedMesh = skinned;
 
   rig.mixer.stopAllAction();
-  const bake = bakeVat(rig.root, mesh, clips as THREE.AnimationClip[], FRAMES);
+  const bake = bakeVat(rig.root, mesh, clips as THREE.AnimationClip[], spec.frames);
   rig.dispose();
 
   const n = bake.vertexCount;
@@ -51,7 +72,7 @@ export function prepareSoldiers(models: LoadedModels, uTime: { value: number }):
   const index = mesh.geometry.getIndex();
   if (index) geometry.setIndex(index.clone());
 
-  const { material, textures } = vatMaterial(uTime, bake, SOLDIER_CLIPS, { roughness: 0.7, metalness: 0.25 });
+  const { material, textures } = vatMaterial(uTime, bake, spec.clips, { roughness: spec.roughness, metalness: spec.metalness, skin: spec.skin, travel: spec.travel });
   return {
     bake, material, geometry,
     dispose() { material.dispose(); textures.pos.dispose(); textures.nor.dispose(); geometry.dispose(); },
@@ -64,6 +85,14 @@ const kits = new WeakMap<LoadedModels, SoldierKit | null>();
 export function getSoldierKit(models: LoadedModels, uTime: { value: number }): SoldierKit | null {
   if (!kits.has(models)) kits.set(models, prepareSoldiers(models, uTime));
   return kits.get(models) ?? null;
+}
+
+const horseKits = new WeakMap<LoadedModels, SoldierKit | null>();
+
+/** The baked galloping horse for the cavalry, made on first use and shared after that. Its rider travels in step (see travel.ts). */
+export function getHorseKit(models: LoadedModels, uTime: { value: number }): SoldierKit | null {
+  if (!horseKits.has(models)) horseKits.set(models, prepareKit(models.horse, uTime, HORSE_SPEC));
+  return horseKits.get(models) ?? null;
 }
 
 export interface SoldierSpot { x: number; z: number; rotY: number; phase: number; clip: number; color: THREE.Color }
