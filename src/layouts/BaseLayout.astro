@@ -105,7 +105,7 @@ const lds = [
     <ThemeSong path={path} locale={locale} />
     <script>import '../scripts/nav-menu';</script>
     <footer class="footer"><div class="container">
-      <p>{ui.footer(SITE.author)} {ui.corrections}: <a href={`mailto:${SITE.correctionsEmail}`}>{SITE.correctionsEmail}</a>.</p>
+      <p>{ui.footer(SITE.author)} {ui.corrections}: <a href={`mailto:${SITE.correctionsEmail}`}>{SITE.correctionsEmail}</a>. {locale === 'en' ? 'A project of' : 'Proyek'} <a href="https://www.infraloka.co.id" rel="noopener">InfraLoka</a>.</p>
     </div></footer>
   </body>
 </html>
