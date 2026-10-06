@@ -25,6 +25,11 @@ describe('buildTitle', () => {
   it('appends the full brand when it fits in 60 characters', () => {
     expect(buildTitle('Operasi Ababil', brand, 'Kawal')).toBe('Operasi Ababil · Kawal Abil Sudarman');
   });
+  it('suffixes a truncated title with the subject when the title does not name it', () => {
+    const out = buildTitle('Saya menulis unggahan dengan bahasa sangat keras tentang pihak lain di media sosial', brand, 'Kawal');
+    expect(out.length).toBeLessThanOrEqual(60);
+    expect(out.endsWith(' · Abil Sudarman')).toBe(true);
+  });
   it('falls back to the short brand and truncates a long title to 60 characters', () => {
     const long = 'Laporan Investigasi: Membedah Kredensial Abil Sudarman dan Perusahaannya Secara Mendalam';
     const out = buildTitle(long, brand, 'Kawal');

@@ -9,7 +9,7 @@ const { locale = 'id' } = Astro.props as { locale?: Locale };
 const groups = groupBukti(await getBukti());
 const DISCLAIMER = UI[locale].disclaimer;
 const T = {
-  id: { title: 'Bukti dan tangkapan layar', h1: 'Bukti', crumb: 'Bukti', intro: 'Gambar di bawah menunjukkan klaim sebagaimana dipublikasikan dan catatan yang dapat diperiksa. Gambar bukan putusan. Nomor identitas ditutup.', empty: 'Belum ada bukti yang dipublikasikan.', shows: 'Menunjukkan:', link: 'Tautan sumber', image: 'Gambar', description: 'Tangkapan layar yang relevan dengan klaim Abil Sudarman, masing-masing dengan keterangan apa yang terlihat.' },
+  id: { title: 'Bukti klaim Abil Sudarman', h1: 'Bukti', crumb: 'Bukti', intro: 'Gambar di bawah menunjukkan klaim sebagaimana dipublikasikan dan catatan yang dapat diperiksa. Gambar bukan putusan. Nomor identitas ditutup.', empty: 'Belum ada bukti yang dipublikasikan.', shows: 'Menunjukkan:', link: 'Tautan sumber', image: 'Gambar', description: 'Tangkapan layar yang relevan dengan klaim Abil Sudarman, masing-masing dengan keterangan apa yang terlihat.' },
   en: { title: 'Evidence and screenshots on Abil Sudarman', h1: 'Evidence', crumb: 'Evidence', intro: 'The images below show claims as published and records that can be checked. Images are not rulings. Identity numbers are masked.', empty: 'No evidence has been published yet.', shows: 'Shows:', link: 'Source link', image: 'Image', description: "Screenshots relevant to Abil Sudarman's claims, each with a note on what is visible and what it does not prove." },
 }[locale];
 const path = localizedPath('evidence', locale);

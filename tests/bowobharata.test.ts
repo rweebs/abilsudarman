@@ -40,7 +40,7 @@ describe('bowobharata content', () => {
     for (const p of Object.values(POSTERS)) expect(p.alt.length).toBeGreaterThan(20);
   });
   it('has a page title and a description under 160 characters', () => {
-    expect(PAGE.title).toBe('Bowobharata');
+    expect(PAGE.title).toBe('Bowobharata: Rahmat Wibowo vs Abil Sudarman');
     expect(PAGE.description.length).toBeLessThanOrEqual(160);
   });
 });

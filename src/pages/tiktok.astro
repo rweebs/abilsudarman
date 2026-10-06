@@ -10,7 +10,7 @@ const { locale = 'id' } = Astro.props as { locale?: Locale };
 const DISCLAIMER = UI[locale].disclaimer;
 const videos = sortTiktok(await getTiktok());
 const T = {
-  id: { title: 'Video TikTok', h1: 'TikTok', empty: 'Belum ada video yang dipublikasikan.', video: 'Video', close: 'Tutup', reload: 'Muat ulang', open: 'Buka di TikTok',
+  id: { title: 'TikTok tentang Abil Sudarman', h1: 'TikTok', empty: 'Belum ada video yang dipublikasikan.', video: 'Video', close: 'Tutup', reload: 'Muat ulang', open: 'Buka di TikTok',
     intro: (caption: string) => `Seri video TikTok @rweebs_ dengan keterangan: “${caption}”. Isinya pendapat penulis, bukan putusan. Pemutar TikTok (pihak ketiga) baru dimuat setelah Anda menekan sebuah video; tanpa itu tidak ada permintaan ke TikTok.`,
     note: 'Pemutar TikTok (pihak ketiga) dimuat setelah Anda menekan sebuah video dan dihentikan saat jendela ditutup. TikTok kadang membatasi pemutarnya sementara (“overload-protect triggered”); jika video tidak muncul, muat ulang atau buka langsung di TikTok.',
     description: 'Daftar video TikTok Rahmat Wibowo tentang klaim Abil Sudarman. Putar langsung di halaman; pemutar TikTok baru dimuat setelah Anda menekan video.' },

@@ -11,7 +11,9 @@ export function buildTitle(title: string, brand: string, shortBrand: string, max
   if (title === brand) return brand;
   const long = `${title} · ${brand}`;
   if (long.length <= max) return long;
-  const suffix = ` · ${shortBrand}`;
+  // A title that already names the subject keeps the short brand; one that does not gets the subject as its suffix.
+  const subject = brand.replace(/^Kawal\s+/i, '');
+  const suffix = ` · ${title.toLowerCase().includes(subject.toLowerCase()) ? shortBrand : subject}`;
   return truncateAtWord(title, max - suffix.length) + suffix;
 }
 

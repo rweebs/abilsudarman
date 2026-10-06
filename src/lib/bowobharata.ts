@@ -13,7 +13,7 @@ export interface Parva {
 }
 
 export const PAGE = {
-  title: 'Bowobharata',
+  title: 'Bowobharata: Rahmat Wibowo vs Abil Sudarman',
   description: 'Bowobharata: Mahabharata sebagai kiasan perjalanan Rahmat Wibowo di Linimasa, Kebenaran vs Pembenaran. Pendapat penulis, ilustrasi AI, sumber di Bukti.',
   kicker: 'Kiasan Mahabharata',
   lead: 'Kebenaran vs Pembenaran. Saya menceritakan ulang perjalanan di Linimasa sebagai perang Kurukshetra: berbeda era, medan yang sama.',
