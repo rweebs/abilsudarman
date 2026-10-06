@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import DisclaimerBanner from '../components/DisclaimerBanner.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import LanguageToggle from '../components/LanguageToggle.astro';
 import { SITE, isActive } from '../lib/site';
 import { LOCALES, LANGUAGE_NAME, LANGUAGE_SHORT, OG_LOCALE, alternatesForPath, otherLocale, pathLocale, routePath, type Locale } from '../i18n';
 import { UI, navFor } from '../i18n/ui';
@@ -80,6 +81,7 @@ const lds = [
     <header class="nav">
       <div class="container">
         <a href={routePath('home', locale)} class="brand"><img src="/logo-kawal.svg" alt="" width="32" height="32" />{SITE.name}</a>
+        <div class="nav__lang-bar"><LanguageToggle locale={locale} href={switchHref} label={ui.language} /></div>
         <details class="nav__menu" open>
           <summary aria-label={ui.menu}><span class="nav__burger" aria-hidden="true"></span></summary>
           <ul class="nav__links">
@@ -93,13 +95,7 @@ const lds = [
             ) : (
               <li><a href={e.href} aria-current={isActive(path, e.href) ? 'page' : undefined}>{e.label}</a></li>
             ))}
-            <li class="nav__lang">
-              <div class="lang-toggle" role="group" aria-label={ui.language}>
-                {LOCALES.map((l) => l === locale
-                  ? <span class="lang-toggle__opt is-current" aria-current="true" lang={l} title={LANGUAGE_NAME[l]}>{LANGUAGE_SHORT[l]}</span>
-                  : <a class="lang-toggle__opt" href={switchHref} hreflang={l} lang={l} title={LANGUAGE_NAME[l]} aria-label={`${ui.language}: ${LANGUAGE_NAME[l]}`}>{LANGUAGE_SHORT[l]}</a>)}
-              </div>
-            </li>
+            <li class="nav__lang"><LanguageToggle locale={locale} href={switchHref} label={ui.language} /></li>
           </ul>
         </details>
       </div>

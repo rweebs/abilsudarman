@@ -44,6 +44,7 @@ h1, h2, h3 { line-height: 1.2; }
 .lang-toggle__opt { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em; }
 .lang-toggle__opt.is-current { background: var(--accent-amber); color: #000; }
 a.lang-toggle__opt:hover { background: var(--bg-glass-border); }
+.nav__lang-bar { display: none; }
 .nav__menu > summary { display: none; list-style: none; cursor: pointer; padding: 0.5rem; border-radius: var(--radius-lg); }
 .nav__menu > summary::-webkit-details-marker { display: none; }
 .nav__burger { display: block; width: 1.5rem; height: 1.1rem; background: linear-gradient(var(--text-primary) 0 0) top / 100% 2px no-repeat, linear-gradient(var(--text-primary) 0 0) center / 100% 2px no-repeat, linear-gradient(var(--text-primary) 0 0) bottom / 100% 2px no-repeat; }
@@ -52,6 +53,8 @@ a.lang-toggle__opt:hover { background: var(--bg-glass-border); }
 @media (max-width: 720px) {
   .nav .container { flex-wrap: nowrap; }
   .nav__menu > summary { display: block; }
+  .nav__lang-bar { display: block; margin-left: auto; margin-right: 0.5rem; }
+  .nav__lang { display: none; }
   .nav__menu > summary:focus-visible { outline: 2px solid var(--accent-amber); }
   .nav__links { max-height: calc(100svh - 4.5rem); overflow-y: auto; position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; gap: 0; background: rgb(10, 14, 26); border-bottom: 1px solid var(--bg-glass-border); padding: 0.5rem 1rem 1rem; }
   .nav__links a { display: block; padding: 0.75rem 0; }
