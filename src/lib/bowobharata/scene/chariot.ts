@@ -4,8 +4,11 @@ import { garment, hangingChain, horse, humanFigure, strand, type HorseRig } from
 import { canvasTexture, contactShadow, glowSprite, wavingCloth, type Part, type SceneContext } from './effects';
 import type { Detail } from './materials';
 import { springStep } from './motion';
-import { dressHero } from './hero';
+import { dressHero, type Hero } from './hero';
 import { instantiate, type Rig } from './models';
+
+// Where the procedural figures' heads are centred (standing), which is where the crown, hair and feather were authored.
+const HEAD_CENTRE = new THREE.Vector3(0.01, 1.7, 0);
 
 // A white team: the one model is repainted per material, keeping its own shading and its dark hooves and eyes.
 const HORSE_TINT = { Main: '#ebe6da', Main_Light: '#f8f5ee', Main_Dark: '#cdc5b4', Hair: '#d8d1c0', Muzzle: '#bba99c', Hooves: '#2b221b' };
@@ -110,7 +113,7 @@ const crown = (M: Palette, y: number, tall = 1) => {
 };
 
 /** Krishna as charioteer: dark blue skin, yellow dhoti, a blue scarf, garland and armlets, the crown with its peacock feather. */
-function krishna(M: Palette, ctx: SceneContext): { group: THREE.Group; wheelOfLight: THREE.Group; halo: THREE.Sprite; reinHand: THREE.Vector3; scarfJoints: THREE.Group[] } {
+function krishna(M: Palette, ctx: SceneContext): { group: THREE.Group; wheelOfLight: THREE.Group; halo: THREE.Sprite; reinHand: THREE.Vector3; scarfJoints: THREE.Group[]; gear: THREE.Object3D[] } {
   const f = humanFigure({
     skin: M.krishnaSkin,
     cloth: M.pitambara,
@@ -130,7 +133,8 @@ function krishna(M: Palette, ctx: SceneContext): { group: THREE.Group; wheelOfLi
   }
   const hair = mesh(new THREE.SphereGeometry(0.105, 16, 12), M.hair, -0.025, 1.72, 0);
   hair.scale.set(1, 1.1, 1);
-  g.add(hair, crown(M, 1.76));
+  const crownMesh = crown(M, 1.76);
+  g.add(hair, crownMesh);
   const feather = mesh(new THREE.PlaneGeometry(0.14, 0.5), new THREE.MeshStandardMaterial({ map: featherTexture(), alphaTest: 0.3, side: THREE.DoubleSide, roughness: 0.6 }), -0.06, 2.12, 0);
   feather.rotation.z = 0.3;
   g.add(feather);
@@ -145,11 +149,11 @@ function krishna(M: Palette, ctx: SceneContext): { group: THREE.Group; wheelOfLi
   scarfEnd.root.position.set(-0.08, 1.4, 0.1);
   scarfEnd.root.rotation.z = -0.35;
   g.add(scarfEnd.root);
-  return { group: g, wheelOfLight, halo, reinHand: f.leftHand, scarfJoints: scarfEnd.joints };
+  return { group: g, wheelOfLight, halo, reinHand: f.leftHand, scarfJoints: scarfEnd.joints, gear: [hair, crownMesh, feather] };
 }
 
 /** Arjuna behind him in silver armour, the bow drawn: stave in the left hand, string to the right. */
-function arjuna(M: Palette): THREE.Group {
+function arjuna(M: Palette): { group: THREE.Group; gear: THREE.Object3D[] } {
   const f = humanFigure({
     skin: M.arjunaSkin,
     cloth: M.crimson,
@@ -163,7 +167,8 @@ function arjuna(M: Palette): THREE.Group {
   g.add(garment([[0.17, 0.95], [0.16, 1.08], [0.2, 1.28], [0.215, 1.42], [0.1, 1.5]], M.silver, 0.68));
   g.add(garment([[0.18, 1.0], [0.21, 0.8], [0.23, 0.55]], M.crimson, 0.72));
   const hair = mesh(new THREE.SphereGeometry(0.105, 16, 12), M.hair, -0.025, 1.72, 0);
-  g.add(hair, crown(M, 1.76, 1.35));
+  const crownMesh = crown(M, 1.76, 1.35);
+  g.add(hair, crownMesh);
 
   const r = 0.8;
   const span = Math.PI * 0.4;
@@ -175,7 +180,7 @@ function arjuna(M: Palette): THREE.Group {
   const nock = new THREE.Vector3(f.rightHand.x, f.rightHand.y, hand.z);
   const string = new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints([top, nock, nock, bottom]), new THREE.LineBasicMaterial({ color: '#efe6cf' }));
   g.add(bow, string);
-  return g;
+  return { group: g, gear: [hair, crownMesh] };
 }
 
 /** Krishna's chariot between the two armies: four white horses, Krishna as charioteer with the chakra raised, Arjuna with his bow. */
@@ -215,8 +220,8 @@ export function createChariot(ctx: SceneContext): Part {
   k.group.position.set(0.55, deck, 0);
   root.add(k.group);
   const a = arjuna(M);
-  a.position.set(-0.55, deck, 0.1);
-  root.add(a);
+  a.group.position.set(-0.55, deck, 0.1);
+  root.add(a.group);
 
   // Reins from Krishna's hand to each horse's bit.
   const hand = k.reinHand.clone().add(k.group.position);
@@ -240,7 +245,7 @@ export function createChariot(ctx: SceneContext): Part {
 
   // Once the real, skinned models have loaded they replace the procedural horses and bodies; the reins follow each animated head.
   const realHorses: Rig[] = [];
-  const heroes: Rig[] = [];
+  const heroes: Hero[] = [];
   const reinLine = reinsLine;
   const headPos = new THREE.Vector3();
 
@@ -256,12 +261,15 @@ export function createChariot(ctx: SceneContext): Part {
         h.group.visible = false;
         realHorses.push(rig);
       });
-      heroes.push(dressHero(k.group, models, 'Spell_Simple_Idle_Loop', '#2f4c8c'), dressHero(a, models, 'Pistol_Aim_Neutral', '#b07e5a'));
+      heroes.push(
+        dressHero(k.group, models, 'Spell_Simple_Idle_Loop', '#2f4c8c', k.gear, HEAD_CENTRE),
+        dressHero(a.group, models, 'Pistol_Aim_Neutral', '#b07e5a', a.gear, HEAD_CENTRE),
+      );
     },
     update(time, mix) {
       const dt = Math.min(0.05, Math.max(0.001, time - last));
       last = time;
-      heroes.forEach((rig) => rig.mixer.update(dt));
+      heroes.forEach((h) => h.update(dt));
       realHorses.forEach((rig, i) => {
         rig.mixer.update(dt);
         const head = rig.bone('Head');

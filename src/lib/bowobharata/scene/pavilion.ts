@@ -1,8 +1,7 @@
 import * as THREE from 'three';
 import { PAVILION, groundHeight } from '../stage-math';
 import { garment, humanFigure, strand } from './anatomy';
-import { dressHero } from './hero';
-import type { Rig } from './models';
+import { dressHero, type Hero } from './hero';
 import { canvasTexture, contactShadow, glowSprite, wavingCloth, type Part, type SceneContext } from './effects';
 
 const std = (color: string, roughness = 0.6, metalness = 0, extra: THREE.MeshStandardMaterialParameters = {}) =>
@@ -167,14 +166,14 @@ export function createPavilion(ctx: SceneContext): Part {
   root.add(light);
 
   // Once the real mannequin has loaded, Sengkuni sits on a throne and talks with his hands, as the animation library has it.
-  let sengkuni: Rig | undefined;
+  let sengkuni: Hero | undefined;
   let last = 0;
 
   return {
     object: root,
     upgrade(models) {
       for (const piece of crossLegged) piece.visible = false;
-      sengkuni = dressHero(s, models, 'Sitting_Talking_Loop', '#4a3270');
+      sengkuni = dressHero(s, models, 'Sitting_Talking_Loop', '#4a3270', [beard, scalp, diadem], new THREE.Vector3(0.01, 1.7 + fig.lift, 0));
       const seat = mesh(new THREE.BoxGeometry(0.62, 0.46, 0.66), dark, -0.1, 0.23, 0);
       const cushion = mesh(new THREE.BoxGeometry(0.64, 0.06, 0.68), robe, -0.1, 0.49, 0);
       const back = mesh(new THREE.BoxGeometry(0.1, 0.95, 0.7), lacquer, -0.46, 0.7, 0);
@@ -184,7 +183,7 @@ export function createPavilion(ctx: SceneContext): Part {
     update(time, mix) {
       const dt = Math.min(0.05, Math.max(0.001, time - last));
       last = time;
-      sengkuni?.mixer.update(dt);
+      sengkuni?.update(dt);
       dice.forEach((d, i) => {
         d.rotation.x = time * (1.1 + i * 0.35);
         d.rotation.y = time * 0.6 + i;
