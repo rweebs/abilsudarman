@@ -74,7 +74,8 @@ const allegations = ALLEGATIONS.map((a) => (locale === 'en' ? { ...a, ...ALLEGAT
 const DESCRIPTION = T.description;
 const websiteLd = {
   '@context': 'https://schema.org', '@type': 'WebSite', name: T.alt.name, alternateName: T.alt.alternateName,
-  url: new URL(localizedPath('home', locale), SITE.url).toString(), inLanguage: locale, description: DESCRIPTION,
+  '@id': `${SITE.url}/#website`, url: new URL(localizedPath('home', locale), SITE.url).toString(), sameAs: [SITE.url, SITE.repo],
+  inLanguage: locale, description: DESCRIPTION,
   publisher: { '@type': 'Person', name: SITE.author },
 };
 const REPORT = 'https://www.pewartanusantara.com/berita/dibungkam-situs-ordal-id-kena-6-000-serangan-siber-usai-bongkar-borok-loker-komdigi/';
