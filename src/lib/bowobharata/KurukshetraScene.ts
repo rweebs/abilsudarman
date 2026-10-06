@@ -3,6 +3,7 @@ import { cardShift, dharmaMix, formation, groundHeight, poseAt, viewOffsetX } fr
 import { createArmies } from './scene/army';
 import { createBattle } from './scene/battle';
 import { createChariot } from './scene/chariot';
+import { createDressing } from './scene/dressing';
 import { FX_LAYER, createBattleEffects, createContext, createLightShafts, type Part } from './scene/effects';
 import { createEnvironment } from './scene/environment';
 import { createDetail } from './scene/materials';
@@ -49,6 +50,7 @@ export function createScene({ canvas, reducedMotion, mobile, onLost }: SceneInit
     createPavilion(ctx),
     createBattleEffects(ctx, dharma, adharma, groundHeight),
     createLightShafts(ctx, new THREE.Vector2(0.55, -0.83)),
+    createDressing(ctx),
   ];
   for (const p of parts) scene.add(p.object);
 

@@ -7,6 +7,9 @@ export interface Quality {
   embers: number;
   terrainSegments: number;
   skirmishPairs: number;
+  /** Grass tufts and rocks scattered on the ground outside the field. */
+  tufts: number;
+  rocks: number;
   /** Ranks at the front of each army drawn as the real, baked-animation soldier; the rest stay procedural. */
   realRanks: number;
   /** Skirmish fighters (both sides together) drawn as the real soldier. */
@@ -25,17 +28,17 @@ export interface Quality {
 export function qualityFor(mobile: boolean, dpr: number, cores = 8): Quality {
   const full = fullQuality(mobile, dpr);
   if (mobile || cores > 4) return full;
-  return { ...full, warriorsPerSide: 1200, realRanks: 3, realFighters: 60, shadowMap: 1024, cavalry: 16, elephants: 4 };
+  return { ...full, warriorsPerSide: 1200, realRanks: 3, realFighters: 60, shadowMap: 1024, cavalry: 16, elephants: 4, tufts: 800, rocks: 40 };
 }
 
 function fullQuality(mobile: boolean, dpr: number): Quality {
   return mobile
     ? {
-      warriorsPerSide: 700, arrows: 48, dust: 140, embers: 90, terrainSegments: 96, skirmishPairs: 28, realRanks: 2, realFighters: 24, cavalry: 8, elephants: 2,
+      warriorsPerSide: 700, arrows: 48, dust: 140, embers: 90, terrainSegments: 96, skirmishPairs: 28, tufts: 360, rocks: 24, realRanks: 2, realFighters: 24, cavalry: 8, elephants: 2,
       shadowMap: 0, bloom: false, shadows: false, ao: false, dof: false, pixelRatio: Math.min(dpr, 1.25),
     }
     : {
-      warriorsPerSide: 1800, arrows: 140, dust: 360, embers: 240, terrainSegments: 200, skirmishPairs: 90, realRanks: 6, realFighters: 120, cavalry: 28, elephants: 6,
+      warriorsPerSide: 1800, arrows: 140, dust: 360, embers: 240, terrainSegments: 200, skirmishPairs: 90, tufts: 1400, rocks: 70, realRanks: 6, realFighters: 120, cavalry: 28, elephants: 6,
       shadowMap: 2048, bloom: true, shadows: true, ao: true, dof: true, pixelRatio: Math.min(dpr, 1.5),
     };
 }
